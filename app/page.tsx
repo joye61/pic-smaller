@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import { Button } from "antd";
 
 export default function Home() {
   return (
@@ -37,6 +38,7 @@ export default function Home() {
           height={37}
           priority
         />
+        <Button type="primary">测试</Button>
       </div>
 
       <div className={styles.grid}>
