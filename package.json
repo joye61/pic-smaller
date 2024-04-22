@@ -11,6 +11,8 @@
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
     "antd": "^5.16.4",
+    "mobx": "^6.12.3",
+    "mobx-react-lite": "^4.0.7",
     "next": "14.2.2",
     "react": "^18",
     "react-dom": "^18"
@@ -19,6 +21,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "sass": "^1.75.0",
     "typescript": "^5"
   }
 }

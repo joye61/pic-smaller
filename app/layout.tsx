@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import "antd/dist/reset.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "PicSmaller – Compress WebP, PNG and JPEG images intelligently",
@@ -20,12 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN">
-      <body className={inter.className}>
+      <body>
         <AntdRegistry>
           <ConfigProvider
             locale={zhCN}
             theme={{
-              // algorithm: theme.compactAlgorithm,
               token: {
                 borderRadius: 0,
               },
