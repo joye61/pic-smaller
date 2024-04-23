@@ -1,12 +1,9 @@
 .container {
-  background-color: #00000066;
-  color: #fff;
   font-size: 24px;
+  line-height: 1;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
-  padding: 5px 10px;
   span {
-    color: red;
-    font-weight: normal;
+    margin-left: 5px;
   }
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "antd/dist/reset.css";
+import "./global.scss";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";
@@ -24,7 +25,7 @@ export default function RootLayout({
             theme={{
               token: {
                 borderRadius: 0,
-              },
+              }
             }}
           >
             {children}
