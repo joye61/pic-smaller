@@ -5,9 +5,22 @@ import { configure } from "mobx";
 import ReactDOM from "react-dom/client";
 import { gstate } from "./global";
 import { initHistoryLogic } from "./history";
+import { ContextAction } from "./ContextAction";
 
 const App = observer(() => {
-  return <ConfigProvider locale={zhCN}>{gstate.page}</ConfigProvider>;
+  return (
+    <ConfigProvider
+      locale={zhCN}
+      theme={{
+        token: {
+          // borderRadius: 0,
+        },
+      }}
+    >
+      <ContextAction />
+      {gstate.page}
+    </ConfigProvider>
+  );
 });
 
 export async function runApp() {

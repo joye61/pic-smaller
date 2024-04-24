@@ -2,6 +2,7 @@ import { Flex, Typography } from "antd";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 import { Logo } from "@/components/Logo";
+import { UploadCard } from "@/components/UploadCard";
 
 export default observer(() => {
   return (
@@ -10,7 +11,9 @@ export default observer(() => {
         <Logo />
         <Typography.Link>反馈</Typography.Link>
       </Flex>
-      <></>
+      <div>
+        <UploadCard />
+      </div>
     </div>
   );
 });

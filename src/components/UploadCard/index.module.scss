@@ -1,0 +1,53 @@
+.container {
+  width: 100%;
+  position: relative;
+  padding: 32px 0;
+  outline: 1px solid #1da565;
+  cursor: pointer;
+  user-select: none;
+  background-color: #fafafa;
+  border-radius: 10px;
+  overflow: hidden;
+  &:hover {
+    background-color: darken($color: #fafafa, $amount: 2);
+  }
+  &:active {
+    background-color: darken($color: #fafafa, $amount: 4);
+  }
+  > input {
+    display: none;
+  }
+
+  &.active {
+    outline: 2px dashed #1da565;
+    background-color: #f5f5db !important;
+  }
+}
+
+.inner {
+  line-height: 1;
+  svg {
+    width: 48px;
+    height: 48px;
+    path {
+      fill: #1da565;
+    }
+  }
+  > div:nth-child(2) {
+    margin-top: 10px;
+    font-size: 24px;
+    color: #1da565;
+  }
+  > div:nth-child(3) {
+    margin-top: 10px;
+    color: #aaa;
+  }
+}
+
+.mask {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
