@@ -9,10 +9,10 @@
   border-radius: 10px;
   overflow: hidden;
   &:hover {
-    background-color: darken($color: #fafafa, $amount: 2);
+    background-color: darken($color: #fafafa, $amount: 3);
   }
   &:active {
-    background-color: darken($color: #fafafa, $amount: 4);
+    background-color: darken($color: #fafafa, $amount: 6);
   }
   > input {
     display: none;
