@@ -10,7 +10,7 @@ import { ContextAction } from "./ContextAction";
 const App = observer(() => {
   return (
     <ConfigProvider
-      locale={zhCN}
+      // locale={zhCN}
       theme={{
         token: {
           // borderRadius: 0,

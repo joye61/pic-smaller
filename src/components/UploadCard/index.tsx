@@ -67,10 +67,10 @@ export function UploadCard() {
             strokeLinejoin="round"
           />
         </svg>
-        <div>拖拽或点击上传</div>
-        <div>支持JPG/JPEG/PNG/WEBP格式</div>
+        <div>Drag and drop files or click to upload</div>
+        <div>Support <span>JPG/JPEG/PNG/WEBP</span> format</div>
       </Flex>
-      <input type="file" multiple ref={fileRef} />
+      <input type="file" multiple ref={fileRef} accept=".jpg,.jpeg,.png,.webp"/>
       <div
         className={style.mask}
         ref={dndRef}
