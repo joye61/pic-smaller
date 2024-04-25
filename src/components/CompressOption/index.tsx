@@ -8,14 +8,10 @@ export const CompressOption = observer(() => {
   return (
     <div className={style.container}>
       <Form layout="vertical">
-        <Form.Item label="根据宽度缩放" name="width">
-          <Input allowClear placeholder="指定宽度，高度等比缩放" />
+        <Form.Item label="缩放到指定宽度" name="width">
+          <Input allowClear placeholder="指定宽度，高度等比缩放" suffix="px" />
         </Form.Item>
-        <Form.Item
-          label="调整压缩质量(0-100)"
-          name="width"
-          help="数值越大，压缩后生成图片越大"
-        >
+        <Form.Item label="调整压缩质量(0-100)" name="width">
           <div
             style={{
               borderRadius: token.borderRadius,
