@@ -7,4 +7,7 @@ export interface LocaleData {
     title: string;
     subTitle: [string, string];
   };
+  listAction: {
+    batchAppend: string;
+  }
 }

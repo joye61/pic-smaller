@@ -51,11 +51,11 @@ export const UploadCard = observer(() => {
         <FileAddOutlined />
         <div>{gstate.locale?.uploadCard.title}</div>
         <div>
-          {gstate.locale?.uploadCard.subTitle[0]}
+          {gstate.locale?.uploadCard.subTitle[0]}&nbsp;
           <span>
             {gstate.supportedTypes.map((item) => item.toUpperCase()).join("/")}
           </span>
-          {gstate.locale?.uploadCard.subTitle[1]}
+          &nbsp;{gstate.locale?.uploadCard.subTitle[1]}
         </div>
       </Flex>
       <ImageInput ref={fileRef} />

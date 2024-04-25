@@ -6,7 +6,10 @@ const localeData: LocaleData = {
   logo: "图小小",
   uploadCard: {
     title: "拖拽或点击上传",
-    subTitle: ["支持 ", " 格式"],
+    subTitle: ["支持", "格式"],
+  },
+  listAction: {
+    batchAppend: "批量添加",
   },
 };
 

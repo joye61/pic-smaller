@@ -12,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import { useRef } from "react";
 import { ImageInput } from "@/components/ImageInput";
+import { gstate } from "@/global";
 
 interface RowType {
   key: string;
@@ -59,7 +60,7 @@ export default observer(() => {
   return (
     <div className={style.main}>
       <Flex align="center" justify="space-between" className={style.header}>
-        <Logo />
+        <Logo title={gstate.locale?.logo} />
         <Typography.Link>Feedback</Typography.Link>
       </Flex>
       <div>
@@ -74,7 +75,7 @@ export default observer(() => {
                   fileRef.current?.click();
                 }}
               >
-                Batch Append
+                {gstate.locale?.listAction.batchAppend}
               </Button>
               <Space>
                 <Button icon={<ClearOutlined />} danger type="primary" />

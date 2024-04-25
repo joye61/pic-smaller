@@ -6,8 +6,11 @@ const localeData: LocaleData = {
   logo: "PicSmaller",
   uploadCard: {
     title: "Drag and drop files or click to upload",
-    subTitle: ["Support ", " format"],
+    subTitle: ["Support", "format"],
   },
+  listAction: {
+    batchAppend: 'Batch Append'
+  }
 };
 
 export default localeData;
