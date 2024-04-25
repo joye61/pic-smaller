@@ -10,6 +10,8 @@ import {
   PlusOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import { useRef } from "react";
+import { ImageInput } from "@/components/ImageInput";
 
 interface RowType {
   key: string;
@@ -52,6 +54,8 @@ const columns: TableProps<RowType>["columns"] = [
 ];
 
 export default observer(() => {
+  const fileRef = useRef<HTMLInputElement>(null);
+
   return (
     <div className={style.main}>
       <Flex align="center" justify="space-between" className={style.header}>
@@ -59,18 +63,25 @@ export default observer(() => {
         <Typography.Link>Feedback</Typography.Link>
       </Flex>
       <div>
-        {/* <UploadCard /> */}
+        <UploadCard />
         <Row>
           <Col span={24}>
             <Flex align="center" justify="space-between" className={style.menu}>
-              <Button icon={<PlusOutlined />} type="primary">
-                Batch Add
+              <Button
+                icon={<PlusOutlined />}
+                type="primary"
+                onClick={() => {
+                  fileRef.current?.click();
+                }}
+              >
+                Batch Append
               </Button>
               <Space>
                 <Button icon={<ClearOutlined />} danger type="primary" />
                 <Button icon={<SettingOutlined />} type="primary" />
                 <Button icon={<DownloadOutlined />} type="primary" />
               </Space>
+              <ImageInput ref={fileRef} />
             </Flex>
           </Col>
         </Row>

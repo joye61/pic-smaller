@@ -1,7 +1,7 @@
 import { goto } from "@/history";
 import style from "./index.module.scss";
 import { Button, Flex, Result } from "antd";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 
 export default observer(() => {
   const backToHome = (

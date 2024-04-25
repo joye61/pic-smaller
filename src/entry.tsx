@@ -1,16 +1,16 @@
 import { ConfigProvider } from "antd";
 import { observer } from "mobx-react-lite";
-import zhCN from "antd/locale/zh_CN";
 import { configure } from "mobx";
 import ReactDOM from "react-dom/client";
 import { gstate } from "./global";
 import { initHistoryLogic } from "./history";
 import { ContextAction } from "./ContextAction";
+import { initLocaleSetting } from "./locale";
 
 const App = observer(() => {
   return (
     <ConfigProvider
-      // locale={zhCN}
+      locale={gstate.locale?.antLocale}
       theme={{
         token: {
           // borderRadius: 0,
@@ -29,6 +29,7 @@ export async function runApp() {
     useProxies: "ifavailable",
   });
 
+  await initLocaleSetting();
   initHistoryLogic();
 
   const root = document.getElementById("root") as HTMLElement;
