@@ -14,20 +14,23 @@ import { TabsProps } from "antd/lib";
 import { ColumnHeightOutlined, ColumnWidthOutlined } from "@ant-design/icons";
 import { homeState } from "@/states/home";
 import { CompressOption } from "@/uitls/ImageInfo";
+import { gstate } from "@/global";
+
+const locale = gstate.locale?.optionPannel;
 
 const tabItems: TabsProps["items"] = [
   {
     key: "unChanged",
-    label: "无缩放",
+    label: locale?.unChanged,
   },
   {
     key: "toWidth",
-    label: "适应宽度",
+    label: locale?.toWidth,
     icon: <ColumnWidthOutlined />,
   },
   {
     key: "toHeight",
-    label: "适应高度",
+    label: locale?.toHeight,
     icon: <ColumnHeightOutlined />,
   },
 ];
@@ -38,10 +41,14 @@ const tabItems: TabsProps["items"] = [
  */
 function showInput() {
   if (homeState.option.scale === "toWidth") {
-    return <InputNumber min={0} step={1} placeholder="设置压缩图宽度" />;
+    return (
+      <InputNumber min={0} step={1} placeholder={locale?.widthPlaceholder} />
+    );
   }
   if (homeState.option.scale === "toHeight") {
-    return <InputNumber min={0} step={1} placeholder="设置压缩图高度" />;
+    return (
+      <InputNumber min={0} step={1} placeholder={locale?.heightPlaceholder} />
+    );
   }
 
   return null;
@@ -64,9 +71,7 @@ export const CompressOptionPannel = observer(() => {
       <div className={style.scaleInput}>{showInput()}</div>
 
       <div className={style.quality}>
-        <Typography.Text>
-          设置压缩质量（质量越高，生成图片越大）
-        </Typography.Text>
+        <Typography.Text>{locale?.qualityTitle}</Typography.Text>
         <div
           style={{
             borderRadius: token.borderRadius,
@@ -78,8 +83,8 @@ export const CompressOptionPannel = observer(() => {
 
       <Flex justify="flex-end">
         <Space>
-          <Button>重置</Button>
-          <Button type="primary">确定</Button>
+          <Button>{locale?.resetBtn}</Button>
+          <Button type="primary">{locale?.confirmBtn}</Button>
         </Space>
       </Flex>
     </div>

@@ -10,3 +10,22 @@
 .menu {
   margin-bottom: 8px;
 }
+
+.localeChange {
+  cursor: pointer;
+  svg {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+    path {
+      fill: currentColor;
+    }
+  }
+  span {
+    white-space: nowrap;
+    color: currentColor;
+  }
+  &:hover {
+    color: #1da565;
+  }
+}

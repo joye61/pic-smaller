@@ -10,7 +10,6 @@ export interface LocaleData {
   listAction: {
     batchAppend: string;
     clear: string;
-    setting: string;
     downloadAll: string;
   };
   columnTitle: {
@@ -22,4 +21,15 @@ export interface LocaleData {
     decrease: string;
     action: string;
   };
+  optionPannel: {
+    title: string;
+    unChanged: string;
+    toWidth: string;
+    toHeight: string;
+    widthPlaceholder: string;
+    heightPlaceholder: string;
+    qualityTitle: string;
+    resetBtn: string;
+    confirmBtn: string;
+  }
 }

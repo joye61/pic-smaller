@@ -3,7 +3,7 @@ import enUS from "antd/locale/en_US";
 
 const localeData: LocaleData = {
   antLocale: enUS,
-  logo: "PicSmaller",
+  logo: "Pic Smaller",
   uploadCard: {
     title: "Drag and drop files or click to upload",
     subTitle: ["Support", "format"],
@@ -11,7 +11,6 @@ const localeData: LocaleData = {
   listAction: {
     batchAppend: 'Batch Append',
     clear: 'Clear the list',
-    setting: 'Compression options',
     downloadAll: 'Download all'
   },
   columnTitle: {
@@ -22,6 +21,17 @@ const localeData: LocaleData = {
     dimension: 'Dimension',
     decrease: 'Decrease',
     action: 'Action'
+  },
+  optionPannel: {
+    title: "Compression options",
+    unChanged: "No Zoom",
+    toWidth: "Fit Width",
+    toHeight: "Fit Height",
+    widthPlaceholder: "Enter the compressed image width",
+    heightPlaceholder: "Enter the compressed image height",
+    qualityTitle: "Set the compression quality, the larger the value, the larger size the generated image",
+    resetBtn: "Reset",
+    confirmBtn: "Confirm"
   }
 };
 

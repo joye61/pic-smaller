@@ -16,12 +16,7 @@ const App = observer(() => {
           borderRadius: 0,
           colorPrimary: "#1da565",
           colorLink: "#1da565",
-        },
-        components: {
-          Popover: {
-            fontSize: 15,
-          },
-        },
+        }
       }}
     >
       <ContextAction />
