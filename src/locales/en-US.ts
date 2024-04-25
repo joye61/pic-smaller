@@ -9,7 +9,19 @@ const localeData: LocaleData = {
     subTitle: ["Support", "format"],
   },
   listAction: {
-    batchAppend: 'Batch Append'
+    batchAppend: 'Batch Append',
+    clear: 'Clear the list',
+    setting: 'Compression options',
+    downloadAll: 'Download all'
+  },
+  columnTitle: {
+    status: 'Status',
+    name: 'Name',
+    preview: 'Preview',
+    size: 'Size',
+    dimension: 'Dimension',
+    decrease: 'Decrease',
+    action: 'Action'
   }
 };
 

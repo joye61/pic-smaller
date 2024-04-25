@@ -10,6 +10,18 @@ const localeData: LocaleData = {
   },
   listAction: {
     batchAppend: "批量添加",
+    clear: "清空列表",
+    setting: "压缩选项",
+    downloadAll: "下载全部",
+  },
+  columnTitle: {
+    status: "状态",
+    name: "文件名",
+    preview: "预览",
+    size: "大小",
+    dimension: "尺寸",
+    decrease: "压缩率",
+    action: "操作",
   },
 };
 

@@ -1,4 +1,14 @@
-import { Button, Col, Flex, Row, Space, Table, Typography } from "antd";
+import {
+  Button,
+  Col,
+  Flex,
+  Popover,
+  Row,
+  Space,
+  Table,
+  Tooltip,
+  Typography,
+} from "antd";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 import { Logo } from "@/components/Logo";
@@ -13,6 +23,7 @@ import {
 import { useRef } from "react";
 import { ImageInput } from "@/components/ImageInput";
 import { gstate } from "@/global";
+import { CompressOption } from "@/components/CompressOption";
 
 interface RowType {
   key: string;
@@ -26,31 +37,31 @@ interface RowType {
 const columns: TableProps<RowType>["columns"] = [
   {
     dataIndex: "status",
-    title: "Status",
+    title: gstate.locale?.columnTitle.status,
   },
   {
     dataIndex: "preview",
-    title: "Preview",
+    title: gstate.locale?.columnTitle.preview,
   },
   {
     dataIndex: "name",
-    title: "Name",
+    title: gstate.locale?.columnTitle.name,
   },
   {
     dataIndex: "size",
-    title: "Size",
+    title: gstate.locale?.columnTitle.size,
   },
   {
     dataIndex: "dimension",
-    title: "Dimension",
+    title: gstate.locale?.columnTitle.dimension,
   },
   {
     dataIndex: "decrease",
-    title: "Decrease",
+    title: gstate.locale?.columnTitle.decrease,
   },
   {
     dataIndex: "action",
-    title: "Action",
+    title: gstate.locale?.columnTitle.action,
   },
 ];
 
@@ -78,9 +89,20 @@ export default observer(() => {
                 {gstate.locale?.listAction.batchAppend}
               </Button>
               <Space>
-                <Button icon={<ClearOutlined />} danger type="primary" />
-                <Button icon={<SettingOutlined />} type="primary" />
-                <Button icon={<DownloadOutlined />} type="primary" />
+                <Tooltip title={gstate.locale?.listAction.clear}>
+                  <Button icon={<ClearOutlined />} danger type="primary" />
+                </Tooltip>
+                <Popover
+                  content={<CompressOption />}
+                  placement="bottomRight"
+                  title={gstate.locale?.listAction.setting}
+                  open
+                >
+                  <Button icon={<SettingOutlined />} type="primary" />
+                </Popover>
+                <Tooltip title={gstate.locale?.listAction.downloadAll}>
+                  <Button icon={<DownloadOutlined />} type="primary" />
+                </Tooltip>
               </Space>
               <ImageInput ref={fileRef} />
             </Flex>
