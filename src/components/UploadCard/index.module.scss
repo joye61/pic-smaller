@@ -2,12 +2,12 @@
   width: 100%;
   position: relative;
   padding: 32px 0;
-  outline: 1px solid #1da56566;
+  border: 1px solid #1da56566;
   cursor: pointer;
   user-select: none;
   background-color: #fafafa;
-  border-radius: 10px;
   overflow: hidden;
+  box-sizing: border-box;
   &:hover {
     background-color: darken($color: #fafafa, $amount: 3);
   }
@@ -19,7 +19,7 @@
   }
 
   &.active {
-    outline: 1px dashed #1da565;
+    border: 1px dashed #1da565;
     background-color: #f5f5db !important;
   }
 }

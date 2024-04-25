@@ -23,7 +23,7 @@ import {
 import { useRef } from "react";
 import { ImageInput } from "@/components/ImageInput";
 import { gstate } from "@/global";
-import { CompressOption } from "@/components/CompressOption";
+import { CompressOptionPannel } from "@/components/CompressOptionPannel";
 
 interface RowType {
   key: string;
@@ -93,7 +93,7 @@ export default observer(() => {
                   <Button icon={<ClearOutlined />} danger type="primary" />
                 </Tooltip>
                 <Popover
-                  content={<CompressOption />}
+                  content={<CompressOptionPannel />}
                   placement="bottomRight"
                   title={gstate.locale?.listAction.setting}
                   open

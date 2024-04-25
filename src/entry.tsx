@@ -13,7 +13,14 @@ const App = observer(() => {
       locale={gstate.locale?.antLocale}
       theme={{
         token: {
-          // borderRadius: 0,
+          borderRadius: 0,
+          colorPrimary: "#1da565",
+          colorLink: "#1da565",
+        },
+        components: {
+          Popover: {
+            fontSize: 15,
+          },
         },
       }}
     >

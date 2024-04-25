@@ -1,0 +1,25 @@
+:global(.ant-popover .ant-popover-content .ant-popover-inner) {
+  padding: 16px;
+}
+
+.container {
+  width: 340px;
+  padding: 8px 0;
+}
+
+.scaleInput {
+  margin-bottom: 24px;
+  > div {
+    width: 100%;
+  }
+}
+
+.quality {
+  margin-bottom: 24px;
+  > span {
+    margin-bottom: 16px;
+  }
+  > div:nth-child(2) {
+    background-color: #87cca533;
+  }
+}
