@@ -1,3 +1,4 @@
+import { gstate } from "@/global";
 import { CompressOption, ImageInfo } from "@/uitls/ImageInfo";
 import { observable } from "mobx";
 
@@ -5,6 +6,7 @@ export interface HomeState {
   list: ImageInfo[];
   showOption: boolean;
   option: CompressOption;
+  langKey: string;
 }
 
 export const homeState = observable.object<HomeState>({
@@ -16,4 +18,5 @@ export const homeState = observable.object<HomeState>({
     toWidth: undefined,
     toHeight: undefined,
   },
+  langKey: gstate.lang,
 });

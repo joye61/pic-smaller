@@ -16,46 +16,45 @@ import { homeState } from "@/states/home";
 import { CompressOption } from "@/uitls/ImageInfo";
 import { gstate } from "@/global";
 
-const locale = gstate.locale?.optionPannel;
-
-const tabItems: TabsProps["items"] = [
-  {
-    key: "unChanged",
-    label: locale?.unChanged,
-  },
-  {
-    key: "toWidth",
-    label: locale?.toWidth,
-    icon: <ColumnWidthOutlined />,
-  },
-  {
-    key: "toHeight",
-    label: locale?.toHeight,
-    icon: <ColumnHeightOutlined />,
-  },
-];
-
-/**
- * 输入框逻辑
- * @returns
- */
-function showInput() {
-  if (homeState.option.scale === "toWidth") {
-    return (
-      <InputNumber min={0} step={1} placeholder={locale?.widthPlaceholder} />
-    );
-  }
-  if (homeState.option.scale === "toHeight") {
-    return (
-      <InputNumber min={0} step={1} placeholder={locale?.heightPlaceholder} />
-    );
-  }
-
-  return null;
-}
-
 export const CompressOptionPannel = observer(() => {
   const { token } = theme.useToken();
+
+  const tabItems: TabsProps["items"] = [
+    {
+      key: "unChanged",
+      label: gstate.locale?.optionPannel.unChanged,
+    },
+    {
+      key: "toWidth",
+      label: gstate.locale?.optionPannel?.toWidth,
+      icon: <ColumnWidthOutlined />,
+    },
+    {
+      key: "toHeight",
+      label: gstate.locale?.optionPannel?.toHeight,
+      icon: <ColumnHeightOutlined />,
+    },
+  ];
+
+  // 显示输入框逻辑
+  let input: React.ReactNode = null;
+  if (homeState.option.scale === "toWidth") {
+    input = (
+      <InputNumber
+        min={0}
+        step={1}
+        placeholder={gstate.locale?.optionPannel?.widthPlaceholder}
+      />
+    );
+  } else if (homeState.option.scale === "toHeight") {
+    input = (
+      <InputNumber
+        min={0}
+        step={1}
+        placeholder={gstate.locale?.optionPannel?.heightPlaceholder}
+      />
+    );
+  }
 
   return (
     <div className={style.container}>
@@ -68,10 +67,12 @@ export const CompressOptionPannel = observer(() => {
         }}
       />
 
-      <div className={style.scaleInput}>{showInput()}</div>
+      <div className={style.scaleInput}>{input}</div>
 
       <div className={style.quality}>
-        <Typography.Text>{locale?.qualityTitle}</Typography.Text>
+        <Typography.Text>
+          {gstate.locale?.optionPannel?.qualityTitle}
+        </Typography.Text>
         <div
           style={{
             borderRadius: token.borderRadius,
@@ -83,8 +84,10 @@ export const CompressOptionPannel = observer(() => {
 
       <Flex justify="flex-end">
         <Space>
-          <Button>{locale?.resetBtn}</Button>
-          <Button type="primary">{locale?.confirmBtn}</Button>
+          <Button>{gstate.locale?.optionPannel?.resetBtn}</Button>
+          <Button type="primary">
+            {gstate.locale?.optionPannel?.confirmBtn}
+          </Button>
         </Space>
       </Flex>
     </div>

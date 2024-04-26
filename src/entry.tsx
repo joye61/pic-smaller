@@ -5,7 +5,7 @@ import ReactDOM from "react-dom/client";
 import { gstate } from "./global";
 import { initHistoryLogic } from "./history";
 import { ContextAction } from "./ContextAction";
-import { initLocaleSetting } from "./locale";
+import { initLangSetting } from "./locale";
 
 const App = observer(() => {
   return (
@@ -31,7 +31,7 @@ export async function runApp() {
     useProxies: "ifavailable",
   });
 
-  await initLocaleSetting();
+  await initLangSetting();
   initHistoryLogic();
 
   const root = document.getElementById("root") as HTMLElement;

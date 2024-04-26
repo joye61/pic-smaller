@@ -33,6 +33,10 @@ const localeData: LocaleData = {
     resetBtn: "重置",
     confirmBtn: "确定"
   },
+  error404: {
+    backHome: '返回首页',
+    description: '抱歉，你访问的页面不存在~'
+  }
 };
 
 export default localeData;

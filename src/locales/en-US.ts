@@ -32,6 +32,10 @@ const localeData: LocaleData = {
     qualityTitle: "Set the compression quality, the larger the value, the larger size the generated image",
     resetBtn: "Reset",
     confirmBtn: "Confirm"
+  },
+  error404: {
+    backHome: 'Back to home',
+    description: 'Sorry, the page you visited does not exist~'
   }
 };
 

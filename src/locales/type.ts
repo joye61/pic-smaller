@@ -3,6 +3,10 @@ import { Locale } from "antd/es/locale";
 export interface LocaleData {
   antLocale: Locale;
   logo: string;
+  error404: {
+    backHome: string;
+    description: string;
+  };
   uploadCard: {
     title: string;
     subTitle: [string, string];
@@ -31,5 +35,5 @@ export interface LocaleData {
     qualityTitle: string;
     resetBtn: string;
     confirmBtn: string;
-  }
+  };
 }

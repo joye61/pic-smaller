@@ -7,6 +7,7 @@ export interface GlobalState {
   pathname: string;
   page: null | React.ReactNode;
   supportedTypes: string[];
+  lang: string;
   locale: LocaleData | null;
 }
 
@@ -14,6 +15,7 @@ export const gstate = observable.object<GlobalState>({
   pathname: normalize(history.location.pathname),
   page: null,
   supportedTypes: ["jpg", "jpeg", "png", "webp"],
+  lang: "en-US",
   locale: null,
 });
 
