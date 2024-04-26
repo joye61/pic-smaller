@@ -9,18 +9,18 @@ const localeData: LocaleData = {
     subTitle: ["Support", "format"],
   },
   listAction: {
-    batchAppend: 'Batch Append',
-    clear: 'Clear the list',
-    downloadAll: 'Download all'
+    batchAppend: "Batch append",
+    clear: "Clear the list",
+    downloadAll: "Download all",
   },
   columnTitle: {
-    status: 'Status',
-    name: 'Name',
-    preview: 'Preview',
-    size: 'Size',
-    dimension: 'Dimension',
-    decrease: 'Decrease',
-    action: 'Action'
+    status: "Status",
+    name: "Name",
+    preview: "Preview",
+    size: "Size",
+    dimension: "Dimension",
+    decrease: "Decrease",
+    action: "Action",
   },
   optionPannel: {
     title: "Compression options",
@@ -29,14 +29,15 @@ const localeData: LocaleData = {
     toHeight: "Fit Height",
     widthPlaceholder: "Enter the compressed image width",
     heightPlaceholder: "Enter the compressed image height",
-    qualityTitle: "Set the compression quality, the larger the value, the larger size the generated image",
+    qualityTitle:
+      "Set the compression quality, the larger the value, the larger size the generated image",
     resetBtn: "Reset",
-    confirmBtn: "Confirm"
+    confirmBtn: "Confirm",
   },
   error404: {
-    backHome: 'Back to home',
-    description: 'Sorry, the page you visited does not exist~'
-  }
+    backHome: "Back to home",
+    description: "Sorry, the page you visited does not exist~",
+  },
 };
 
 export default localeData;

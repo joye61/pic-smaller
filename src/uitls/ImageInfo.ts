@@ -1,14 +1,12 @@
 export interface OriginalInfo {
   name: string;
   type: string;
-  mime: string;
   size: number;
   width: number;
   height: number;
   blob: Blob;
 }
 
-// 输出图片的信息
 export type OutputInfo = OriginalInfo;
 
 export interface CompressOption {
@@ -22,13 +20,9 @@ export interface CompressOption {
   quality: number;
 }
 
-export class ImageInfo {
-  public params: CompressOption = {
-    scale: "unChanged",
-    quality: 0.7,
-  };
-
-  public output?: OutputInfo;
-
-  constructor(public origin: OriginalInfo) {}
+export interface ImageInfo {
+  key: number;
+  option: CompressOption;
+  origin: OriginalInfo;
+  output: OutputInfo | null;
 }
