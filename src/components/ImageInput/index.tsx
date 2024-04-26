@@ -16,14 +16,16 @@ export const ImageInput = observer(
         type="file"
         multiple
         accept={gstate.supportedTypes.map((item) => "." + item).join(",")}
-        onChange={(event) => {
+        onChange={async (event) => {
           if (!event.target.files?.length) {
             event.target.value = "";
             return;
           }
           const files = event.target.files;
+          const list: Array<ImageInfo> = [];
           for (let i = 0; i < files.length; i++) {
             const file = files.item(i)!;
+            const bitmap = await createImageBitmap(file);
             const info: ImageInfo = {
               key: uniqId(),
               output: null,
@@ -37,11 +39,16 @@ export const ImageInput = observer(
                 name: file.name,
                 type: file.type,
                 size: file.size,
-                width: 0,
-                height: 0,
+                width: bitmap.width,
+                height: bitmap.height,
                 blob: file,
               },
             };
+            bitmap.close();
+            list.push(info);
+          }
+          
+          for (let info of list) {
             homeState.list.push(info);
             sendToCreatePreview(info);
             sendToCreateCompress(info);

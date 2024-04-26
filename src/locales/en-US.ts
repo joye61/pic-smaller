@@ -10,7 +10,7 @@ const localeData: LocaleData = {
   },
   listAction: {
     batchAppend: "Batch append",
-    clear: "Clear the list",
+    clear: "Clear all",
     downloadAll: "Download all",
   },
   columnTitle: {

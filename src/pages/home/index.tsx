@@ -21,6 +21,7 @@ import {
   ArrowUpOutlined,
   CheckCircleFilled,
   ClearOutlined,
+  DeleteOutlined,
   DownloadOutlined,
   PlusOutlined,
   SettingOutlined,
@@ -36,7 +37,6 @@ import { ImageInfo } from "@/uitls/ImageInfo";
 import { Indicator } from "@/components/Indicator";
 import { formatSize } from "@/functions";
 import { round } from "lodash";
-// import {} from "lodash"
 
 /**
  * 获取当前语言字符串
@@ -55,6 +55,8 @@ export default observer(() => {
     {
       dataIndex: "status",
       title: gstate.locale?.columnTitle.status,
+      fixed: "left",
+      width: 60,
       render(_, row) {
         if (row.output) {
           return (
@@ -75,7 +77,6 @@ export default observer(() => {
     },
     {
       dataIndex: "name",
-      ellipsis: true,
       title: gstate.locale?.columnTitle.name,
       render(_, row) {
         return <Typography.Text>{row.origin.name}</Typography.Text>;
@@ -85,7 +86,6 @@ export default observer(() => {
       dataIndex: "dimension",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.dimension,
-      align: "right",
       render(_, row) {
         return (
           <Typography.Text>
@@ -98,7 +98,6 @@ export default observer(() => {
       dataIndex: "newDimension",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newDimension,
-      align: "right",
       render(_, row) {
         if (!row.output) return "-";
         return (
@@ -116,7 +115,6 @@ export default observer(() => {
       dataIndex: "size",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.size,
-      align: "right",
       render(_, row) {
         return <Typography.Text>{formatSize(row.origin.size)}</Typography.Text>;
       },
@@ -125,7 +123,6 @@ export default observer(() => {
       dataIndex: "newSize",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newSize,
-      align: "right",
       render(_, row) {
         if (!row.output) return "-";
         const lower = row.origin.size > row.output!.size;
@@ -150,6 +147,8 @@ export default observer(() => {
       className: style.nowrap,
       title: gstate.locale?.columnTitle.decrease,
       align: "right",
+      fixed: "right",
+      width: 80,
       render(_, row) {
         if (!row.output) return "-";
         const lower = row.origin.size > row.output!.size;
@@ -182,7 +181,22 @@ export default observer(() => {
     },
     {
       dataIndex: "action",
+      align: "right",
+      fixed: "right",
+      width: 60,
       title: gstate.locale?.columnTitle.action,
+      render(_, row) {
+        return (
+          <Space>
+            <Typography.Link type="danger">
+              <DeleteOutlined />
+            </Typography.Link>
+            <Typography.Link>
+              <DownloadOutlined />
+            </Typography.Link>
+          </Space>
+        );
+      },
     },
   ];
 
@@ -205,19 +219,19 @@ export default observer(() => {
                 {gstate.locale?.listAction.batchAppend}
               </Button>
               <Space>
-                <Tooltip title={gstate.locale?.listAction.clear}>
-                  <Button icon={<ClearOutlined />} danger type="primary" />
-                </Tooltip>
                 <Popover
                   content={<CompressOptionPannel />}
                   placement="bottomRight"
                   title={gstate.locale?.optionPannel.title}
                 >
-                  <Button icon={<SettingOutlined />} type="primary" />
+                  <Button icon={<SettingOutlined />} />
                 </Popover>
-                <Tooltip title={gstate.locale?.listAction.downloadAll}>
-                  <Button icon={<DownloadOutlined />} type="primary" />
-                </Tooltip>
+                <Button icon={<ClearOutlined />}>
+                  {gstate.locale?.listAction.clear}
+                </Button>
+                <Button icon={<DownloadOutlined />} type="primary">
+                  {gstate.locale?.listAction.downloadAll}
+                </Button>
               </Space>
               <ImageInput ref={fileRef} />
             </Flex>
@@ -227,11 +241,13 @@ export default observer(() => {
           <Col span={24}>
             <Table
               columns={columns}
-              bordered
-              // size="small"
-              pagination={false}
-              scroll={{ y: 600 }}
+              // bordered
+              size="small"
+              scroll={{ x: 1400 }}
               dataSource={homeState.list}
+              footer={() => {
+                return null;
+              }}
             />
           </Col>
         </Row>
