@@ -21,6 +21,8 @@ const localeData: LocaleData = {
     dimension: "尺寸",
     decrease: "压缩率",
     action: "操作",
+    newSize: "新大小",
+    newDimension: "新尺寸",
   },
   optionPannel: {
     title: "压缩选项",
@@ -31,12 +33,12 @@ const localeData: LocaleData = {
     heightPlaceholder: "设置压缩后图片高度",
     qualityTitle: "设置压缩质量（数值越大，生成的图片越大）",
     resetBtn: "重置",
-    confirmBtn: "确定"
+    confirmBtn: "确定",
   },
   error404: {
-    backHome: '返回首页',
-    description: '抱歉，你访问的页面不存在~'
-  }
+    backHome: "返回首页",
+    description: "抱歉，你访问的页面不存在~",
+  },
 };
 
 export default localeData;

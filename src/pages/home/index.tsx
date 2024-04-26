@@ -12,11 +12,13 @@ import {
   theme,
 } from "antd";
 import style from "./index.module.scss";
-import { observer } from "mobx-react-lite";
+import { Observer, observer } from "mobx-react-lite";
 import { Logo } from "@/components/Logo";
 import { UploadCard } from "@/components/UploadCard";
 import { TableProps } from "antd/es/table";
 import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
   CheckCircleFilled,
   ClearOutlined,
   DownloadOutlined,
@@ -32,6 +34,9 @@ import { homeState } from "@/states/home";
 import { setTransformData } from "@/uitls/transform";
 import { ImageInfo } from "@/uitls/ImageInfo";
 import { Indicator } from "@/components/Indicator";
+import { formatSize } from "@/functions";
+import { round } from "lodash";
+// import {} from "lodash"
 
 /**
  * 获取当前语言字符串
@@ -70,22 +75,110 @@ export default observer(() => {
     },
     {
       dataIndex: "name",
+      ellipsis: true,
       title: gstate.locale?.columnTitle.name,
       render(_, row) {
         return <Typography.Text>{row.origin.name}</Typography.Text>;
       },
     },
     {
-      dataIndex: "size",
-      title: gstate.locale?.columnTitle.size,
+      dataIndex: "dimension",
+      className: style.nowrap,
+      title: gstate.locale?.columnTitle.dimension,
+      align: "right",
+      render(_, row) {
+        return (
+          <Typography.Text>
+            {row.origin.width}*{row.origin.height}
+          </Typography.Text>
+        );
+      },
     },
     {
-      dataIndex: "dimension",
-      title: gstate.locale?.columnTitle.dimension,
+      dataIndex: "newDimension",
+      className: style.nowrap,
+      title: gstate.locale?.columnTitle.newDimension,
+      align: "right",
+      render(_, row) {
+        if (!row.output) return "-";
+        return (
+          <Observer>
+            {() => (
+              <Typography.Text>
+                {row.output!.width}*{row.output!.height}
+              </Typography.Text>
+            )}
+          </Observer>
+        );
+      },
+    },
+    {
+      dataIndex: "size",
+      className: style.nowrap,
+      title: gstate.locale?.columnTitle.size,
+      align: "right",
+      render(_, row) {
+        return <Typography.Text>{formatSize(row.origin.size)}</Typography.Text>;
+      },
+    },
+    {
+      dataIndex: "newSize",
+      className: style.nowrap,
+      title: gstate.locale?.columnTitle.newSize,
+      align: "right",
+      render(_, row) {
+        if (!row.output) return "-";
+        const lower = row.origin.size > row.output!.size;
+        const format = formatSize(row.output!.size);
+        return (
+          <Observer>
+            {() => {
+              if (lower) {
+                return (
+                  <Typography.Text type="danger">{format}</Typography.Text>
+                );
+              }
+
+              return <Typography.Text type="success">{format}</Typography.Text>;
+            }}
+          </Observer>
+        );
+      },
     },
     {
       dataIndex: "decrease",
+      className: style.nowrap,
       title: gstate.locale?.columnTitle.decrease,
+      align: "right",
+      render(_, row) {
+        if (!row.output) return "-";
+        const lower = row.origin.size > row.output!.size;
+        const rate = (row.output!.size - row.origin.size) / row.origin.size;
+        const formatRate = round(rate, 4) * 100 + "%";
+        return (
+          <Observer>
+            {() => {
+              if (lower) {
+                return (
+                  <Flex align="center" justify="flex-end">
+                    <Typography.Text type="danger">
+                      {formatRate}
+                    </Typography.Text>
+                    <ArrowDownOutlined style={{ color: token.colorError }} />
+                  </Flex>
+                );
+              }
+
+              return (
+                <Flex align="center" justify="flex-end">
+                  <Typography.Text type="success">{formatRate}</Typography.Text>
+                  <ArrowUpOutlined style={{ color: token.colorSuccess }} />
+                </Flex>
+              );
+            }}
+          </Observer>
+        );
+      },
     },
     {
       dataIndex: "action",
@@ -135,7 +228,9 @@ export default observer(() => {
             <Table
               columns={columns}
               bordered
-              // scroll={{ y: 600 }}
+              // size="small"
+              pagination={false}
+              scroll={{ y: 600 }}
               dataSource={homeState.list}
             />
           </Col>

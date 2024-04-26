@@ -21,6 +21,8 @@ const localeData: LocaleData = {
     dimension: "Dimension",
     decrease: "Decrease",
     action: "Action",
+    newSize: "New size",
+    newDimension: "New Dimension",
   },
   optionPannel: {
     title: "Compression options",

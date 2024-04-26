@@ -21,7 +21,9 @@ export interface LocaleData {
     name: string;
     preview: string;
     size: string;
+    newSize: string;
     dimension: string;
+    newDimension: string;
     decrease: string;
     action: string;
   };
