@@ -7,7 +7,6 @@ import {
   Row,
   Space,
   Table,
-  Tooltip,
   Typography,
   theme,
 } from "antd";
