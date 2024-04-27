@@ -157,11 +157,11 @@ export default observer(() => {
             {() => {
               if (lower) {
                 return (
-                  <Typography.Text type="danger">{format}</Typography.Text>
+                  <Typography.Text type="success">{format}</Typography.Text>
                 );
               }
 
-              return <Typography.Text type="success">{format}</Typography.Text>;
+              return <Typography.Text type="danger">{format}</Typography.Text>;
             }}
           </Observer>
         );
@@ -186,20 +186,20 @@ export default observer(() => {
               if (lower) {
                 return (
                   <Flex align="center" justify="flex-end">
-                    <Typography.Text type="danger">
+                    <Typography.Text type="success">
                       {formatRate}&nbsp;
                     </Typography.Text>
-                    <ArrowDownOutlined style={{ color: token.colorError }} />
+                    <ArrowDownOutlined style={{ color: token.colorSuccess }} />
                   </Flex>
                 );
               }
 
               return (
                 <Flex align="center" justify="flex-end">
-                  <Typography.Text type="success">
+                  <Typography.Text type="danger">
                     {formatRate}&nbsp;
                   </Typography.Text>
-                  <ArrowUpOutlined style={{ color: token.colorSuccess }} />
+                  <ArrowUpOutlined style={{ color: token.colorError }} />
                 </Flex>
               );
             }}
@@ -219,7 +219,7 @@ export default observer(() => {
             {() => (
               <Space>
                 <Typography.Link
-                  type="warning"
+                  type="danger"
                   onClick={() => {
                     homeState.list.splice(index, 1);
                     homeState.list = [...toJS(homeState.list)];
