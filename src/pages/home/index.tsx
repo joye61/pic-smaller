@@ -36,7 +36,6 @@ import { setTransformData } from "@/uitls/transform";
 import { ImageInfo } from "@/uitls/ImageInfo";
 import { Indicator } from "@/components/Indicator";
 import { formatSize } from "@/functions";
-import { round } from "lodash";
 import { toJS } from "mobx";
 
 /**
@@ -98,7 +97,7 @@ export default observer(() => {
     },
     {
       dataIndex: "dimension",
-      width: 100,
+      width: 120,
       align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.dimension,
@@ -180,7 +179,7 @@ export default observer(() => {
         const lower = row.origin.blob.size > row.output!.blob.size;
         const rate =
           (row.output!.blob.size - row.origin.blob.size) / row.origin.blob.size;
-        const formatRate = (rate * 100).toFixed(2) + "%";
+        const formatRate = (Math.abs(rate) * 100).toFixed(2) + "%";
         return (
           <Observer>
             {() => {
@@ -274,7 +273,12 @@ export default observer(() => {
                 >
                   <Button icon={<SettingOutlined />} />
                 </Popover>
-                <Button icon={<ClearOutlined />}>
+                <Button
+                  icon={<ClearOutlined />}
+                  onClick={() => {
+                    homeState.list = [];
+                  }}
+                >
                   {gstate.locale?.listAction.clear}
                 </Button>
                 <Button icon={<DownloadOutlined />} type="primary">
@@ -289,7 +293,7 @@ export default observer(() => {
           <Col span={24}>
             <Table
               columns={columns}
-              // bordered
+              bordered
               size="small"
               pagination={false}
               scroll={{ y: 400 }}

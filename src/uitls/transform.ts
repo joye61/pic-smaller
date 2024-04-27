@@ -17,6 +17,7 @@ const worker: WorkerManager = {
 function onMessage(event: MessageEvent<ImageInfo>) {
   const index = homeState.list.findIndex((item) => item.key === event.data.key);
   if (index !== -1) {
+    event.data.preview ??= homeState.list[index].preview;
     homeState.list[index] = event.data;
     homeState.list = [...toJS(homeState.list)];
   }
