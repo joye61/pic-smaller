@@ -14,8 +14,8 @@ export interface OriginalInfo {
   blob: Blob;
 }
 
-export type PreviewInfo = Omit<OriginalInfo, 'name'>;
-export type OutputInfo = Omit<OriginalInfo, 'name'>;
+export type PreviewInfo = Omit<OriginalInfo, "name">;
+export type OutputInfo = Omit<OriginalInfo, "name">;
 
 export interface CompressOption {
   // scale: unChanged
@@ -32,7 +32,7 @@ export interface ImageInfo {
   key: number;
   option: CompressOption;
   origin: OriginalInfo;
-  preview: PreviewInfo | null,
+  preview: PreviewInfo | null;
   output: OutputInfo | null;
 }
 
@@ -55,9 +55,35 @@ export async function createBlob(
   return blob;
 }
 
+export interface CalculateScaleResult {
+  width: number;
+  height: number;
+}
+
+export function calculateScale(info: ImageInfo) {
+  if (info.option.scale === "toWidth") {
+    const rate = info.option.toWidth! / info.origin.width;
+    return {
+      width: info.option.toWidth!,
+      height: rate * info.origin.height,
+    };
+  } else if (info.option.scale === "toHeight") {
+    const rate = info.option.toHeight! / info.origin.height;
+    return {
+      width: rate * info.origin.width,
+      height: info.option.toHeight!,
+    };
+  } else {
+    return {
+      width: info.origin.width,
+      height: info.origin.height,
+    };
+  }
+}
+
 /**
  * 处理上传的图片文件
- * @param files 
+ * @param files
  */
 export async function createImagesFromFiles(files: FileListLike) {
   const list: Array<ImageInfo> = [];
@@ -91,4 +117,3 @@ export async function createImagesFromFiles(files: FileListLike) {
     sendToCreateCompress(info);
   }
 }
-

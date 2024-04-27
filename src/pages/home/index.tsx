@@ -99,6 +99,7 @@ export default observer(() => {
     {
       dataIndex: "dimension",
       width: 100,
+      align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.dimension,
       render(_, row) {
@@ -112,6 +113,7 @@ export default observer(() => {
     {
       dataIndex: "newDimension",
       width: 120,
+      align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newDimension,
       render(_, row) {
@@ -130,6 +132,7 @@ export default observer(() => {
     {
       dataIndex: "size",
       width: 100,
+      align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.size,
       render(_, row) {
@@ -143,6 +146,7 @@ export default observer(() => {
     {
       dataIndex: "newSize",
       width: 100,
+      align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newSize,
       render(_, row) {
@@ -170,13 +174,13 @@ export default observer(() => {
       title: gstate.locale?.columnTitle.decrease,
       align: "right",
       fixed: "right",
-      width: 80,
+      width: 100,
       render(_, row) {
         if (!row.output) return "-";
         const lower = row.origin.blob.size > row.output!.blob.size;
         const rate =
           (row.output!.blob.size - row.origin.blob.size) / row.origin.blob.size;
-        const formatRate = round(rate, 4) * 100 + "%";
+        const formatRate = (rate * 100).toFixed(2) + "%";
         return (
           <Observer>
             {() => {
@@ -184,7 +188,7 @@ export default observer(() => {
                 return (
                   <Flex align="center" justify="flex-end">
                     <Typography.Text type="danger">
-                      {formatRate}
+                      {formatRate}&nbsp;
                     </Typography.Text>
                     <ArrowDownOutlined style={{ color: token.colorError }} />
                   </Flex>
@@ -193,7 +197,9 @@ export default observer(() => {
 
               return (
                 <Flex align="center" justify="flex-end">
-                  <Typography.Text type="success">{formatRate}</Typography.Text>
+                  <Typography.Text type="success">
+                    {formatRate}&nbsp;
+                  </Typography.Text>
                   <ArrowUpOutlined style={{ color: token.colorSuccess }} />
                 </Flex>
               );
