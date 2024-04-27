@@ -12,6 +12,8 @@ const localeData: LocaleData = {
     batchAppend: "批量添加",
     clear: "清空列表",
     downloadAll: "下载全部",
+    downloadOne: "下载图片",
+    removeOne: "移除图片"
   },
   columnTitle: {
     status: "状态",

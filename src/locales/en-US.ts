@@ -12,6 +12,8 @@ const localeData: LocaleData = {
     batchAppend: "Batch append",
     clear: "Clear all",
     downloadAll: "Download all",
+    downloadOne: "Download image",
+    removeOne: "Remove image"
   },
   columnTitle: {
     status: "Status",

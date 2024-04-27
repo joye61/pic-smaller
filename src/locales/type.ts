@@ -15,6 +15,8 @@ export interface LocaleData {
     batchAppend: string;
     clear: string;
     downloadAll: string;
+    downloadOne: string;
+    removeOne: string;
   };
   columnTitle: {
     status: string;

@@ -1,22 +1,30 @@
+import { uniqId } from "@/functions";
+import { homeState } from "@/states/home";
+import { sendToCreateCompress, sendToCreatePreview } from "./transform";
+
+export interface FileListLike {
+  length: number;
+  [index: number]: File;
+}
+
 export interface OriginalInfo {
   name: string;
-  type: string;
-  size: number;
   width: number;
   height: number;
   blob: Blob;
 }
 
-export type OutputInfo = OriginalInfo;
+export type PreviewInfo = Omit<OriginalInfo, 'name'>;
+export type OutputInfo = Omit<OriginalInfo, 'name'>;
 
 export interface CompressOption {
-  // 缩放类型，默认值为 unChanged
+  // scale: unChanged
   scale: "toWidth" | "toHeight" | "unChanged";
-  // 缩放到宽度值，依赖:scale=toWidth
+  // depend: scale=toWidth
   toWidth?: number;
-  // 缩放到高度值，依赖:scale=toHeight
+  // depend: scale=toHeight
   toHeight?: number;
-  // 压缩质量，默认70
+  // compress quality: 70
   quality: number;
 }
 
@@ -24,5 +32,63 @@ export interface ImageInfo {
   key: number;
   option: CompressOption;
   origin: OriginalInfo;
+  preview: PreviewInfo | null,
   output: OutputInfo | null;
 }
+
+export async function createBlob(
+  info: OriginalInfo,
+  width: number,
+  height: number,
+  quality = 0.7
+) {
+  const offscreen = new OffscreenCanvas(width, height);
+  const canvas = offscreen.getContext("2d");
+  const image = await createImageBitmap(info.blob);
+  canvas?.drawImage(image, 0, 0, info.width, info.height, 0, 0, width, height);
+  const opiton: ImageEncodeOptions = {
+    type: info.blob.type,
+    quality,
+  };
+  const blob = await offscreen.convertToBlob(opiton);
+  image.close();
+  return blob;
+}
+
+/**
+ * 处理上传的图片文件
+ * @param files 
+ */
+export async function createImagesFromFiles(files: FileListLike) {
+  const list: Array<ImageInfo> = [];
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const bitmap = await createImageBitmap(file);
+    const info: ImageInfo = {
+      key: uniqId(),
+      output: null,
+      preview: null,
+      option: {
+        scale: homeState.option.scale,
+        toWidth: homeState.option.toWidth,
+        toHeight: homeState.option.toHeight,
+        quality: homeState.option.quality,
+      },
+      origin: {
+        name: file.name,
+        width: bitmap.width,
+        height: bitmap.height,
+        blob: file,
+      },
+    };
+    bitmap.close();
+    list.push(info);
+  }
+
+  for (let info of list) {
+    homeState.list.push(info);
+    sendToCreatePreview(info);
+    sendToCreateCompress(info);
+  }
+}
+

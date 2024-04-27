@@ -2,6 +2,7 @@ import WorkerCompress from "@/uitls/compress?worker";
 import WorkerPreview from "@/uitls/preview?worker";
 import { ImageInfo } from "./ImageInfo";
 import { homeState } from "@/states/home";
+import { toJS } from "mobx";
 
 interface WorkerManager {
   compress?: Worker;
@@ -17,6 +18,7 @@ function onMessage(event: MessageEvent<ImageInfo>) {
   const index = homeState.list.findIndex((item) => item.key === event.data.key);
   if (index !== -1) {
     homeState.list[index] = event.data;
+    homeState.list = [...toJS(homeState.list)];
   }
 }
 

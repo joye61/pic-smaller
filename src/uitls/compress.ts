@@ -1,8 +1,8 @@
-import { ImageInfo } from "./ImageInfo";
+import { ImageInfo, PreviewInfo } from "./ImageInfo";
 
 globalThis.addEventListener(
   "message",
   async (event: MessageEvent<ImageInfo>) => {
-    console.log(event);
+    const info = event.data;
   }
 );

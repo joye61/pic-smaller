@@ -1,5 +1,3 @@
-import { ImageInfo } from "./ImageInfo";
-
-export class SvgImage extends ImageInfo {
+export class SvgImage {
   async compress() {}
 }

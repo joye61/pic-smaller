@@ -7,6 +7,7 @@ import {
   Row,
   Space,
   Table,
+  Tooltip,
   Typography,
   theme,
 } from "antd";
@@ -36,6 +37,7 @@ import { ImageInfo } from "@/uitls/ImageInfo";
 import { Indicator } from "@/components/Indicator";
 import { formatSize } from "@/functions";
 import { round } from "lodash";
+import { toJS } from "mobx";
 
 /**
  * 获取当前语言字符串
@@ -72,22 +74,36 @@ export default observer(() => {
     },
     {
       dataIndex: "preview",
+      width: 70,
       title: gstate.locale?.columnTitle.preview,
+      render(_, row) {
+        if (!row.preview) return <div className={style.preview} />;
+        return (
+          <div className={style.preview}>
+            <img src={URL.createObjectURL(row.preview.blob)} />
+          </div>
+        );
+      },
     },
     {
       dataIndex: "name",
       title: gstate.locale?.columnTitle.name,
       render(_, row) {
-        return <Typography.Text>{row.origin.name}</Typography.Text>;
+        return (
+          <Typography.Text title={row.origin.name} className={style.name}>
+            {row.origin.name}
+          </Typography.Text>
+        );
       },
     },
     {
       dataIndex: "dimension",
+      width: 100,
       className: style.nowrap,
       title: gstate.locale?.columnTitle.dimension,
       render(_, row) {
         return (
-          <Typography.Text>
+          <Typography.Text type="secondary">
             {row.origin.width}*{row.origin.height}
           </Typography.Text>
         );
@@ -95,6 +111,7 @@ export default observer(() => {
     },
     {
       dataIndex: "newDimension",
+      width: 120,
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newDimension,
       render(_, row) {
@@ -112,20 +129,26 @@ export default observer(() => {
     },
     {
       dataIndex: "size",
+      width: 100,
       className: style.nowrap,
       title: gstate.locale?.columnTitle.size,
       render(_, row) {
-        return <Typography.Text>{formatSize(row.origin.size)}</Typography.Text>;
+        return (
+          <Typography.Text type="secondary">
+            {formatSize(row.origin.blob.size)}
+          </Typography.Text>
+        );
       },
     },
     {
       dataIndex: "newSize",
+      width: 100,
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newSize,
       render(_, row) {
         if (!row.output) return "-";
-        const lower = row.origin.size > row.output!.size;
-        const format = formatSize(row.output!.size);
+        const lower = row.origin.blob.size > row.output!.blob.size;
+        const format = formatSize(row.output!.blob.size);
         return (
           <Observer>
             {() => {
@@ -150,8 +173,9 @@ export default observer(() => {
       width: 80,
       render(_, row) {
         if (!row.output) return "-";
-        const lower = row.origin.size > row.output!.size;
-        const rate = (row.output!.size - row.origin.size) / row.origin.size;
+        const lower = row.origin.blob.size > row.output!.blob.size;
+        const rate =
+          (row.output!.blob.size - row.origin.blob.size) / row.origin.blob.size;
         const formatRate = round(rate, 4) * 100 + "%";
         return (
           <Observer>
@@ -184,16 +208,35 @@ export default observer(() => {
       fixed: "right",
       width: 60,
       title: gstate.locale?.columnTitle.action,
-      render(_, row) {
+      render(_, row, index) {
         return (
-          <Space>
-            <Typography.Link type="danger">
-              <DeleteOutlined />
-            </Typography.Link>
-            <Typography.Link>
-              <DownloadOutlined />
-            </Typography.Link>
-          </Space>
+          <Observer>
+            {() => (
+              <Space>
+                <Typography.Link
+                  type="warning"
+                  onClick={() => {
+                    homeState.list.splice(index, 1);
+                    homeState.list = [...toJS(homeState.list)];
+                  }}
+                >
+                  <Tooltip title={gstate.locale?.listAction.removeOne}>
+                    <DeleteOutlined />
+                  </Tooltip>
+                </Typography.Link>
+                <Typography.Link
+                  type="secondary"
+                  onClick={() => {
+                    // TODO
+                  }}
+                >
+                  <Tooltip title={gstate.locale?.listAction.downloadOne}>
+                    <DownloadOutlined />
+                  </Tooltip>
+                </Typography.Link>
+              </Space>
+            )}
+          </Observer>
         );
       },
     },
@@ -242,7 +285,8 @@ export default observer(() => {
               columns={columns}
               // bordered
               size="small"
-              scroll={{ x: 1400 }}
+              pagination={false}
+              scroll={{ y: 400 }}
               dataSource={homeState.list}
               footer={() => {
                 return null;

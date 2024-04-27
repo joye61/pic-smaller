@@ -6,15 +6,21 @@ import { LocaleData } from "./locales/type";
 export interface GlobalState {
   pathname: string;
   page: null | React.ReactNode;
-  supportedTypes: string[];
   lang: string;
   locale: LocaleData | null;
+  mimes: Record<string, string>;
 }
 
 export const gstate = observable.object<GlobalState>({
   pathname: normalize(history.location.pathname),
   page: null,
-  supportedTypes: ["jpg", "jpeg", "png", "webp"],
+  mimes: {
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
+    png: "image/png",
+    webp: "image/webp",
+    // 'svg': 'image/svg+xml'
+  },
   lang: "en-US",
   locale: null,
 });

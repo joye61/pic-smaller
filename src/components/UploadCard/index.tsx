@@ -6,6 +6,8 @@ import { observer } from "mobx-react-lite";
 import { gstate } from "@/global";
 import { ImageInput } from "../ImageInput";
 import { state } from "./state";
+import { toJS } from "mobx";
+import { FileListLike, createImagesFromFiles } from "@/uitls/ImageInfo";
 
 function useDragAndDrop(dragRef: React.RefObject<HTMLDivElement>) {
   useEffect(() => {
@@ -16,9 +18,31 @@ function useDragAndDrop(dragRef: React.RefObject<HTMLDivElement>) {
       event.preventDefault();
       state.dragActive = true;
     };
-    const drop = (event: DragEvent) => {
+    const drop = async (event: DragEvent) => {
       event.preventDefault();
       state.dragActive = false;
+
+      let files: FileListLike = [];
+      if (event.dataTransfer?.items) {
+        const list: File[] = [];
+        for (let i = 0; i < event.dataTransfer.items.length; i++) {
+          const item = event.dataTransfer.items[i];
+          const types = Object.values(toJS(gstate.mimes));
+          if (item.kind === "file" && types.includes(item.type)) {
+            const file = item.getAsFile();
+            if (file) {
+              list.push(file);
+            }
+          }
+        }
+        files = list;
+      } else if (event.dataTransfer?.files) {
+        files = event.dataTransfer?.files;
+      }
+
+      if (files.length) {
+        await createImagesFromFiles(files);
+      }
     };
 
     const target = dragRef.current!;
@@ -54,7 +78,9 @@ export const UploadCard = observer(() => {
         <div>
           {gstate.locale?.uploadCard.subTitle[0]}&nbsp;
           <span>
-            {gstate.supportedTypes.map((item) => item.toUpperCase()).join("/")}
+            {Object.keys(toJS(gstate.mimes))
+              .map((item) => item.toUpperCase())
+              .join("/")}
           </span>
           &nbsp;{gstate.locale?.uploadCard.subTitle[1]}
         </div>

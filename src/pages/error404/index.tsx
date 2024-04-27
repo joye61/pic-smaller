@@ -2,6 +2,7 @@ import { goto } from "@/history";
 import style from "./index.module.scss";
 import { Button, Flex, Result } from "antd";
 import { observer } from "mobx-react-lite";
+import { gstate } from "@/global";
 
 export default observer(() => {
   const backToHome = (
@@ -11,7 +12,7 @@ export default observer(() => {
         goto("/", null, "replace");
       }}
     >
-      回到首页
+      {gstate.locale?.error404.backHome}
     </Button>
   );
 
@@ -20,7 +21,7 @@ export default observer(() => {
       <Result
         status="404"
         title="404"
-        subTitle="抱歉，你访问的页面不存在~"
+        subTitle={gstate.locale?.error404.description}
         extra={backToHome}
       />
     </Flex>
