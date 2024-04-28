@@ -113,9 +113,9 @@ export const CompressOptionPannel = observer(() => {
       <Flex justify="flex-end">
         <Space>
           <Button
-            onClick={() => {
+            onClick={async () => {
               update(DefaultCompressOption);
-              homeState.updateCompressOption(DefaultCompressOption);
+              await homeState.updateCompressOption(DefaultCompressOption);
             }}
           >
             {gstate.locale?.optionPannel?.resetBtn}

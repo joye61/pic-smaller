@@ -20,22 +20,19 @@ export class PngImage {
     const dimension = calculateScale(this.info);
     const buffer = await this.info.origin.blob.arrayBuffer();
     const result: UPNGDecodeResult = UPNG.decode(buffer) as any;
+    const frames = UPNG.toRGBA8(result);
 
-    let buffers: ArrayBuffer[] = [];
     let delays: number[] | undefined = undefined;
-    if (result.frames.length === 0) {
-      buffers.push(buffer);
-    } else {
+    if (result.frames.length >= 2) {
       delays = [];
       result.frames.forEach((frame) => {
-        buffers.push(frame.data ? frame.data.buffer : new ArrayBuffer(0));
         delays!.push(frame.delay);
       });
     }
 
-    const quality = 256 - 256 * (this.info.option.quality / 100);
+    const quality = 8 + (256 - 8) * (this.info.option.quality / 100);
     const pngBuffer = (<any>UPNG).encode(
-      buffers,
+      frames,
       dimension.width,
       dimension.height,
       quality,
@@ -48,13 +45,5 @@ export class PngImage {
       ...dimension,
       blob,
     };
-  }
-
-  /**
-   * 获取最终转换后的图片信息
-   * @returns
-   */
-  getInfo() {
-    return this.info;
   }
 }

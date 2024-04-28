@@ -18,7 +18,11 @@ export class HomeState {
     makeAutoObservable(this);
   }
 
-  updateCompressOption(data: Partial<CompressOption>) {
+  async updateCompressOption(data: Partial<CompressOption>) {
+    this.showOption = false;
+    await new Promise<void>((resolve) => {
+      window.setTimeout(resolve, 300);
+    });
     const option: CompressOption = {
       ...toJS(this.option),
       ...data,
@@ -31,7 +35,6 @@ export class HomeState {
       data.preview = null;
       sendToCreateCompress(data);
     });
-    this.showOption = false;
   }
 }
 
