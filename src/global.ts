@@ -12,6 +12,7 @@ export class GlobalState {
     jpg: "image/jpeg",
     jpeg: "image/jpeg",
     png: "image/png",
+    apng: "image/apng",
     webp: "image/webp",
     // 'svg': 'image/svg+xml'
   };
