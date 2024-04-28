@@ -16,7 +16,7 @@ const App = observer(() => {
           borderRadius: 0,
           colorPrimary: "#1da565",
           colorLink: "#1da565",
-        }
+        },
       }}
     >
       <ContextAction />

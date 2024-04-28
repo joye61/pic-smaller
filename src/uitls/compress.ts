@@ -1,4 +1,4 @@
-import { ImageInfo, PreviewInfo } from "./ImageInfo";
+import { ImageInfo } from "./ImageInfo";
 import { JpegImage } from "./JpegImage";
 
 globalThis.addEventListener(

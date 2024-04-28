@@ -49,6 +49,7 @@ export async function showPageByPath(pathname: string) {
     const result: ModuleResult = (await importer) as ModuleResult;
     gstate.page = <result.default />;
   } catch (error) {
+    console.log(error);
     const error404 = await import(`@/pages/error404/index.tsx`);
     gstate.page = <error404.default />;
   }

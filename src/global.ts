@@ -1,28 +1,25 @@
-import { observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { normalize } from "./functions";
 import { history } from "./history";
 import { LocaleData } from "./locales/type";
 
-export interface GlobalState {
-  pathname: string;
-  page: null | React.ReactNode;
-  lang: string;
-  locale: LocaleData | null;
-  mimes: Record<string, string>;
-}
-
-export const gstate = observable.object<GlobalState>({
-  pathname: normalize(history.location.pathname),
-  page: null,
-  mimes: {
+export class GlobalState {
+  public pathname: string = normalize(history.location.pathname);
+  public page: null | React.ReactNode = null;
+  public lang: string = "en-US";
+  public locale: LocaleData | null = null;
+  public mimes: Record<string, string> = {
     jpg: "image/jpeg",
     jpeg: "image/jpeg",
     png: "image/png",
     webp: "image/webp",
     // 'svg': 'image/svg+xml'
-  },
-  lang: "en-US",
-  locale: null,
-});
+  };
 
+  constructor() {
+    makeAutoObservable(this);
+  }
+}
+
+export const gstate = new GlobalState();
 export const modules = import.meta.glob("@/pages/**/index.tsx");

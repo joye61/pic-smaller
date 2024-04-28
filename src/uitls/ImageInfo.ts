@@ -1,6 +1,7 @@
 import { uniqId } from "@/functions";
 import { homeState } from "@/states/home";
 import { sendToCreateCompress, sendToCreatePreview } from "./transform";
+import { toJS } from "mobx";
 
 export interface FileListLike {
   length: number;
@@ -65,12 +66,12 @@ export function calculateScale(info: ImageInfo) {
     const rate = info.option.toWidth! / info.origin.width;
     return {
       width: info.option.toWidth!,
-      height: rate * info.origin.height,
+      height: Math.ceil(rate * info.origin.height),
     };
   } else if (info.option.scale === "toHeight") {
     const rate = info.option.toHeight! / info.origin.height;
     return {
-      width: rate * info.origin.width,
+      width: Math.ceil(rate * info.origin.width),
       height: info.option.toHeight!,
     };
   } else {
@@ -94,12 +95,7 @@ export async function createImagesFromFiles(files: FileListLike) {
       key: uniqId(),
       output: null,
       preview: null,
-      option: {
-        scale: homeState.option.scale,
-        toWidth: homeState.option.toWidth,
-        toHeight: homeState.option.toHeight,
-        quality: homeState.option.quality,
-      },
+      option: toJS(homeState.option),
       origin: {
         name: file.name,
         width: bitmap.width,
@@ -111,9 +107,9 @@ export async function createImagesFromFiles(files: FileListLike) {
     list.push(info);
   }
 
-  for (let info of list) {
-    homeState.list.push(info);
+  list.forEach((info) => {
+    homeState.list.set(info.key, info);
     sendToCreatePreview(info);
     sendToCreateCompress(info);
-  }
+  });
 }

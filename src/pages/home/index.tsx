@@ -12,7 +12,7 @@ import {
   theme,
 } from "antd";
 import style from "./index.module.scss";
-import { Observer, observer } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import { Logo } from "@/components/Logo";
 import { UploadCard } from "@/components/UploadCard";
 import { TableProps } from "antd/es/table";
@@ -36,7 +36,8 @@ import { setTransformData } from "@/uitls/transform";
 import { ImageInfo } from "@/uitls/ImageInfo";
 import { Indicator } from "@/components/Indicator";
 import { formatSize } from "@/functions";
-import { toJS } from "mobx";
+
+const CompressOptionPopupClass = "__COPC";
 
 /**
  * 获取当前语言字符串
@@ -49,7 +50,6 @@ function getLangStr() {
 
 export default observer(() => {
   const fileRef = useRef<HTMLInputElement>(null);
-  const optionRef = useRef<null>;
   const { token } = theme.useToken();
 
   const columns: TableProps<ImageInfo>["columns"] = [
@@ -119,13 +119,9 @@ export default observer(() => {
       render(_, row) {
         if (!row.output) return "-";
         return (
-          <Observer>
-            {() => (
-              <Typography.Text>
-                {row.output!.width}*{row.output!.height}
-              </Typography.Text>
-            )}
-          </Observer>
+          <Typography.Text>
+            {row.output!.width}*{row.output!.height}
+          </Typography.Text>
         );
       },
     },
@@ -153,19 +149,11 @@ export default observer(() => {
         if (!row.output) return "-";
         const lower = row.origin.blob.size > row.output!.blob.size;
         const format = formatSize(row.output!.blob.size);
-        return (
-          <Observer>
-            {() => {
-              if (lower) {
-                return (
-                  <Typography.Text type="success">{format}</Typography.Text>
-                );
-              }
+        if (lower) {
+          return <Typography.Text type="success">{format}</Typography.Text>;
+        }
 
-              return <Typography.Text type="danger">{format}</Typography.Text>;
-            }}
-          </Observer>
-        );
+        return <Typography.Text type="danger">{format}</Typography.Text>;
       },
     },
     {
@@ -181,30 +169,22 @@ export default observer(() => {
         const rate =
           (row.output!.blob.size - row.origin.blob.size) / row.origin.blob.size;
         const formatRate = (Math.abs(rate) * 100).toFixed(2) + "%";
-        return (
-          <Observer>
-            {() => {
-              if (lower) {
-                return (
-                  <Flex align="center" justify="flex-end">
-                    <Typography.Text type="success">
-                      {formatRate}&nbsp;
-                    </Typography.Text>
-                    <ArrowDownOutlined style={{ color: token.colorSuccess }} />
-                  </Flex>
-                );
-              }
+        if (lower) {
+          return (
+            <Flex align="center" justify="flex-end">
+              <Typography.Text type="success">
+                {formatRate}&nbsp;
+              </Typography.Text>
+              <ArrowDownOutlined style={{ color: token.colorSuccess }} />
+            </Flex>
+          );
+        }
 
-              return (
-                <Flex align="center" justify="flex-end">
-                  <Typography.Text type="danger">
-                    {formatRate}&nbsp;
-                  </Typography.Text>
-                  <ArrowUpOutlined style={{ color: token.colorError }} />
-                </Flex>
-              );
-            }}
-          </Observer>
+        return (
+          <Flex align="center" justify="flex-end">
+            <Typography.Text type="danger">{formatRate}&nbsp;</Typography.Text>
+            <ArrowUpOutlined style={{ color: token.colorError }} />
+          </Flex>
         );
       },
     },
@@ -214,35 +194,30 @@ export default observer(() => {
       fixed: "right",
       width: 70,
       title: gstate.locale?.columnTitle.action,
-      render(_, row, index) {
+      render(_, row) {
         return (
-          <Observer>
-            {() => (
-              <Space>
-                <Typography.Link
-                  type="danger"
-                  onClick={() => {
-                    homeState.list.splice(index, 1);
-                    homeState.list = [...toJS(homeState.list)];
-                  }}
-                >
-                  <Tooltip title={gstate.locale?.listAction.removeOne}>
-                    <DeleteOutlined />
-                  </Tooltip>
-                </Typography.Link>
-                <Typography.Link
-                  type="secondary"
-                  onClick={() => {
-                    // TODO
-                  }}
-                >
-                  <Tooltip title={gstate.locale?.listAction.downloadOne}>
-                    <DownloadOutlined />
-                  </Tooltip>
-                </Typography.Link>
-              </Space>
-            )}
-          </Observer>
+          <Space>
+            <Typography.Link
+              type="danger"
+              onClick={() => {
+                homeState.list.delete(row.key);
+              }}
+            >
+              <Tooltip title={gstate.locale?.listAction.removeOne}>
+                <DeleteOutlined />
+              </Tooltip>
+            </Typography.Link>
+            <Typography.Link
+              type="secondary"
+              onClick={() => {
+                // TODO
+              }}
+            >
+              <Tooltip title={gstate.locale?.listAction.downloadOne}>
+                <DownloadOutlined />
+              </Tooltip>
+            </Typography.Link>
+          </Space>
         );
       },
     },
@@ -250,8 +225,27 @@ export default observer(() => {
 
   useEffect(setTransformData, []);
 
+  useEffect(() => {
+    const click = (event: MouseEvent) => {
+      const pannel = document.querySelector(`.${CompressOptionPopupClass}`);
+      if (
+        pannel &&
+        homeState.showOption &&
+        !pannel.contains(event.target as Node)
+      ) {
+        homeState.showOption = false;
+      }
+    };
+
+    window.addEventListener("click", click);
+
+    return () => {
+      window.removeEventListener("click", click);
+    };
+  }, []);
+
   let actionPannel = <UploadCard />;
-  if (homeState.list.length > 0) {
+  if (homeState.list.size > 0) {
     actionPannel = (
       <>
         <Row>
@@ -272,15 +266,20 @@ export default observer(() => {
                   placement="bottomRight"
                   title={gstate.locale?.optionPannel.title}
                   open={homeState.showOption}
+                  overlayClassName={CompressOptionPopupClass}
                 >
-                  <Button icon={<SettingOutlined />} onClick={()=>{
-                    homeState.showOption = true;
-                  }}/>
+                  <Button
+                    icon={<SettingOutlined />}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      homeState.showOption = !homeState.showOption;
+                    }}
+                  />
                 </Popover>
                 <Button
                   icon={<ClearOutlined />}
                   onClick={() => {
-                    homeState.list = [];
+                    homeState.list.clear();
                   }}
                 >
                   {gstate.locale?.listAction.clear}
@@ -301,7 +300,7 @@ export default observer(() => {
               size="small"
               pagination={false}
               scroll={{ y: 400 }}
-              dataSource={homeState.list}
+              dataSource={Array.from(homeState.list.values())}
               footer={() => {
                 return null;
               }}

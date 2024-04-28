@@ -15,14 +15,11 @@ const worker: WorkerManager = {
 };
 
 function onMessage(event: MessageEvent<ImageInfo>) {
-  const index = homeState.list.findIndex((item) => item.key === event.data.key);
-  if (index !== -1) {
-    const oldPreview = homeState.list[index].preview;
-    const oldOutput = homeState.list[index].output;
-
-    homeState.list[index].preview = event.data.preview ?? oldPreview;
-    homeState.list[index].output = event.data.output ?? oldOutput;
-    homeState.list = [...toJS(homeState.list)];
+  if (homeState.list.has(event.data.key)) {
+    const info: ImageInfo = toJS(homeState.list.get(event.data.key)!);
+    info.preview = event.data.preview ?? info.preview;
+    info.output = event.data.output ?? info.output;
+    homeState.list.set(event.data.key, info);
   }
 }
 
