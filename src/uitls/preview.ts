@@ -4,7 +4,7 @@ globalThis.addEventListener(
   "message",
   async (event: MessageEvent<ImageInfo>) => {
     const info = event.data;
-    const max = 200;
+    const max = 256;
 
     if (Math.max(info.origin.width, info.origin.height) <= max) {
       info.preview = {
@@ -31,7 +31,7 @@ globalThis.addEventListener(
       return;
     }
 
-    const rate = max / info.origin.width;
+    const rate = max / info.origin.height;
     const ph = max;
     const pw = rate * info.origin.width;
     const blob = await createBlob(info.origin, pw, ph, 1);

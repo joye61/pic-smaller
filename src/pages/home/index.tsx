@@ -49,6 +49,7 @@ function getLangStr() {
 
 export default observer(() => {
   const fileRef = useRef<HTMLInputElement>(null);
+  const optionRef = useRef<null>;
   const { token } = theme.useToken();
 
   const columns: TableProps<ImageInfo>["columns"] = [
@@ -56,7 +57,7 @@ export default observer(() => {
       dataIndex: "status",
       title: gstate.locale?.columnTitle.status,
       fixed: "left",
-      width: 60,
+      width: 70,
       render(_, row) {
         if (row.output) {
           return (
@@ -73,7 +74,7 @@ export default observer(() => {
     },
     {
       dataIndex: "preview",
-      width: 70,
+      width: 80,
       title: gstate.locale?.columnTitle.preview,
       render(_, row) {
         if (!row.preview) return <div className={style.preview} />;
@@ -97,7 +98,7 @@ export default observer(() => {
     },
     {
       dataIndex: "dimension",
-      width: 120,
+      width: 130,
       align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.dimension,
@@ -111,7 +112,7 @@ export default observer(() => {
     },
     {
       dataIndex: "newDimension",
-      width: 120,
+      width: 130,
       align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newDimension,
@@ -211,7 +212,7 @@ export default observer(() => {
       dataIndex: "action",
       align: "right",
       fixed: "right",
-      width: 60,
+      width: 70,
       title: gstate.locale?.columnTitle.action,
       render(_, row, index) {
         return (
@@ -270,8 +271,11 @@ export default observer(() => {
                   content={<CompressOptionPannel />}
                   placement="bottomRight"
                   title={gstate.locale?.optionPannel.title}
+                  open={homeState.showOption}
                 >
-                  <Button icon={<SettingOutlined />} />
+                  <Button icon={<SettingOutlined />} onClick={()=>{
+                    homeState.showOption = true;
+                  }}/>
                 </Popover>
                 <Button
                   icon={<ClearOutlined />}
