@@ -4,7 +4,6 @@ import {
   Dropdown,
   Flex,
   Popover,
-  Progress,
   Row,
   Space,
   Table,
