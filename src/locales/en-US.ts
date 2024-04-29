@@ -4,6 +4,7 @@ import enUS from "antd/locale/en_US";
 const localeData: LocaleData = {
   antLocale: enUS,
   logo: "Pic Smaller",
+  readFileTip: 'Loading',
   uploadCard: {
     title: "Drag and drop files or click to upload",
     subTitle: ["Support", "format"],

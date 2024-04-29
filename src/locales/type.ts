@@ -3,6 +3,7 @@ import { Locale } from "antd/es/locale";
 export interface LocaleData {
   antLocale: Locale;
   logo: string;
+  readFileTip: string;
   error404: {
     backHome: string;
     description: string;

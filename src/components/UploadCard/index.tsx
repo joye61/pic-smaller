@@ -1,4 +1,4 @@
-import { Flex } from "antd";
+import { Flex, theme } from "antd";
 import style from "./index.module.scss";
 import { useEffect, useRef } from "react";
 import classNames from "classnames";
@@ -64,11 +64,14 @@ export const UploadCard = observer(() => {
 
   useDragAndDrop(dragRef);
 
+  const { token } = theme.useToken();
+
   return (
     <Flex
       justify="center"
       align="center"
       className={classNames(style.container, state.dragActive && style.active)}
+      style={{ borderRadius: token.borderRadiusLG }}
     >
       <Flex vertical align="center" className={style.inner}>
         <svg viewBox="0 0 426.66668701171875 426.66668701171875">

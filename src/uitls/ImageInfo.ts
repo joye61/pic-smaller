@@ -2,6 +2,7 @@ import { uniqId } from "@/functions";
 import { homeState } from "@/states/home";
 import { sendToCreateCompress, sendToCreatePreview } from "./transform";
 import { toJS } from "mobx";
+import { gstate } from "@/global";
 
 export interface FileListLike {
   length: number;
@@ -42,6 +43,7 @@ export interface ImageInfo {
  * @param files
  */
 export async function createImagesFromFiles(files: FileListLike) {
+  gstate.loading = true;
   const list: Array<ImageInfo> = [];
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
@@ -61,6 +63,7 @@ export async function createImagesFromFiles(files: FileListLike) {
     bitmap.close();
     list.push(info);
   }
+  gstate.loading = false;
 
   list.forEach((info) => {
     homeState.list.set(info.key, info);

@@ -1,4 +1,4 @@
-import { ConfigProvider } from "antd";
+import { ConfigProvider, Spin } from "antd";
 import { observer } from "mobx-react-lite";
 import { configure } from "mobx";
 import ReactDOM from "react-dom/client";
@@ -14,6 +14,8 @@ const App = observer(() => {
       theme={{
         token: {
           borderRadius: 0,
+          borderRadiusSM: 0,
+          borderRadiusLG: 0,
           colorPrimary: "#1da565",
           colorLink: "#1da565",
         },
@@ -21,6 +23,7 @@ const App = observer(() => {
     >
       <ContextAction />
       {gstate.page}
+      {gstate.loading && <Spin fullscreen spinning tip={gstate.loadingTip} />}
     </ConfigProvider>
   );
 });
