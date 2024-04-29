@@ -40,4 +40,9 @@ export interface LocaleData {
     resetBtn: string;
     confirmBtn: string;
   };
+  progress: {
+    before: string;
+    after: string;
+    rate: string;
+  };
 }

@@ -9,6 +9,15 @@ export const DefaultCompressOption: CompressOption = {
   toHeight: undefined,
 };
 
+export interface ProgressHintInfo {
+  loadedNum: number;
+  totalNum: number;
+  percent: number;
+  originSize: number;
+  outputSize: number;
+  rate: number;
+}
+
 export class HomeState {
   public list: Map<number, ImageInfo> = new Map();
   public showOption: boolean = false;
@@ -44,6 +53,36 @@ export class HomeState {
       }
     }
     return false;
+  }
+
+  /**
+   * 获取进度条信息
+   * @returns
+   */
+  getProgressHintInfo(): ProgressHintInfo {
+    let loadedNum = 0;
+    let totalNum = this.list.size;
+    let originSize = 0;
+    let outputSize = 0;
+    for (let [_, info] of this.list) {
+      originSize += info.origin.blob.size;
+      if (info.output) {
+        loadedNum++;
+        outputSize += info.output.blob.size;
+      }
+    }
+    let percent = Math.ceil((loadedNum * 100) / totalNum);
+    const originRate = ((outputSize - originSize) * 100) / originSize;
+    const rate = Number(Math.abs(originRate).toFixed(2));
+
+    return {
+      totalNum,
+      loadedNum,
+      originSize,
+      outputSize,
+      percent,
+      rate,
+    };
   }
 }
 

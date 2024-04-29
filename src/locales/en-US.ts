@@ -33,8 +33,7 @@ const localeData: LocaleData = {
     toHeight: "Fit Height",
     widthPlaceholder: "Enter the compressed image width",
     heightPlaceholder: "Enter the compressed image height",
-    qualityTitle:
-      "Set the compression quality, the larger the value, the larger size the generated image",
+    qualityTitle: "Set the compression quality, the larger the value, the larger size the generated image",
     resetBtn: "Reset",
     confirmBtn: "Confirm",
   },
@@ -42,6 +41,11 @@ const localeData: LocaleData = {
     backHome: "Back to home",
     description: "Sorry, the page you visited does not exist~",
   },
+  progress: {
+    before: 'Before compression',
+    after: 'After compression',
+    rate: 'Decrease ratio'
+  }
 };
 
 export default localeData;

@@ -4,6 +4,7 @@ import {
   Dropdown,
   Flex,
   Popover,
+  Progress,
   Row,
   Space,
   Table,
@@ -36,6 +37,7 @@ import { setTransformData } from "@/uitls/transform";
 import { ImageInfo } from "@/uitls/ImageInfo";
 import { Indicator } from "@/components/Indicator";
 import { formatSize } from "@/functions";
+import { ProgressHint } from "@/components/ProgressHint";
 
 const CompressOptionPopupClass = "__COPC";
 
@@ -314,7 +316,7 @@ export default observer(() => {
               scroll={{ y: 400 }}
               dataSource={Array.from(homeState.list.values())}
               footer={() => {
-                return null;
+                return <ProgressHint />;
               }}
             />
           </Col>

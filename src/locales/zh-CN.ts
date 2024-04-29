@@ -41,6 +41,11 @@ const localeData: LocaleData = {
     backHome: "返回首页",
     description: "抱歉，你访问的页面不存在~",
   },
+  progress: {
+    before: '压缩前',
+    after: '压缩后',
+    rate: '压缩率'
+  }
 };
 
 export default localeData;
