@@ -46,4 +46,6 @@ export class PngImage {
       blob,
     };
   }
+
+  async preview() {}
 }

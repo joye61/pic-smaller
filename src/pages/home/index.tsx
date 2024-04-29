@@ -52,6 +52,9 @@ export default observer(() => {
   const fileRef = useRef<HTMLInputElement>(null);
   const { token } = theme.useToken();
 
+  // 当前是否禁用操作
+  const disabled = homeState.hasTaskRunning();
+
   const columns: TableProps<ImageInfo>["columns"] = [
     {
       dataIndex: "status",
@@ -198,7 +201,8 @@ export default observer(() => {
         return (
           <Space>
             <Typography.Link
-              type="danger"
+              type="secondary"
+              disabled={disabled}
               onClick={() => {
                 homeState.list.delete(row.key);
               }}
@@ -209,6 +213,7 @@ export default observer(() => {
             </Typography.Link>
             <Typography.Link
               type="secondary"
+              disabled={disabled}
               onClick={() => {
                 // TODO
               }}
@@ -252,6 +257,7 @@ export default observer(() => {
           <Col span={24}>
             <Flex align="center" justify="space-between" className={style.menu}>
               <Button
+                disabled={disabled}
                 icon={<PlusOutlined />}
                 type="primary"
                 onClick={() => {
@@ -269,6 +275,7 @@ export default observer(() => {
                   overlayClassName={CompressOptionPopupClass}
                 >
                   <Button
+                    disabled={disabled}
                     icon={<SettingOutlined />}
                     onClick={(event) => {
                       event.stopPropagation();
@@ -277,6 +284,7 @@ export default observer(() => {
                   />
                 </Popover>
                 <Button
+                  disabled={disabled}
                   icon={<ClearOutlined />}
                   onClick={() => {
                     homeState.list.clear();
@@ -284,7 +292,11 @@ export default observer(() => {
                 >
                   {gstate.locale?.listAction.clear}
                 </Button>
-                <Button icon={<DownloadOutlined />} type="primary">
+                <Button
+                  icon={<DownloadOutlined />}
+                  type="primary"
+                  disabled={disabled}
+                >
                   {gstate.locale?.listAction.downloadAll}
                 </Button>
               </Space>

@@ -36,6 +36,15 @@ export class HomeState {
       sendToCreateCompress(data);
     });
   }
+
+  hasTaskRunning() {
+    for (let [_, value] of this.list) {
+      if (!value.output) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 export const homeState = new HomeState();
