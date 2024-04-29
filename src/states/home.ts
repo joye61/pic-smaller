@@ -48,7 +48,7 @@ export class HomeState {
 
   hasTaskRunning() {
     for (let [_, value] of this.list) {
-      if (!value.preview && !value.output) {
+      if (!value.preview || !value.output) {
         return true;
       }
     }
