@@ -18,6 +18,7 @@ const App = observer(() => {
           borderRadiusLG: 0,
           colorPrimary: "#1da565",
           colorLink: "#1da565",
+          colorSuccess: "#1da565"
         },
       }}
     >

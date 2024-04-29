@@ -15,7 +15,7 @@ import { ColumnHeightOutlined, ColumnWidthOutlined } from "@ant-design/icons";
 import { DefaultCompressOption, homeState } from "@/states/home";
 import { CompressOption } from "@/uitls/ImageInfo";
 import { gstate } from "@/global";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const CompressOptionPannel = observer(() => {
   const { token } = theme.useToken();
@@ -23,6 +23,34 @@ export const CompressOptionPannel = observer(() => {
   const update = (data: Partial<CompressOption>) => {
     setOption({ ...option, ...data });
   };
+
+  const canSubmit = () => {
+    if (
+      option.scale === "unChanged" ||
+      (option.scale === "toWidth" && typeof option.toWidth === "number") ||
+      (option.scale === "toHeight" && typeof option.toHeight === "number")
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    const enter = (event: KeyboardEvent) => {
+      if (
+        event.key.toUpperCase() === "ENTER" &&
+        homeState.showOption &&
+        canSubmit()
+      ) {
+        event.preventDefault();
+        homeState.updateCompressOption(option);
+      }
+    };
+    window.addEventListener("keydown", enter);
+    return () => {
+      window.removeEventListener("keydown", enter);
+    };
+  }, [option]);
 
   const tabItems: TabsProps["items"] = [
     {
@@ -79,6 +107,10 @@ export const CompressOptionPannel = observer(() => {
           const newOption: Partial<CompressOption> = {
             scale: activeKey as CompressOption["scale"],
           };
+          if (activeKey === "unChanged") {
+            newOption.toHeight = undefined;
+            newOption.toWidth = undefined;
+          }
           if (activeKey === "toWidth") {
             newOption.toHeight = undefined;
           }
@@ -122,6 +154,7 @@ export const CompressOptionPannel = observer(() => {
           </Button>
           <Button
             type="primary"
+            disabled={!canSubmit()}
             onClick={() => {
               homeState.updateCompressOption(option);
             }}

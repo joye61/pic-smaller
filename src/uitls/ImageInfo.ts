@@ -43,7 +43,7 @@ export interface ImageInfo {
  * @param files
  */
 export async function createImagesFromFiles(files: FileListLike) {
-  gstate.loading = true;
+  gstate.showLoading(gstate.locale?.readFileTip);
   const list: Array<ImageInfo> = [];
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
@@ -63,7 +63,7 @@ export async function createImagesFromFiles(files: FileListLike) {
     bitmap.close();
     list.push(info);
   }
-  gstate.loading = false;
+  gstate.hideLoading();
 
   list.forEach((info) => {
     homeState.list.set(info.key, info);
