@@ -8,7 +8,7 @@ export function createImageHandlerInstance(info: ImageInfo) {
   let image: undefined | JpegImage | PngImage | typeof WebpImage = undefined;
   if (["image/jpeg", "image/webp"].includes(mime)) {
     image = new JpegImage(info);
-  } else if (["image/png", "image/apng"].includes(mime)) {
+  } else if (["image/png"].includes(mime)) {
     image = new PngImage(info);
   }
   return image;

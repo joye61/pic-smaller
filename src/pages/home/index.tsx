@@ -216,7 +216,11 @@ export default observer(() => {
               type="secondary"
               disabled={disabled}
               onClick={() => {
-                // TODO
+                const anchor = document.createElement("a");
+                anchor.href = URL.createObjectURL(row.output!.blob);
+                anchor.download = row.origin.name;
+                anchor.click();
+                anchor.remove();
               }}
             >
               <Tooltip title={gstate.locale?.listAction.downloadOne}>

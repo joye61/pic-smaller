@@ -22,6 +22,6 @@ export function uniqId() {
  * @returns
  */
 export function formatSize(num: number) {
-  const result = filesize(num, { standard: "jedec", output: "array" });
+  const result = filesize(num, { standard: "jedec", output: "array"});
   return result[0] + " " + result[1];
 }
