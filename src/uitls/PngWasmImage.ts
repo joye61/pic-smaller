@@ -1,12 +1,9 @@
 /**
- * 参考项目：https://github.com/antelle/wasm-image-compressor
+ * Reference：https://github.com/antelle/wasm-image-compressor
  */
 
 import { ImageHandler } from "./ImageHandler";
 import { Module } from "./PngWasmModule";
-
-const MaxColors = 128; // 0-256 颜色空间
-const Dithering = 0; // 0-1 抖动值
 
 export class PngWasmImage extends ImageHandler {
   async compress() {
@@ -22,11 +19,17 @@ export class PngWasmImage extends ImageHandler {
         return this.compressWithError();
       }
       const outputSizePointer = Module._malloc(4);
+
+      const maxColors = Math.ceil(256 * (this.info.option.quality / 100));
+      const dithering = this.info.option.highPngDither / 100;
+
+      console.log(maxColors, dithering);
+
       const result = Module._compress(
         width,
         height,
-        MaxColors,
-        Dithering,
+        Math.max(8, maxColors), // 约定颜色空间不能小于8
+        dithering,
         buffer,
         outputSizePointer
       );

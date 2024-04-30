@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Checkbox,
   Divider,
@@ -149,39 +148,44 @@ export const CompressOptionPannel = observer(() => {
 
       <Divider />
 
-      <div className={style.openHp}>
-        <Checkbox
-          checked={option.openHighPng}
-          onChange={(event) => {
-            update({ openHighPng: event.target.checked });
-          }}
-        >
-          {gstate.locale?.optionPannel.enableHighPng}
-        </Checkbox>
-      </div>
-
-      <div className={style.hpDither}>
-        <Typography.Text>
-          {gstate.locale?.optionPannel?.highPngDither}
-        </Typography.Text>
-        <Alert message="If you don’t understand dithering, keep the default" />
-        <div
-          className={classNames(
-            style.commonSlider,
-            !option.openHighPng && style.sliderDisable
-          )}
-          style={{
-            borderRadius: token.borderRadius,
-          }}
-        >
-          <Slider
-            defaultValue={DefaultCompressOption.highPngDither}
-            value={option.highPngDither}
-            disabled={!option.openHighPng}
-            onChange={(value) => {
-              update({ highPngDither: value });
+      <div className={style.hpBox}>
+        <div className={style.openHp}>
+          <Checkbox
+            checked={option.openHighPng}
+            onChange={(event) => {
+              update({ openHighPng: event.target.checked });
             }}
-          />
+          >
+            <Typography.Text
+              type={option.openHighPng ? undefined : "secondary"}
+            >
+              {gstate.locale?.optionPannel.enableHighPng}
+            </Typography.Text>
+          </Checkbox>
+        </div>
+
+        <div className={style.hpDither}>
+          <Typography.Text type={option.openHighPng ? undefined : "secondary"}>
+            {gstate.locale?.optionPannel?.highPngDither}
+          </Typography.Text>
+          <div
+            className={classNames(
+              style.commonSlider,
+              !option.openHighPng && style.sliderDisable
+            )}
+            style={{
+              borderRadius: token.borderRadius,
+            }}
+          >
+            <Slider
+              defaultValue={DefaultCompressOption.highPngDither}
+              value={option.highPngDither}
+              disabled={!option.openHighPng}
+              onChange={(value) => {
+                update({ highPngDither: value });
+              }}
+            />
+          </div>
         </div>
       </div>
 

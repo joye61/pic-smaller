@@ -4,7 +4,7 @@ import enUS from "antd/locale/en_US";
 const localeData: LocaleData = {
   antLocale: enUS,
   logo: "Pic Smaller",
-  readFileTip: 'Loading',
+  readFileTip: "Loading",
   uploadCard: {
     title: "Drag and drop files or click to upload",
     subTitle: ["Support", "format"],
@@ -14,7 +14,8 @@ const localeData: LocaleData = {
     clear: "Clear all",
     downloadAll: "Download all",
     downloadOne: "Download image",
-    removeOne: "Remove image"
+    removeOne: "Remove image",
+    reCompress: "Recompress",
   },
   columnTitle: {
     status: "Status",
@@ -34,21 +35,23 @@ const localeData: LocaleData = {
     toHeight: "Fit Height",
     widthPlaceholder: "Enter the compressed image width",
     heightPlaceholder: "Enter the compressed image height",
-    qualityTitle: "Set the compression quality, the larger the value, the larger size the generated image",
+    qualityTitle:
+      "Set compression quality (0-100): the larger the value, the larger size the generated image",
     resetBtn: "Reset",
     confirmBtn: "Confirm",
-    enableHighPng: 'Enable high-quality compression of PNG type',
-    highPngDither: 'Dithering, the larger the value, the more noise and the smoother the image.'
+    enableHighPng: "Enable high-quality compression of PNG type",
+    highPngDither:
+      "Set dithering factor (0-100):  the larger the value, the more noise and the smoother the image",
   },
   error404: {
     backHome: "Back to home",
     description: "Sorry, the page you visited does not exist~",
   },
   progress: {
-    before: 'Before compression',
-    after: 'After compression',
-    rate: 'Decrease ratio'
-  }
+    before: "Before compression",
+    after: "After compression",
+    rate: "Decrease ratio",
+  },
 };
 
 export default localeData;

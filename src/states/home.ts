@@ -4,11 +4,11 @@ import { makeAutoObservable, toJS } from "mobx";
 
 export const DefaultCompressOption: CompressOption = {
   scale: "unChanged",
-  quality: 70,
+  quality: 60,
   toWidth: undefined,
   toHeight: undefined,
   openHighPng: false,
-  highPngColors: 8,
+  // highPngColors: 8,
   highPngDither: 0,
 };
 
@@ -30,6 +30,13 @@ export class HomeState {
     makeAutoObservable(this);
   }
 
+  reCompress(){
+    this.list.forEach(info => {
+      info.output = null;
+      sendToCreateCompress(toJS(info));
+    })
+  }
+
   async updateCompressOption(data: Partial<CompressOption>) {
     this.showOption = false;
     await new Promise<void>((resolve) => {
@@ -43,9 +50,7 @@ export class HomeState {
     this.list.forEach((info) => {
       info.output = null;
       info.option = option;
-      const data: ImageInfo = toJS(info);
-      data.preview = null;
-      sendToCreateCompress(data);
+      sendToCreateCompress(toJS(info));
     });
   }
 

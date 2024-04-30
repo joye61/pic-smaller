@@ -18,6 +18,7 @@ export interface LocaleData {
     downloadAll: string;
     downloadOne: string;
     removeOne: string;
+    reCompress: string;
   };
   columnTitle: {
     status: string;

@@ -24,6 +24,7 @@ import {
   DeleteOutlined,
   DownloadOutlined,
   PlusOutlined,
+  ReloadOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import { useEffect, useRef } from "react";
@@ -279,15 +280,26 @@ export default observer(() => {
                   open={homeState.showOption}
                   overlayClassName={CompressOptionPopupClass}
                 >
+                  <Tooltip title={gstate.locale?.optionPannel.title}>
+                    <Button
+                      disabled={disabled}
+                      icon={<SettingOutlined />}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        homeState.showOption = !homeState.showOption;
+                      }}
+                    />
+                  </Tooltip>
+                </Popover>
+                <Tooltip title={gstate.locale?.listAction.reCompress}>
                   <Button
                     disabled={disabled}
-                    icon={<SettingOutlined />}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      homeState.showOption = !homeState.showOption;
+                    icon={<ReloadOutlined />}
+                    onClick={() => {
+                      homeState.reCompress();
                     }}
                   />
-                </Popover>
+                </Tooltip>
                 <Button
                   disabled={disabled}
                   icon={<ClearOutlined />}

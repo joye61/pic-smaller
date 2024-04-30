@@ -1,17 +1,22 @@
+import { ImageHandler } from "./ImageHandler";
 import { ImageInfo } from "./ImageInfo";
 import { JpegImage } from "./JpegImage";
 import { PngImage } from "./PngImage";
 import { PngWasmImage } from "./PngWasmImage";
-import { WebpImage } from "./WebpImage";
 
-export function createImageHandlerInstance(info: ImageInfo) {
+export function createImageHandlerInstance(
+  info: ImageInfo
+): ImageHandler | undefined {
   const mime = info.origin.blob.type;
-  let image: undefined | JpegImage | PngImage | typeof WebpImage = undefined;
   if (["image/jpeg", "image/webp"].includes(mime)) {
-    image = new JpegImage(info);
-  } else if (["image/png"].includes(mime)) {
-    // image = new PngImage(info);
-    image = new PngWasmImage(info);
+    return new JpegImage(info);
   }
-  return image;
+
+  if (["image/png"].includes(mime)) {
+    if (info.option.openHighPng) {
+      return new PngWasmImage(info);
+    } else {
+      return new PngImage(info);
+    }
+  }
 }
