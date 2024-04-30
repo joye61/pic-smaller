@@ -6,15 +6,24 @@ import { MenuProps } from "antd";
 const localeCacheKey = "Pic-Smaller-Locale";
 const defaultLang = "en-US";
 
+// https://www.techonthenet.com/js/language_tags.php
 const localeDataMap: Record<string, Promise<{ default: LocaleData }>> = {
   "zh-CN": import("./locales/zh-CN"),
+  "zh-TW": import("./locales/zh-TW"),
   "zh-Hans": import("./locales/zh-CN"),
   "en-US": import("./locales/en-US"),
+  "ja-JP": import("./locales/ja-JP"),
+  "ko-KR": import("./locales/ko-KR"),
+  "ru-RU": import("./locales/ru-RU"),
 };
 
 export const langList: MenuProps["items"] = [
-  { key: "zh-CN", label: "🇨🇳 简体中文" },
-  { key: "en-US", label: "🇺🇸 English" },
+  { key: "en-US", label: "English" },
+  { key: "ja-JP", label: "日本語" },
+  { key: "ko-KR", label: "한국인" },
+  { key: "ru-RU", label: "Русский" },
+  { key: "zh-TW", label: "繁體中文" },
+  { key: "zh-CN", label: "简体中文" },
 ];
 
 export function getLang() {

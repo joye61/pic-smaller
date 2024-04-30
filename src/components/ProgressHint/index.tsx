@@ -13,14 +13,14 @@ export const ProgressHint = observer(() => {
   let rate: React.ReactNode = null;
   if (info.originSize > info.outputSize) {
     rate = (
-      <Typography.Text type="success">
+      <Typography.Text type="success" strong>
         {info.rate}%&nbsp;
         <ArrowDownOutlined />
       </Typography.Text>
     );
   } else {
     rate = (
-      <Typography.Text type="danger">
+      <Typography.Text type="danger" strong>
         {info.rate}%&nbsp;
         <ArrowUpOutlined />
       </Typography.Text>
@@ -37,7 +37,7 @@ export const ProgressHint = observer(() => {
         size={14}
       />
       <div className={style.progress}>
-        <Typography.Text>{info.loadedNum}</Typography.Text>
+        <Typography.Text strong>{info.loadedNum}</Typography.Text>
         <Typography.Text type="secondary">
           &nbsp;/&nbsp;{info.totalNum}&nbsp;&nbsp;&nbsp;&nbsp;
         </Typography.Text>

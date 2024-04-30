@@ -166,7 +166,6 @@ export default observer(() => {
       className: style.nowrap,
       title: gstate.locale?.columnTitle.decrease,
       align: "right",
-      fixed: "right",
       width: 100,
       render(_, row) {
         if (!row.output) return "-";
