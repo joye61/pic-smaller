@@ -36,6 +36,7 @@ export interface ImageInfo {
   origin: OriginalInfo;
   preview: PreviewInfo | null;
   output: OutputInfo | null;
+  extra?: null | any;
 }
 
 /**

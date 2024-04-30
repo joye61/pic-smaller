@@ -1,6 +1,7 @@
 import { ImageInfo } from "./ImageInfo";
 import { JpegImage } from "./JpegImage";
 import { PngImage } from "./PngImage";
+import { PngWasmImage } from "./PngWasmImage";
 import { WebpImage } from "./WebpImage";
 
 export function createImageHandlerInstance(info: ImageInfo) {
@@ -9,7 +10,8 @@ export function createImageHandlerInstance(info: ImageInfo) {
   if (["image/jpeg", "image/webp"].includes(mime)) {
     image = new JpegImage(info);
   } else if (["image/png"].includes(mime)) {
-    image = new PngImage(info);
+    // image = new PngImage(info);
+    image = new PngWasmImage(info);
   }
   return image;
 }

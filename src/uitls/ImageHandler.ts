@@ -12,17 +12,34 @@ export abstract class ImageHandler {
   abstract compress(): Awaited<void>;
 
   /**
-   * 从OffscreenCanvas中创建Blob
-   * @param width
-   * @param height
-   * @param quality
-   * @returns
+   * 如果发生了错误，返回原始图片，不做任何更改
    */
-  async createBlobFromCanvas(width: number, height: number, quality = 0.7) {
-    const offscreen = new OffscreenCanvas(width, height);
-    const canvas = offscreen.getContext("2d");
+  compressWithError() {
+    this.info.output = {
+      width: this.info.origin.width,
+      height: this.info.origin.height,
+      blob: this.info.origin.blob,
+    };
+  }
+
+  /**
+   * 将原始图片转换到目标尺寸的离屏canvas中
+   * @param width 目标Canvas的宽度，如果没有，则为原始尺寸
+   * @param height 目标Canvas的高度，如果没有，则为原始尺寸
+   */
+  async convertOriginToCanvas(
+    width?: number,
+    height?: number
+  ): Promise<{
+    canvas: OffscreenCanvas;
+    context: OffscreenCanvasRenderingContext2D;
+  }> {
+    width ??= this.info.origin.width;
+    height ??= this.info.origin.height;
+    const canvas = new OffscreenCanvas(width, height);
+    const context = canvas.getContext("2d")!;
     const image = await createImageBitmap(this.info.origin.blob);
-    canvas?.drawImage(
+    context?.drawImage(
       image,
       0,
       0,
@@ -33,13 +50,24 @@ export abstract class ImageHandler {
       width,
       height
     );
+    image.close();
+    return { canvas, context };
+  }
+
+  /**
+   * 从OffscreenCanvas中创建Blob
+   * @param width
+   * @param height
+   * @param quality
+   * @returns
+   */
+  async createBlobFromCanvas(width: number, height: number, quality = 0.7) {
+    const { canvas } = await this.convertOriginToCanvas(width, height);
     const opiton: ImageEncodeOptions = {
       type: this.info.origin.blob.type,
       quality,
     };
-    const blob = await offscreen.convertToBlob(opiton);
-    image.close();
-    return blob;
+    return canvas.convertToBlob(opiton);
   }
 
   /**

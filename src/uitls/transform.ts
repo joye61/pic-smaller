@@ -1,5 +1,5 @@
-import WorkerCompress from "@/uitls/compress?worker";
-import WorkerPreview from "@/uitls/preview?worker";
+import WorkerCompress from "@/uitls/WorkerCompress?worker";
+import WorkerPreview from "@/uitls/WorkerPreview?worker";
 import { ImageInfo } from "./ImageInfo";
 import { homeState } from "@/states/home";
 import { toJS } from "mobx";
