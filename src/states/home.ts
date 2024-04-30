@@ -7,6 +7,9 @@ export const DefaultCompressOption: CompressOption = {
   quality: 70,
   toWidth: undefined,
   toHeight: undefined,
+  openHighPng: false,
+  highPngColors: 8,
+  highPngDither: 0,
 };
 
 export interface ProgressHintInfo {

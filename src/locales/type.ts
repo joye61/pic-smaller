@@ -40,6 +40,8 @@ export interface LocaleData {
     qualityTitle: string;
     resetBtn: string;
     confirmBtn: string;
+    enableHighPng: string;
+    highPngDither: string;
   };
   progress: {
     before: string;

@@ -3,7 +3,7 @@
 }
 
 .container {
-  width: 340px;
+  width: 380px;
   padding: 8px 0;
 }
 
@@ -14,12 +14,20 @@
   }
 }
 
+.commonSlider {
+  background-color: #87cca533;
+  &.sliderDisable {
+    background-color: #ededed54;
+  }
+}
+
 .quality {
   margin-bottom: 24px;
   > span {
     margin-bottom: 16px;
   }
-  > div:nth-child(2) {
-    background-color: #87cca533;
-  }
+}
+
+.openHp {
+  margin-bottom: 16px;
 }

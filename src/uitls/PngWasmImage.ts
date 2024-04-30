@@ -5,7 +5,7 @@
 import { ImageHandler } from "./ImageHandler";
 import { Module } from "./PngWasmModule";
 
-const MaxColors = 8; // 0-256 颜色空间
+const MaxColors = 128; // 0-256 颜色空间
 const Dithering = 0; // 0-1 抖动值
 
 export class PngWasmImage extends ImageHandler {

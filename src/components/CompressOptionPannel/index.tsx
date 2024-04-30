@@ -1,5 +1,8 @@
 import {
+  Alert,
   Button,
+  Checkbox,
+  Divider,
   Flex,
   InputNumber,
   Slider,
@@ -16,6 +19,7 @@ import { DefaultCompressOption, homeState } from "@/states/home";
 import { CompressOption } from "@/uitls/ImageInfo";
 import { gstate } from "@/global";
 import { useEffect, useState } from "react";
+import classNames from "classnames";
 
 export const CompressOptionPannel = observer(() => {
   const { token } = theme.useToken();
@@ -128,6 +132,7 @@ export const CompressOptionPannel = observer(() => {
           {gstate.locale?.optionPannel?.qualityTitle}
         </Typography.Text>
         <div
+          className={style.commonSlider}
           style={{
             borderRadius: token.borderRadius,
           }}
@@ -137,6 +142,44 @@ export const CompressOptionPannel = observer(() => {
             value={option.quality}
             onChange={(value) => {
               update({ quality: value });
+            }}
+          />
+        </div>
+      </div>
+
+      <Divider />
+
+      <div className={style.openHp}>
+        <Checkbox
+          checked={option.openHighPng}
+          onChange={(event) => {
+            update({ openHighPng: event.target.checked });
+          }}
+        >
+          {gstate.locale?.optionPannel.enableHighPng}
+        </Checkbox>
+      </div>
+
+      <div className={style.hpDither}>
+        <Typography.Text>
+          {gstate.locale?.optionPannel?.highPngDither}
+        </Typography.Text>
+        <Alert message="If you don’t understand dithering, keep the default" />
+        <div
+          className={classNames(
+            style.commonSlider,
+            !option.openHighPng && style.sliderDisable
+          )}
+          style={{
+            borderRadius: token.borderRadius,
+          }}
+        >
+          <Slider
+            defaultValue={DefaultCompressOption.highPngDither}
+            value={option.highPngDither}
+            disabled={!option.openHighPng}
+            onChange={(value) => {
+              update({ highPngDither: value });
             }}
           />
         </div>

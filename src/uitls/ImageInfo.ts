@@ -28,6 +28,12 @@ export interface CompressOption {
   toHeight?: number;
   // compress quality: 70
   quality: number;
+  // 启用PNG类型高质量压缩
+  openHighPng: boolean;
+  // 颜色空间 2-256
+  highPngColors: number;
+  // 抖动值 0-1
+  highPngDither: number;
 }
 
 export interface ImageInfo {

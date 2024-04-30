@@ -34,9 +34,11 @@ const localeData: LocaleData = {
     toHeight: "适应高度",
     widthPlaceholder: "设置压缩后图片宽度",
     heightPlaceholder: "设置压缩后图片高度",
-    qualityTitle: "设置压缩质量（数值越大，生成的图片越大）",
+    qualityTitle: "压缩质量：数值越大，生成的图片越大",
     resetBtn: "重置",
     confirmBtn: "确定",
+    enableHighPng: '启用PNG类型高质量压缩',
+    highPngDither: '抖色系数：数值越大，噪点越多，但图像越平滑'
   },
   error404: {
     backHome: "返回首页",

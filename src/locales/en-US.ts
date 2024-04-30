@@ -37,6 +37,8 @@ const localeData: LocaleData = {
     qualityTitle: "Set the compression quality, the larger the value, the larger size the generated image",
     resetBtn: "Reset",
     confirmBtn: "Confirm",
+    enableHighPng: 'Enable high-quality compression of PNG type',
+    highPngDither: 'Dithering, the larger the value, the more noise and the smoother the image.'
   },
   error404: {
     backHome: "Back to home",
