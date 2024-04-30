@@ -23,8 +23,6 @@ export class PngWasmImage extends ImageHandler {
       const maxColors = Math.ceil(256 * (this.info.option.quality / 100));
       const dithering = this.info.option.highPngDither / 100;
 
-      console.log(maxColors, dithering);
-
       const result = Module._compress(
         width,
         height,
