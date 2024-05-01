@@ -36,8 +36,9 @@ import { homeState } from "@/states/home";
 import { setTransformData } from "@/uitls/transform";
 import { ImageInfo } from "@/uitls/ImageInfo";
 import { Indicator } from "@/components/Indicator";
-import { formatSize } from "@/functions";
+import { createDownload, formatSize, getUniqNameOnNames } from "@/functions";
 import { ProgressHint } from "@/components/ProgressHint";
+import JSZip from "jszip";
 
 const CompressOptionPopupClass = "__COPC";
 
@@ -216,11 +217,9 @@ export default observer(() => {
               type="secondary"
               disabled={disabled}
               onClick={() => {
-                const anchor = document.createElement("a");
-                anchor.href = URL.createObjectURL(row.output!.blob);
-                anchor.download = row.origin.name;
-                anchor.click();
-                anchor.remove();
+                if (row.output?.blob) {
+                  createDownload(row.origin.name, row.output!.blob);
+                }
               }}
             >
               <Tooltip title={gstate.locale?.listAction.downloadOne}>
@@ -312,6 +311,30 @@ export default observer(() => {
                   icon={<DownloadOutlined />}
                   type="primary"
                   disabled={disabled}
+                  onClick={async () => {
+                    gstate.showLoading(gstate.locale?.bundleTip);
+                    const zip = new JSZip();
+                    const names: Set<string> = new Set();
+                    for (let [_, info] of homeState.list) {
+                      const uniqName = getUniqNameOnNames(
+                        names,
+                        info.origin.name
+                      );
+                      names.add(uniqName);
+                      if (info.output?.blob) {
+                        zip.file(uniqName, info.output.blob);
+                      }
+                    }
+                    const result = await zip.generateAsync({
+                      type: "blob",
+                      compression: "DEFLATE",
+                      compressionOptions: {
+                        level: 6,
+                      },
+                    });
+                    createDownload("PicSmaller.zip", result);
+                    gstate.hideLoading();
+                  }}
                 >
                   {gstate.locale?.listAction.downloadAll}
                 </Button>

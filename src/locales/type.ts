@@ -4,6 +4,7 @@ export interface LocaleData {
   antLocale: Locale;
   logo: string;
   readFileTip: string;
+  bundleTip: string;
   error404: {
     backHome: string;
     description: string;

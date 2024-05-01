@@ -7,6 +7,7 @@ const localeData: LocaleData = {
   antLocale: jaJP,
   logo: "Pic Smaller",
   readFileTip: "読み込み中",
+  bundleTip: 'パッキング',
   uploadCard: {
     title: "ドラッグまたはクリックしてアップロードします",
     subTitle: ["サポート", "フォーマット"],

@@ -19,9 +19,9 @@ const localeDataMap: Record<string, Promise<{ default: LocaleData }>> = {
 
 export const langList: MenuProps["items"] = [
   { key: "en-US", label: "English" },
-  { key: "ja-JP", label: "日本語" },
-  { key: "ko-KR", label: "한국인" },
   { key: "ru-RU", label: "Русский" },
+  { key: "ko-KR", label: "한국인" },
+  { key: "ja-JP", label: "日本語" },
   { key: "zh-TW", label: "繁體中文" },
   { key: "zh-CN", label: "简体中文" },
 ];

@@ -7,6 +7,7 @@ const localeData: LocaleData = {
   antLocale: zhTW,
   logo: "圖小小",
   readFileTip: "讀取中",
+  bundleTip: '打包中',
   uploadCard: {
     title: "拖曳或點選上傳",
     subTitle: ["支援", "格式"],

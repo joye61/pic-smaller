@@ -7,6 +7,7 @@ const localeData: LocaleData = {
   antLocale: koKR,
   logo: "Pic Smaller",
   readFileTip: "읽는 중",
+  bundleTip: '포장',
   uploadCard: {
     title: "업로드하려면 드래그 앤 드롭하거나 클릭하세요.",
     subTitle: ["지원", "형식"],

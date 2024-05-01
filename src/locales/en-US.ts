@@ -5,6 +5,7 @@ const localeData: LocaleData = {
   antLocale: enUS,
   logo: "Pic Smaller",
   readFileTip: "Loading",
+  bundleTip: 'Packing',
   uploadCard: {
     title: "Drag and drop files or click to upload",
     subTitle: ["Support", "format"],

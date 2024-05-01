@@ -22,6 +22,38 @@ export function uniqId() {
  * @returns
  */
 export function formatSize(num: number) {
-  const result = filesize(num, { standard: "jedec", output: "array"});
+  const result = filesize(num, { standard: "jedec", output: "array" });
   return result[0] + " " + result[1];
+}
+
+/**
+ * 弹出一个下载框
+ * @param name 
+ * @param blob 
+ */
+export function createDownload(name: string, blob: Blob) {
+  const anchor = document.createElement("a");
+  anchor.href = URL.createObjectURL(blob);
+  anchor.download = name;
+  anchor.click();
+  anchor.remove();
+}
+
+/**
+ * 判断names中是否已经存在name，如果存在，则创建一个新的name
+ * @param names 用来检测的names
+ * @param name 待判断的name
+ */
+export function getUniqNameOnNames(names: Set<string>, name: string): string {
+  const getName = (checkName: string): string => {
+    if (names.has(checkName)) {
+      const nameParts = checkName.split(".");
+      const extension = nameParts.pop();
+      const newName = nameParts.join("") + "(1)." + extension;
+      return getName(newName);
+    } else {
+      return checkName;
+    }
+  };
+  return getName(name);
 }
