@@ -14,12 +14,10 @@ const localeDataMap: Record<string, Promise<{ default: LocaleData }>> = {
   "en-US": import("./locales/en-US"),
   "ja-JP": import("./locales/ja-JP"),
   "ko-KR": import("./locales/ko-KR"),
-  "ru-RU": import("./locales/ru-RU"),
 };
 
 export const langList: MenuProps["items"] = [
   { key: "en-US", label: "English" },
-  { key: "ru-RU", label: "Русский" },
   { key: "ko-KR", label: "한국인" },
   { key: "ja-JP", label: "日本語" },
   { key: "zh-TW", label: "繁體中文" },
