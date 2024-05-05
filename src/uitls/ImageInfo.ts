@@ -34,6 +34,18 @@ export interface CompressOption {
   // highPngColors: number;
   // 抖动值 0-1
   highPngDither: number;
+
+  jpeg?: {
+    quality: number; // 0-1
+  };
+  png?: {
+    engine: "upng" | "libpng";
+    colors: number; // 2-256
+    dithering: number; // 0-1,
+  };
+  gif?: {
+    colors: number; // 2-256
+  };
 }
 
 export interface ImageInfo {
