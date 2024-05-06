@@ -7,7 +7,7 @@ const localeData: LocaleData = {
   antLocale: koKR,
   logo: "Pic Smaller",
   readFileTip: "읽는 중",
-  bundleTip: '포장',
+  bundleTip: "포장",
   uploadCard: {
     title: "업로드하려면 드래그 앤 드롭하거나 클릭하세요.",
     subTitle: ["지원", "형식"],
@@ -33,7 +33,7 @@ const localeData: LocaleData = {
     newDimension: "새 차원",
   },
   optionPannel: {
-    changeDimension: '압축된 이미지 크기 조정',
+    changeDimension: "압축된 이미지 크기 조정",
     title: "압축 옵션",
     unChanged: "크기 조정 없음",
     toWidth: "너비에 맞춰 조정",
@@ -44,9 +44,14 @@ const localeData: LocaleData = {
       "압축 품질 설정(0-100): 값이 클수록 생성되는 이미지가 커집니다.",
     resetBtn: "재설정",
     confirmBtn: "확인",
-    enableHighPng: "PNG 유형의 고품질 압축을 활성화합니다",
-    highPngDither:
-      "디더 계수 설정(0-100): 값이 클수록 노이즈는 많아지지만 이미지는 더 부드러워집니다.",
+    engineUpng: "일반 압축 엔진",
+    engineLibPng: "고급 압축 엔진(더 높은 압축 품질, 색상 디더링 지원)",
+    colorsDesc:
+      "출력 이미지의 색상 수를 설정합니다(2-256): 색상이 많을수록 출력 이미지가 커집니다.",
+    pngDithering:
+      "디더링 계수 설정(0-1): 계수가 클수록 그림이 더 선명해지지만 노이즈가 더 많아집니다.",
+    gifDither:
+      "디더링을 켜세요: 그림이 더 선명해지고 노이즈가 더 많아지며 출력 그림이 더 커집니다.",
   },
   error404: {
     backHome: "홈 페이지로 돌아가기",

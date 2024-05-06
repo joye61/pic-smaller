@@ -69,11 +69,11 @@ export const CompressOptionPannel = observer(() => {
   const pngEngineOptions = [
     {
       value: "upng",
-      label: "普通压缩引擎",
+      label: gstate.locale?.optionPannel.engineUpng,
     },
     {
       value: "libpng",
-      label: "高级压缩引擎（更高压缩品质，支持抖色）",
+      label: gstate.locale?.optionPannel.engineLibPng,
     },
   ];
 
@@ -108,7 +108,7 @@ export const CompressOptionPannel = observer(() => {
   return (
     <Modal
       title={gstate.locale?.optionPannel.title}
-      width={480}
+      width={512}
       centered
       maskClosable
       open={homeState.showOption}
@@ -120,6 +120,9 @@ export const CompressOptionPannel = observer(() => {
       onCancel={async () => {
         update(DefaultCompressOption);
         await homeState.updateCompressOption(DefaultCompressOption);
+      }}
+      onOk={() => {
+        homeState.updateCompressOption(option);
       }}
     >
       <OptionItem desc={gstate.locale?.optionPannel.changeDimension}>
@@ -205,7 +208,7 @@ export const CompressOptionPannel = observer(() => {
         />
       </OptionItem>
 
-      <OptionItem desc="设置输出图片颜色数（2-256）：颜色越多，输出图片越大">
+      <OptionItem desc={gstate.locale?.optionPannel.colorsDesc}>
         <div
           className={style.commonSlider}
           style={{
@@ -230,7 +233,7 @@ export const CompressOptionPannel = observer(() => {
       </OptionItem>
 
       {option.png.engine === "libpng" && (
-        <OptionItem desc="设置抖色系数（0-1）：系数越大，噪点越多，图片越清晰，但压缩速度越慢">
+        <OptionItem desc={gstate.locale?.optionPannel.pngDithering}>
           <div
             className={style.commonSlider}
             style={{
@@ -259,7 +262,7 @@ export const CompressOptionPannel = observer(() => {
         GIF
       </Divider>
 
-      <OptionItem desc="设置输出图片颜色数（2-256）：颜色越多，输出图片越大">
+      <OptionItem desc={gstate.locale?.optionPannel.colorsDesc}>
         <div
           className={style.commonSlider}
           style={{
@@ -287,38 +290,17 @@ export const CompressOptionPannel = observer(() => {
         <Checkbox
           checked={option.gif.dither}
           onChange={(event) => {
+            console.log(event);
             let gif: CompressOption["gif"] = {
               ...option.gif,
-              dither: event.target.value,
+              dither: event.target.checked,
             };
             update({ gif });
           }}
         >
-          开启抖色：图片更清晰，噪点更多，输出图片更大
+          {gstate.locale?.optionPannel.gifDither}
         </Checkbox>
       </OptionItem>
-
-      {/* <Flex justify="flex-end">
-        <Space>
-          <Button
-            onClick={async () => {
-              update(DefaultCompressOption);
-              await homeState.updateCompressOption(DefaultCompressOption);
-            }}
-          >
-            {gstate.locale?.optionPannel?.resetBtn}
-          </Button>
-          <Button
-            type="primary"
-            disabled={!canSubmit()}
-            onClick={() => {
-              homeState.updateCompressOption(option);
-            }}
-          >
-            {gstate.locale?.optionPannel?.confirmBtn}
-          </Button>
-        </Space>
-      </Flex> */}
     </Modal>
   );
 });

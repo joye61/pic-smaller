@@ -43,8 +43,11 @@ export interface LocaleData {
     qualityTitle: string;
     resetBtn: string;
     confirmBtn: string;
-    enableHighPng: string;
-    highPngDither: string;
+    engineUpng: string;
+    engineLibPng: string;
+    colorsDesc: string;
+    pngDithering: string;
+    gifDither: string;
   };
   progress: {
     before: string;

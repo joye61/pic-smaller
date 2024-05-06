@@ -7,7 +7,7 @@ const localeData: LocaleData = {
   antLocale: zhTW,
   logo: "圖小小",
   readFileTip: "讀取中",
-  bundleTip: '打包中',
+  bundleTip: "打包中",
   uploadCard: {
     title: "拖曳或點選上傳",
     subTitle: ["支援", "格式"],
@@ -32,7 +32,7 @@ const localeData: LocaleData = {
     newDimension: "新尺寸",
   },
   optionPannel: {
-    changeDimension: '調整壓縮後的圖片尺寸',
+    changeDimension: "調整壓縮後的圖片尺寸",
     title: "壓縮選項",
     unChanged: "無縮放",
     toWidth: "適應寬度",
@@ -42,8 +42,11 @@ const localeData: LocaleData = {
     qualityTitle: "設定壓縮質量(0-100)：數值越大，產生的圖片越大",
     resetBtn: "重置",
     confirmBtn: "確定",
-    enableHighPng: "啟用PNG型別高品質壓縮",
-    highPngDither: "設定抖色係數(0-100)：數值越大，雜訊越多，但影像越平滑",
+    engineUpng: "普通壓縮引擎",
+    engineLibPng: "進階壓縮引擎（更高壓縮品質，支援抖色）",
+    colorsDesc: "設定輸出圖片顏色數（2-256）：顏色越多，輸出圖片越大",
+    pngDithering: "設定抖色係數（0-1）：係數越大，圖片越清晰，但雜訊越多",
+    gifDither: "開啟抖色：圖片更清晰，雜訊更多，輸出圖片更大",
   },
   error404: {
     backHome: "返回首頁",

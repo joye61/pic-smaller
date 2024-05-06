@@ -9,16 +9,16 @@ export interface OptionItemProps extends HTMLProps<HTMLDivElement> {
 }
 
 export function OptionItem(props: OptionItemProps) {
-  let desc: React.ReactNode = props.desc;
-  if (isString(props.desc)) {
+  let { desc, children, ...extra } = props;
+  if (isString(desc)) {
     desc = (
-      <Typography.Text className={style.desc}>{props.desc}</Typography.Text>
+      <Typography.Text className={style.desc}>{desc}</Typography.Text>
     );
   }
   return (
-    <div className={style.container}>
+    <div className={style.container} {...extra}>
       <div className={style.desc}>{desc}</div>
-      <div>{props.children}</div>
+      <div>{children}</div>
     </div>
   );
 }

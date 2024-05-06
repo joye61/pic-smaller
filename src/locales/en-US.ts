@@ -5,7 +5,7 @@ const localeData: LocaleData = {
   antLocale: enUS,
   logo: "Pic Smaller",
   readFileTip: "Loading",
-  bundleTip: 'Packing',
+  bundleTip: "Packing",
   uploadCard: {
     title: "Drag and drop files or click to upload",
     subTitle: ["Support", "format"],
@@ -30,18 +30,26 @@ const localeData: LocaleData = {
     newDimension: "New Dimension",
   },
   optionPannel: {
+    changeDimension: "Adjust compressed image size",
     title: "Compression options",
     unChanged: "No Zoom",
     toWidth: "Fit Width",
     toHeight: "Fit Height",
     widthPlaceholder: "Enter the compressed image width",
     heightPlaceholder: "Enter the compressed image height",
-    qualityTitle: "Set compression quality (0-100): the larger the value, the larger size the generated image",
+    qualityTitle:
+      "Set compression quality (0-100): the larger the value, the larger size the generated image",
     resetBtn: "Reset",
     confirmBtn: "Confirm",
-    enableHighPng: "Enable high-quality compression of PNG type",
-    highPngDither: "Set dithering factor (0-100):  the larger the value, the more noise and the smoother the image",
-    changeDimension: 'Adjust compressed image size'
+    engineUpng: "Normal compression engine",
+    engineLibPng:
+      "Advanced compression engine (higher compression quality, support for color dithering)",
+    colorsDesc:
+      "Set the number of colors for the output image (2-256): the more colors, the larger size the output image",
+    pngDithering:
+      "Set the dithering coefficient (0-1): the larger the coefficient, the clearer the picture, but the more noise there is",
+    gifDither:
+      "Turn on dithering: the image is clearer, the noise is more, and the output image size is larger",
   },
   error404: {
     backHome: "Back to home",
