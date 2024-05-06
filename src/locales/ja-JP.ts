@@ -32,6 +32,7 @@ const localeData: LocaleData = {
     newDimension: "新しいディメンション",
   },
   optionPannel: {
+    changeDimension: '圧縮された画像サイズを調整する',
     title: "圧縮オプション",
     unChanged: "スケーリングなし",
     toWidth: "幅に合わせる",

@@ -10,6 +10,18 @@ export const DefaultCompressOption: CompressOption = {
   openHighPng: false,
   // highPngColors: 8,
   highPngDither: 0,
+  jpeg: {
+    quality: 0.6,
+  },
+  png: {
+    engine: "upng",
+    colors: 8,
+    dithering: 0,
+  },
+  gif: {
+    colors: 16,
+    dither: false,
+  },
 };
 
 export interface ProgressHintInfo {
@@ -30,11 +42,11 @@ export class HomeState {
     makeAutoObservable(this);
   }
 
-  reCompress(){
-    this.list.forEach(info => {
+  reCompress() {
+    this.list.forEach((info) => {
       info.output = null;
       sendToCreateCompress(toJS(info));
-    })
+    });
   }
 
   async updateCompressOption(data: Partial<CompressOption>) {

@@ -1,24 +1,20 @@
 import {
-  Button,
   Checkbox,
   Divider,
-  Flex,
   InputNumber,
+  Modal,
+  Radio,
+  Select,
   Slider,
-  Space,
-  Tabs,
-  Typography,
   theme,
 } from "antd";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
-import { TabsProps } from "antd/lib";
-import { ColumnHeightOutlined, ColumnWidthOutlined } from "@ant-design/icons";
 import { DefaultCompressOption, homeState } from "@/states/home";
 import { CompressOption } from "@/uitls/ImageInfo";
 import { gstate } from "@/global";
 import { useEffect, useState } from "react";
-import classNames from "classnames";
+import { OptionItem } from "../OptionItem";
 
 export const CompressOptionPannel = observer(() => {
   const { token } = theme.useToken();
@@ -55,20 +51,29 @@ export const CompressOptionPannel = observer(() => {
     };
   }, [option]);
 
-  const tabItems: TabsProps["items"] = [
+  const scaleOptions = [
     {
-      key: "unChanged",
+      value: "unChanged",
       label: gstate.locale?.optionPannel.unChanged,
     },
     {
-      key: "toWidth",
+      value: "toWidth",
       label: gstate.locale?.optionPannel?.toWidth,
-      icon: <ColumnWidthOutlined />,
     },
     {
-      key: "toHeight",
+      value: "toHeight",
       label: gstate.locale?.optionPannel?.toHeight,
-      icon: <ColumnHeightOutlined />,
+    },
+  ];
+
+  const pngEngineOptions = [
+    {
+      value: "upng",
+      label: "普通压缩引擎",
+    },
+    {
+      value: "libpng",
+      label: "高级压缩引擎（更高压缩品质，支持抖色）",
     },
   ];
 
@@ -101,35 +106,61 @@ export const CompressOptionPannel = observer(() => {
   }
 
   return (
-    <div className={style.container}>
-      <Tabs
-        type="card"
-        items={tabItems}
-        activeKey={option.scale}
-        onChange={(activeKey) => {
-          const newOption: Partial<CompressOption> = {
-            scale: activeKey as CompressOption["scale"],
-          };
-          if (activeKey === "unChanged") {
-            newOption.toHeight = undefined;
-            newOption.toWidth = undefined;
-          }
-          if (activeKey === "toWidth") {
-            newOption.toHeight = undefined;
-          }
-          if (activeKey === "toHeight") {
-            newOption.toWidth = undefined;
-          }
-          update(newOption);
-        }}
-      />
+    <Modal
+      title={gstate.locale?.optionPannel.title}
+      width={480}
+      centered
+      maskClosable
+      open={homeState.showOption}
+      cancelText={gstate.locale?.optionPannel?.resetBtn}
+      okText={gstate.locale?.optionPannel?.confirmBtn}
+      okButtonProps={{
+        disabled: !canSubmit(),
+      }}
+      onCancel={async () => {
+        update(DefaultCompressOption);
+        await homeState.updateCompressOption(DefaultCompressOption);
+      }}
+    >
+      <OptionItem desc={gstate.locale?.optionPannel.changeDimension}>
+        <Radio.Group
+          buttonStyle="solid"
+          value={option.scale}
+          onChange={(event) => {
+            const value = event.target.value;
+            const newOption: Partial<CompressOption> = {
+              scale: value as CompressOption["scale"],
+            };
+            if (value === "unChanged") {
+              newOption.toHeight = undefined;
+              newOption.toWidth = undefined;
+            }
+            if (value === "toWidth") {
+              newOption.toHeight = undefined;
+            }
+            if (value === "toHeight") {
+              newOption.toWidth = undefined;
+            }
+            update(newOption);
+          }}
+        >
+          {scaleOptions.map((item) => {
+            return (
+              <Radio.Button key={item.value} value={item.value}>
+                {item.label}
+              </Radio.Button>
+            );
+          })}
+        </Radio.Group>
 
-      <div className={style.scaleInput}>{input}</div>
+        {input && <div className={style.scaleInput}>{input}</div>}
+      </OptionItem>
 
-      <div className={style.quality}>
-        <Typography.Text>
-          {gstate.locale?.optionPannel?.qualityTitle}
-        </Typography.Text>
+      <Divider orientation="left" orientationMargin="0">
+        JPG/JPEG/WEBP
+      </Divider>
+
+      <OptionItem desc={gstate.locale?.optionPannel?.qualityTitle}>
         <div
           className={style.commonSlider}
           style={{
@@ -137,59 +168,137 @@ export const CompressOptionPannel = observer(() => {
           }}
         >
           <Slider
-            defaultValue={DefaultCompressOption.quality}
-            value={option.quality}
+            defaultValue={DefaultCompressOption.jpeg.quality}
+            value={option.jpeg.quality}
+            min={0}
+            max={1}
+            step={0.01}
             onChange={(value) => {
-              update({ quality: value });
+              const jpeg: CompressOption["jpeg"] = {
+                quality: value,
+              };
+              update({ jpeg });
             }}
           />
         </div>
-      </div>
+      </OptionItem>
 
-      <Divider />
+      <Divider orientation="left" orientationMargin="0">
+        PNG
+      </Divider>
 
-      <div className={style.hpBox}>
-        <div className={style.openHp}>
-          <Checkbox
-            checked={option.openHighPng}
-            onChange={(event) => {
-              update({ openHighPng: event.target.checked });
+      <OptionItem>
+        <Select
+          style={{ width: "100%" }}
+          value={option.png.engine}
+          options={pngEngineOptions}
+          onChange={(value) => {
+            let png: CompressOption["png"] = {
+              ...option.png,
+              engine: value,
+            };
+            if (value === "upng") {
+              png.dithering = undefined;
+            }
+            update({ png });
+          }}
+        />
+      </OptionItem>
+
+      <OptionItem desc="设置输出图片颜色数（2-256）：颜色越多，输出图片越大">
+        <div
+          className={style.commonSlider}
+          style={{
+            borderRadius: token.borderRadius,
+          }}
+        >
+          <Slider
+            defaultValue={DefaultCompressOption.png.colors}
+            value={option.png.colors}
+            min={2}
+            max={256}
+            step={1}
+            onChange={(value) => {
+              let png: CompressOption["png"] = {
+                ...option.png,
+                colors: value,
+              };
+              update({ png });
             }}
-          >
-            <Typography.Text
-              type={option.openHighPng ? undefined : "secondary"}
-            >
-              {gstate.locale?.optionPannel.enableHighPng}
-            </Typography.Text>
-          </Checkbox>
+          />
         </div>
+      </OptionItem>
 
-        <div className={style.hpDither}>
-          <Typography.Text type={option.openHighPng ? undefined : "secondary"}>
-            {gstate.locale?.optionPannel?.highPngDither}
-          </Typography.Text>
+      {option.png.engine === "libpng" && (
+        <OptionItem desc="设置抖色系数（0-1）：系数越大，噪点越多，图片越清晰，但压缩速度越慢">
           <div
-            className={classNames(
-              style.commonSlider,
-              !option.openHighPng && style.sliderDisable
-            )}
+            className={style.commonSlider}
             style={{
               borderRadius: token.borderRadius,
             }}
           >
             <Slider
-              defaultValue={DefaultCompressOption.highPngDither}
-              value={option.highPngDither}
-              disabled={!option.openHighPng}
+              defaultValue={DefaultCompressOption.png.dithering}
+              value={option.png.dithering}
+              min={0}
+              max={1}
+              step={0.01}
               onChange={(value) => {
-                update({ highPngDither: value });
+                let png: CompressOption["png"] = {
+                  ...option.png,
+                  dithering: value,
+                };
+                update({ png });
               }}
             />
           </div>
-        </div>
-      </div>
+        </OptionItem>
+      )}
 
-      <Flex justify="flex-end">
+      <Divider orientation="left" orientationMargin="0">
+        GIF
+      </Divider>
+
+      <OptionItem desc="设置输出图片颜色数（2-256）：颜色越多，输出图片越大">
+        <div
+          className={style.commonSlider}
+          style={{
+            borderRadius: token.borderRadius,
+          }}
+        >
+          <Slider
+            defaultValue={DefaultCompressOption.gif.colors}
+            value={option.gif.colors}
+            min={2}
+            max={256}
+            step={1}
+            onChange={(value) => {
+              let gif: CompressOption["gif"] = {
+                ...option.gif,
+                colors: value,
+              };
+              update({ gif });
+            }}
+          />
+        </div>
+      </OptionItem>
+
+      <OptionItem>
+        <Checkbox
+          checked={option.gif.dither}
+          onChange={(event) => {
+            let gif: CompressOption["gif"] = {
+              ...option.gif,
+              dither: event.target.value,
+            };
+            update({ gif });
+          }}
+        >
+          开启抖色：图片更清晰，噪点更多，输出图片更大
+        </Checkbox>
+      </OptionItem>
+
+      {/* <Flex justify="flex-end">
         <Space>
           <Button
             onClick={async () => {
@@ -209,7 +318,7 @@ export const CompressOptionPannel = observer(() => {
             {gstate.locale?.optionPannel?.confirmBtn}
           </Button>
         </Space>
-      </Flex>
-    </div>
+      </Flex> */}
+    </Modal>
   );
 });

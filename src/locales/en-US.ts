@@ -36,13 +36,12 @@ const localeData: LocaleData = {
     toHeight: "Fit Height",
     widthPlaceholder: "Enter the compressed image width",
     heightPlaceholder: "Enter the compressed image height",
-    qualityTitle:
-      "Set compression quality (0-100): the larger the value, the larger size the generated image",
+    qualityTitle: "Set compression quality (0-100): the larger the value, the larger size the generated image",
     resetBtn: "Reset",
     confirmBtn: "Confirm",
     enableHighPng: "Enable high-quality compression of PNG type",
-    highPngDither:
-      "Set dithering factor (0-100):  the larger the value, the more noise and the smoother the image",
+    highPngDither: "Set dithering factor (0-100):  the larger the value, the more noise and the smoother the image",
+    changeDimension: 'Adjust compressed image size'
   },
   error404: {
     backHome: "Back to home",

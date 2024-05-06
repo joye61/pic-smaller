@@ -32,6 +32,7 @@ const localeData: LocaleData = {
     newDimension: "新尺寸",
   },
   optionPannel: {
+    changeDimension: '調整壓縮後的圖片尺寸',
     title: "壓縮選項",
     unChanged: "無縮放",
     toWidth: "適應寬度",

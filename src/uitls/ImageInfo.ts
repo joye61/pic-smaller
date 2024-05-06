@@ -35,16 +35,17 @@ export interface CompressOption {
   // 抖动值 0-1
   highPngDither: number;
 
-  jpeg?: {
+  jpeg: {
     quality: number; // 0-1
   };
-  png?: {
+  png: {
     engine: "upng" | "libpng";
     colors: number; // 2-256
-    dithering: number; // 0-1,
+    dithering?: number; // 0-1,
   };
-  gif?: {
+  gif: {
     colors: number; // 2-256
+    dither: boolean; // 是否启用抖色
   };
 }
 

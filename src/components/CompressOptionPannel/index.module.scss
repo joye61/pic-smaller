@@ -3,11 +3,11 @@
 }
 
 .container {
-  width: 380px;
+  width: 420px;
 }
 
 .scaleInput {
-  margin-bottom: 24px;
+  margin-top: 16px;
   > div {
     width: 100%;
   }
@@ -18,23 +18,4 @@
   &.sliderDisable {
     background-color: #ededed54;
   }
-}
-
-.quality {
-  margin-bottom: 24px;
-  > span {
-    margin-bottom: 16px;
-  }
-}
-
-.openHp {
-  margin-bottom: 16px;
-}
-
-.hpDither {
-  margin-bottom: 24px;
-}
-
-.hpBox {
-  position: relative;
 }

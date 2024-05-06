@@ -30,15 +30,17 @@ const localeData: LocaleData = {
     newDimension: "新尺寸",
   },
   optionPannel: {
+    changeDimension: '调整压缩后的图片尺寸',
     title: "压缩选项",
     unChanged: "无缩放",
     toWidth: "适应宽度",
     toHeight: "适应高度",
     widthPlaceholder: "设置压缩后图片宽度",
     heightPlaceholder: "设置压缩后图片高度",
-    qualityTitle: "设置压缩质量(0-100)：数值越大，生成的图片越大",
     resetBtn: "重置",
     confirmBtn: "确定",
+    
+    qualityTitle: "设置压缩质量(0-100)：数值越大，生成的图片越大",
     enableHighPng: "启用PNG类型高质量压缩",
     highPngDither: "设置抖色系数(0-100)：数值越大，噪点越多，但图像越平滑",
   },

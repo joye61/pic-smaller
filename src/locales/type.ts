@@ -34,6 +34,7 @@ export interface LocaleData {
   };
   optionPannel: {
     title: string;
+    changeDimension: string;
     unChanged: string;
     toWidth: string;
     toHeight: string;
