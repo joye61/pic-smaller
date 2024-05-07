@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   Divider,
   InputNumber,
@@ -6,7 +7,6 @@ import {
   Radio,
   Select,
   Slider,
-  theme,
 } from "antd";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
@@ -17,7 +17,6 @@ import { useEffect, useState } from "react";
 import { OptionItem } from "../OptionItem";
 
 export const CompressOptionPannel = observer(() => {
-  const { token } = theme.useToken();
   const [option, setOption] = useState<CompressOption>(homeState.option);
   const update = (data: Partial<CompressOption>) => {
     setOption({ ...option, ...data });
@@ -108,24 +107,42 @@ export const CompressOptionPannel = observer(() => {
   return (
     <Modal
       title={gstate.locale?.optionPannel.title}
-      width={512}
+      width={520}
       centered
       maskClosable
       open={homeState.showOption}
-      cancelText={gstate.locale?.optionPannel?.resetBtn}
       okText={gstate.locale?.optionPannel?.confirmBtn}
       okButtonProps={{
         disabled: !canSubmit(),
       }}
-      onCancel={async () => {
-        update(DefaultCompressOption);
-        await homeState.updateCompressOption(DefaultCompressOption);
+      onCancel={() => {
+        homeState.showOption = false;
       }}
       onOk={() => {
+        homeState.showOption = false;
         homeState.updateCompressOption(option);
       }}
+      footer={(_, { OkBtn }) => (
+        <>
+          <Button
+            onClick={async () => {
+              update(DefaultCompressOption);
+              homeState.showOption = false;
+              await homeState.updateCompressOption(DefaultCompressOption);
+            }}
+          >
+            {gstate.locale?.optionPannel?.resetBtn}
+          </Button>
+          <OkBtn />
+        </>
+      )}
     >
-      <OptionItem desc={gstate.locale?.optionPannel.changeDimension}>
+      <OptionItem
+        desc={gstate.locale?.optionPannel.changeDimension}
+        style={{
+          marginTop: "24px",
+        }}
+      >
         <Radio.Group
           buttonStyle="solid"
           value={option.scale}
@@ -164,26 +181,19 @@ export const CompressOptionPannel = observer(() => {
       </Divider>
 
       <OptionItem desc={gstate.locale?.optionPannel?.qualityTitle}>
-        <div
-          className={style.commonSlider}
-          style={{
-            borderRadius: token.borderRadius,
+        <Slider
+          defaultValue={DefaultCompressOption.jpeg.quality}
+          value={option.jpeg.quality}
+          min={0}
+          max={1}
+          step={0.01}
+          onChange={(value) => {
+            const jpeg: CompressOption["jpeg"] = {
+              quality: value,
+            };
+            update({ jpeg });
           }}
-        >
-          <Slider
-            defaultValue={DefaultCompressOption.jpeg.quality}
-            value={option.jpeg.quality}
-            min={0}
-            max={1}
-            step={0.01}
-            onChange={(value) => {
-              const jpeg: CompressOption["jpeg"] = {
-                quality: value,
-              };
-              update({ jpeg });
-            }}
-          />
-        </div>
+        />
       </OptionItem>
 
       <Divider orientation="left" orientationMargin="0">
@@ -201,7 +211,7 @@ export const CompressOptionPannel = observer(() => {
               engine: value,
             };
             if (value === "upng") {
-              png.dithering = undefined;
+              png.dithering = 0;
             }
             update({ png });
           }}
@@ -209,52 +219,38 @@ export const CompressOptionPannel = observer(() => {
       </OptionItem>
 
       <OptionItem desc={gstate.locale?.optionPannel.colorsDesc}>
-        <div
-          className={style.commonSlider}
-          style={{
-            borderRadius: token.borderRadius,
+        <Slider
+          defaultValue={DefaultCompressOption.png.colors}
+          value={option.png.colors}
+          min={2}
+          max={256}
+          step={1}
+          onChange={(value) => {
+            let png: CompressOption["png"] = {
+              ...option.png,
+              colors: value,
+            };
+            update({ png });
           }}
-        >
-          <Slider
-            defaultValue={DefaultCompressOption.png.colors}
-            value={option.png.colors}
-            min={2}
-            max={256}
-            step={1}
-            onChange={(value) => {
-              let png: CompressOption["png"] = {
-                ...option.png,
-                colors: value,
-              };
-              update({ png });
-            }}
-          />
-        </div>
+        />
       </OptionItem>
 
       {option.png.engine === "libpng" && (
         <OptionItem desc={gstate.locale?.optionPannel.pngDithering}>
-          <div
-            className={style.commonSlider}
-            style={{
-              borderRadius: token.borderRadius,
+          <Slider
+            defaultValue={DefaultCompressOption.png.dithering}
+            value={option.png.dithering}
+            min={0}
+            max={1}
+            step={0.01}
+            onChange={(value) => {
+              let png: CompressOption["png"] = {
+                ...option.png,
+                dithering: value,
+              };
+              update({ png });
             }}
-          >
-            <Slider
-              defaultValue={DefaultCompressOption.png.dithering}
-              value={option.png.dithering}
-              min={0}
-              max={1}
-              step={0.01}
-              onChange={(value) => {
-                let png: CompressOption["png"] = {
-                  ...option.png,
-                  dithering: value,
-                };
-                update({ png });
-              }}
-            />
-          </div>
+          />
         </OptionItem>
       )}
 
@@ -263,34 +259,26 @@ export const CompressOptionPannel = observer(() => {
       </Divider>
 
       <OptionItem desc={gstate.locale?.optionPannel.colorsDesc}>
-        <div
-          className={style.commonSlider}
-          style={{
-            borderRadius: token.borderRadius,
+        <Slider
+          defaultValue={DefaultCompressOption.gif.colors}
+          value={option.gif.colors}
+          min={2}
+          max={256}
+          step={1}
+          onChange={(value) => {
+            let gif: CompressOption["gif"] = {
+              ...option.gif,
+              colors: value,
+            };
+            update({ gif });
           }}
-        >
-          <Slider
-            defaultValue={DefaultCompressOption.gif.colors}
-            value={option.gif.colors}
-            min={2}
-            max={256}
-            step={1}
-            onChange={(value) => {
-              let gif: CompressOption["gif"] = {
-                ...option.gif,
-                colors: value,
-              };
-              update({ gif });
-            }}
-          />
-        </div>
+        />
       </OptionItem>
 
       <OptionItem>
         <Checkbox
           checked={option.gif.dither}
           onChange={(event) => {
-            console.log(event);
             let gif: CompressOption["gif"] = {
               ...option.gif,
               dither: event.target.checked,

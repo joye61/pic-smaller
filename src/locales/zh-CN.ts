@@ -39,9 +39,9 @@ const localeData: LocaleData = {
     heightPlaceholder: "设置压缩后图片高度",
     resetBtn: "重置",
     confirmBtn: "确定",
-    qualityTitle: "设置压缩质量(0-100)：数值越大，生成的图片越大",
+    qualityTitle: "设置压缩质量(0-1)：数值越大，生成的图片越大",
     engineUpng: '普通压缩引擎',
-    engineLibPng: '高级压缩引擎（更高压缩品质，支持抖色）',
+    engineLibPng: '高级压缩引擎（更高输出品质，支持抖色）',
     colorsDesc: '设置输出图片颜色数（2-256）：颜色越多，输出图片越大',
     pngDithering: '设置抖色系数（0-1）：系数越大，图片越清晰，但噪点越多',
     gifDither: '开启抖色：图片更清晰，噪点更多，输出图片更大'

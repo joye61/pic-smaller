@@ -41,7 +41,7 @@ const localeData: LocaleData = {
     widthPlaceholder: "압축된 이미지 너비 설정",
     heightPlaceholder: "압축된 이미지의 높이를 설정합니다",
     qualityTitle:
-      "압축 품질 설정(0-100): 값이 클수록 생성되는 이미지가 커집니다.",
+      "압축 품질 설정(0-1): 값이 클수록 생성되는 이미지가 커집니다.",
     resetBtn: "재설정",
     confirmBtn: "확인",
     engineUpng: "일반 압축 엔진",

@@ -20,14 +20,11 @@ export class PngWasmImage extends ImageHandler {
       }
       const outputSizePointer = Module._malloc(4);
 
-      const maxColors = Math.ceil(256 * (this.info.option.quality / 100));
-      const dithering = this.info.option.highPngDither / 100;
-
       const result = Module._compress(
         width,
         height,
-        Math.max(8, maxColors), // 约定颜色空间不能小于8
-        dithering,
+        this.info.option.png.colors,
+        this.info.option.png.dithering,
         buffer,
         outputSizePointer
       );

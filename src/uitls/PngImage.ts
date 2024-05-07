@@ -19,12 +19,11 @@ export class PngImage extends ImageHandler {
     const { context } = await this.convertOriginToCanvas(width, height);
     const imageData = context.getImageData(0, 0, width, height);
     const frames = [imageData?.data.buffer];
-    const quality = 256 * (this.info.option.quality / 100);
     const encodeBuffer = (<any>UPNG).encode(
       frames,
       width,
       height,
-      quality < 8 ? 8 : quality
+      this.info.option.png.colors
     );
 
     const blob = new Blob([encodeBuffer], {

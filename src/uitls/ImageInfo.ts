@@ -26,14 +26,6 @@ export interface CompressOption {
   toWidth?: number;
   // depend: scale=toHeight
   toHeight?: number;
-  // compress quality: 70
-  quality: number;
-  // 启用PNG类型高质量压缩
-  openHighPng: boolean;
-  // 颜色空间 2-256
-  // highPngColors: number;
-  // 抖动值 0-1
-  highPngDither: number;
 
   jpeg: {
     quality: number; // 0-1
@@ -41,7 +33,7 @@ export interface CompressOption {
   png: {
     engine: "upng" | "libpng";
     colors: number; // 2-256
-    dithering?: number; // 0-1,
+    dithering: number; // 0-1,
   };
   gif: {
     colors: number; // 2-256

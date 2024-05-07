@@ -1,3 +1,4 @@
+import { GifWasmImage } from './GifWasmImage';
 import { ImageHandler } from "./ImageHandler";
 import { ImageInfo } from "./ImageInfo";
 import { JpegImage } from "./JpegImage";
@@ -12,11 +13,15 @@ export function createImageHandlerInstance(
     return new JpegImage(info);
   }
 
-  if (["image/png"].includes(mime)) {
-    if (info.option.openHighPng) {
+  if (mime === 'image/png') {
+    if (info.option.png.engine === 'libpng') {
       return new PngWasmImage(info);
     } else {
       return new PngImage(info);
     }
+  }
+
+  if(mime === 'image/gif') {
+    return new GifWasmImage(info);
   }
 }

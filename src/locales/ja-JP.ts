@@ -40,7 +40,7 @@ const localeData: LocaleData = {
     widthPlaceholder: "圧縮された画像の幅を設定します",
     heightPlaceholder: "圧縮画像の高さを設定します",
     qualityTitle:
-      "圧縮品質を設定します(0-100): 値が大きいほど、生成される画像も大きくなります",
+      "圧縮品質を設定します(0-1): 値が大きいほど、生成される画像も大きくなります",
     resetBtn: "リセット",
     confirmBtn: "もちろん",
     engineUpng: "通常の圧縮エンジン",

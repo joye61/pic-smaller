@@ -6,7 +6,7 @@ export class JpegImage extends ImageHandler {
     const blob = await this.createBlobFromCanvas(
       dimension.width,
       dimension.height,
-      this.info.option.quality / 100
+      this.info.option.jpeg.quality
     );
     this.info.output = {
       ...dimension,

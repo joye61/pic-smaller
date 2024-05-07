@@ -38,16 +38,16 @@ const localeData: LocaleData = {
     widthPlaceholder: "Enter the compressed image width",
     heightPlaceholder: "Enter the compressed image height",
     qualityTitle:
-      "Set compression quality (0-100): the larger the value, the larger size the generated image",
+      "Set compression quality (0-1): the larger the value, the larger size the generated image",
     resetBtn: "Reset",
     confirmBtn: "Confirm",
     engineUpng: "Normal compression engine",
     engineLibPng:
-      "Advanced compression engine (higher compression quality, support for color dithering)",
+      "Advanced compression engine (higher output quality, color dithering)",
     colorsDesc:
       "Set the number of colors for the output image (2-256): the more colors, the larger size the output image",
     pngDithering:
-      "Set the dithering coefficient (0-1): the larger the coefficient, the clearer the picture, but the more noise there is",
+      "Set the dithering coefficient (0-1): the larger the coefficient, the clearer the image, but the more noise there is",
     gifDither:
       "Turn on dithering: the image is clearer, the noise is more, and the output image size is larger",
   },

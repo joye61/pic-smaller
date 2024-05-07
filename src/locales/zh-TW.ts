@@ -39,7 +39,7 @@ const localeData: LocaleData = {
     toHeight: "適應高度",
     widthPlaceholder: "設定壓縮後圖片寬度",
     heightPlaceholder: "設定壓縮後圖片高度",
-    qualityTitle: "設定壓縮質量(0-100)：數值越大，產生的圖片越大",
+    qualityTitle: "設定壓縮質量(0-1)：數值越大，產生的圖片越大",
     resetBtn: "重置",
     confirmBtn: "確定",
     engineUpng: "普通壓縮引擎",
