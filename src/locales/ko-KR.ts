@@ -33,25 +33,19 @@ const localeData: LocaleData = {
     newDimension: "새 차원",
   },
   optionPannel: {
-    changeDimension: "압축된 이미지 크기 조정",
+    resize: "이미지 크기 조정",
     title: "압축 옵션",
     unChanged: "크기 조정 없음",
     toWidth: "너비에 맞춰 조정",
     toHeight: "높이에 맞춰 조정",
     widthPlaceholder: "압축된 이미지 너비 설정",
     heightPlaceholder: "압축된 이미지의 높이를 설정합니다",
-    qualityTitle:
-      "압축 품질 설정(0-1): 값이 클수록 생성되는 이미지가 커집니다.",
-    resetBtn: "재설정",
-    confirmBtn: "확인",
-    engineUpng: "일반 압축 엔진",
-    engineLibPng: "고급 압축 엔진(더 높은 압축 품질, 색상 디더링 지원)",
-    colorsDesc:
-      "출력 이미지의 색상 수를 설정합니다(2-256): 색상이 많을수록 출력 이미지가 커집니다.",
-    pngDithering:
-      "디더링 계수 설정(0-1): 계수가 클수록 그림이 더 선명해지지만 노이즈가 더 많아집니다.",
-    gifDither:
-      "디더링을 켜세요: 그림이 더 선명해지고 노이즈가 더 많아지며 출력 그림이 더 커집니다.",
+    resetBtn: "재설정 옵션",
+    confirmBtn: "옵션 적용",
+    qualityTitle: "출력 이미지 품질 설정(0-1)",
+    colorsDesc: "출력 색상 수 설정(2-256)",
+    pngDithering: "디더링 계수 설정(0-1)",
+    gifDithering: "디더링 켜기",
   },
   error404: {
     backHome: "홈 페이지로 돌아가기",

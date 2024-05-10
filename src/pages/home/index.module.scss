@@ -1,18 +1,21 @@
-.main {
-  max-width: 1064px;
-  margin: 0 auto;
-  padding: 0 16px;
+$headerHeight: 60px;
+$sideWidth: 400px;
+$border: 1px solid #f0f0f0;
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #f9f9f9;
 }
+
 .header {
-  padding: 16px 0;
-  margin-bottom: 30px;
+  background-color: #fff;
+  height: $headerHeight;
+  padding: 0 16px;
+  border-bottom: $border;
 }
 
-.menu {
-  margin-bottom: 8px;
-}
-
-.localeChange {
+.locale {
   cursor: pointer;
   svg {
     width: 18px;
@@ -31,6 +34,14 @@
   }
 }
 
+.main {
+  height: calc(100% - $headerHeight);
+}
+
+.status {
+  padding-left: 16px !important;
+}
+
 .preview {
   font-size: 0;
   width: 50px;
@@ -43,16 +54,45 @@
   }
 }
 
-.name {
+.content,
+.side {
+  $h1: 60px;
+  $h3: 60px;
+  height: 100%;
   overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-line-clamp: 2;
-  -moz-box-orient: vertical;
-  word-wrap: break-word;
-  word-break: break-all;
-  white-space: normal;
+  > div:nth-child(1) {
+    height: $h1;
+    border-bottom: $border;
+    background-color: #fff;
+    padding: 0 16px;
+  }
+  > div:nth-child(2) {
+    flex: 1;
+    height: calc(100% - $h1 - $h3);
+  }
+  > div:nth-child(3) {
+    height: $h3;
+    border-top: $border;
+    padding: 0 16px;
+  }
+}
+
+.content {
+  flex-grow: 1;
+  > div:nth-child(3) {
+    background-color: #f0f0f0;
+  }
+}
+
+.side {
+  width: $sideWidth;
+  background-color: #fff;
+  border-left: $border;
+  flex-shrink: 0;
+  > div:nth-child(2) {
+    padding: 16px;
+  }
+  > div:nth-child(3) {
+    background-color: #fff;
+  }
 }

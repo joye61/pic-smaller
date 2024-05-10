@@ -31,7 +31,6 @@ export interface ProgressHintInfo {
 
 export class HomeState {
   public list: Map<number, ImageInfo> = new Map();
-  public showOption: boolean = false;
   public option: CompressOption = DefaultCompressOption;
 
   constructor() {

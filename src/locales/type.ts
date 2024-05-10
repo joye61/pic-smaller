@@ -34,7 +34,7 @@ export interface LocaleData {
   };
   optionPannel: {
     title: string;
-    changeDimension: string;
+    resize: string;
     unChanged: string;
     toWidth: string;
     toHeight: string;
@@ -43,11 +43,9 @@ export interface LocaleData {
     qualityTitle: string;
     resetBtn: string;
     confirmBtn: string;
-    engineUpng: string;
-    engineLibPng: string;
     colorsDesc: string;
     pngDithering: string;
-    gifDither: string;
+    gifDithering: string;
   };
   progress: {
     before: string;
