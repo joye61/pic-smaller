@@ -9,7 +9,7 @@ const localeData: LocaleData = {
   readFileTip: "読み込み中",
   bundleTip: "パッキング",
   uploadCard: {
-    title: "ドラッグまたはクリックしてアップロードします",
+    title: "ここでローカル画像ファイルを選択またはドラッグします",
     subTitle: ["サポート", "フォーマット"],
   },
   listAction: {

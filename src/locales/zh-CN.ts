@@ -7,7 +7,7 @@ const localeData: LocaleData = {
   readFileTip: "读取中",
   bundleTip: "打包中",
   uploadCard: {
-    title: "拖拽或点击上传",
+    title: "选取或者拖拽本地图片文件到这里",
     subTitle: ["支持", "格式"],
   },
   listAction: {

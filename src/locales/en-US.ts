@@ -7,7 +7,7 @@ const localeData: LocaleData = {
   readFileTip: "Loading",
   bundleTip: "Packing",
   uploadCard: {
-    title: "Drag and drop files or click to upload",
+    title: "Select or drag local image files here",
     subTitle: ["Support", "format"],
   },
   listAction: {

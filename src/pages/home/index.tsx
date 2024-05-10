@@ -2,6 +2,7 @@ import {
   Button,
   Dropdown,
   Flex,
+  GlobalToken,
   Space,
   Table,
   Tooltip,
@@ -34,6 +35,7 @@ import { Indicator } from "@/components/Indicator";
 import { createDownload, formatSize, getUniqNameOnNames } from "@/functions";
 import { ProgressHint } from "@/components/ProgressHint";
 import JSZip from "jszip";
+import { UploadCard } from "@/components/UploadCard";
 
 /**
  * 获取当前语言字符串
@@ -44,13 +46,7 @@ function getLangStr() {
   return (findLang as any)?.label;
 }
 
-export default observer(() => {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const { token } = theme.useToken();
-
-  // 当前是否禁用操作
-  const disabled = homeState.hasTaskRunning();
-
+function getColumns(token: GlobalToken, disabled: boolean) {
   const columns: TableProps<ImageInfo>["columns"] = [
     {
       dataIndex: "status",
@@ -74,7 +70,6 @@ export default observer(() => {
     },
     {
       dataIndex: "preview",
-      width: 80,
       title: gstate.locale?.columnTitle.preview,
       render(_, row) {
         if (!row.preview) return <div className={style.preview} />;
@@ -98,7 +93,6 @@ export default observer(() => {
     },
     {
       dataIndex: "dimension",
-      // width: 130,
       align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.dimension,
@@ -112,7 +106,6 @@ export default observer(() => {
     },
     {
       dataIndex: "newDimension",
-      // width: 130,
       align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newDimension,
@@ -127,7 +120,6 @@ export default observer(() => {
     },
     {
       dataIndex: "size",
-      // width: 100,
       align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.size,
@@ -141,7 +133,6 @@ export default observer(() => {
     },
     {
       dataIndex: "newSize",
-      // width: 100,
       align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newSize,
@@ -161,7 +152,6 @@ export default observer(() => {
       className: style.nowrap,
       title: gstate.locale?.columnTitle.decrease,
       align: "right",
-      // width: 100,
       render(_, row) {
         if (!row.output) return "-";
         const lower = row.origin.blob.size > row.output!.blob.size;
@@ -191,7 +181,6 @@ export default observer(() => {
       dataIndex: "action",
       align: "right",
       fixed: "right",
-      // width: 70,
       title: gstate.locale?.columnTitle.action,
       render(_, row) {
         return (
@@ -226,57 +215,47 @@ export default observer(() => {
     },
   ];
 
+  return columns;
+}
+
+export default observer(() => {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const { token } = theme.useToken();
+
+  // 当前是否禁用操作
+  const disabled = homeState.hasTaskRunning();
+  const columns = getColumns(token, disabled);
+
   useEffect(setTransformData, []);
 
   const scrollBoxRef = useRef<HTMLDivElement>(null);
+  const resizeRef = useRef<() => void>(() => {
+    const element = scrollBoxRef.current;
+    if (element) {
+      const height = element.getBoundingClientRect().height;
+      const th = document.querySelector(".ant-table-thead");
+      const thHeight = th?.getBoundingClientRect().height ?? 0;
+      setScrollHeight(height - thHeight);
+    }
+  });
   const [scrollHeight, setScrollHeight] = useState<number>(0);
 
   useEffect(() => {
-    const resize = () => {
-      const element = scrollBoxRef.current;
-      if (element) {
-        const height = element.getBoundingClientRect().height;
-        const th = document.querySelector(".ant-table-thead");
-        const thHeight = th?.getBoundingClientRect().height ?? 0;
-        setScrollHeight(height - thHeight);
-      }
-    };
-    window.addEventListener("resize", resize);
-    resize();
+    resizeRef.current();
+  }, [homeState.list.size]);
+
+  useEffect(() => {
+    window.addEventListener("resize", resizeRef.current!);
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", resizeRef.current!);
     };
   }, []);
 
-  return (
-    <div className={style.container}>
-      {/* header */}
-      <Flex align="center" justify="space-between" className={style.header}>
-        <div>
-          <Logo title={gstate.locale?.logo} />
-        </div>
-        <Space>
-          <Dropdown
-            menu={{
-              items: langList,
-              selectedKeys: [gstate.lang],
-              onClick({ key }) {
-                changeLang(key);
-              },
-            }}
-          >
-            <Flex className={style.locale} align="center">
-              <svg viewBox="0 0 24 24" style={{ color: "currentcolor" }}>
-                <path d="M12.87,15.07L10.33,12.56L10.36,12.53C12.1,10.59 13.34,8.36 14.07,6H17V4H10V2H8V4H1V6H12.17C11.5,7.92 10.44,9.75 9,11.35C8.07,10.32 7.3,9.19 6.69,8H4.69C5.42,9.63 6.42,11.17 7.67,12.56L2.58,17.58L4,19L9,14L12.11,17.11L12.87,15.07M18.5,10H16.5L12,22H14L15.12,19H19.87L21,22H23L18.5,10M15.88,17L17.5,12.67L19.12,17H15.88Z" />
-              </svg>
-              <Typography.Text>{getLangStr()}</Typography.Text>
-            </Flex>
-          </Dropdown>
-        </Space>
-      </Flex>
-
-      {/* body */}
-      <Flex align="stretch" className={style.main}>
+  // Main content switch
+  let mainContent = <UploadCard />;
+  if (homeState.list.size > 0) {
+    mainContent = (
+      <>
         <Flex align="stretch" vertical className={style.content}>
           <Flex align="center" justify="space-between" className={style.menu}>
             <Button
@@ -387,6 +366,40 @@ export default observer(() => {
             </Space>
           </Flex>
         </div>
+      </>
+    );
+  }
+
+  return (
+    <div className={style.container}>
+      {/* header */}
+      <Flex align="center" justify="space-between" className={style.header}>
+        <div>
+          <Logo title={gstate.locale?.logo} />
+        </div>
+        <Space>
+          <Dropdown
+            menu={{
+              items: langList,
+              selectedKeys: [gstate.lang],
+              onClick({ key }) {
+                changeLang(key);
+              },
+            }}
+          >
+            <Flex className={style.locale} align="center">
+              <svg viewBox="0 0 24 24" style={{ color: "currentcolor" }}>
+                <path d="M12.87,15.07L10.33,12.56L10.36,12.53C12.1,10.59 13.34,8.36 14.07,6H17V4H10V2H8V4H1V6H12.17C11.5,7.92 10.44,9.75 9,11.35C8.07,10.32 7.3,9.19 6.69,8H4.69C5.42,9.63 6.42,11.17 7.67,12.56L2.58,17.58L4,19L9,14L12.11,17.11L12.87,15.07M18.5,10H16.5L12,22H14L15.12,19H19.87L21,22H23L18.5,10M15.88,17L17.5,12.67L19.12,17H15.88Z" />
+              </svg>
+              <Typography.Text>{getLangStr()}</Typography.Text>
+            </Flex>
+          </Dropdown>
+        </Space>
+      </Flex>
+
+      {/* body */}
+      <Flex align="stretch" className={style.main}>
+        {mainContent}
       </Flex>
     </div>
   );
