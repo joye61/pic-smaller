@@ -16,16 +16,25 @@ export interface PngProcessOption extends ProcessOption {
   dithering: number; // 0-1,
 }
 
-export class PngImage {
-  base: ImageBase;
-
-  constructor(public info: ImageInfo, public option: PngProcessOption) {
-    this.base = new ImageBase(info, option);
+export class PngImage extends ImageBase {
+  /**
+   * Create PngImage instance
+   * @param info
+   * @param option
+   * @returns
+   */
+  public static async create(
+    info: Omit<ImageInfo, "width" | "height">,
+    option: PngProcessOption
+  ) {
+    const dimension = await ImageBase.getDimension(info.blob);
+    return new PngImage({ ...info, ...dimension }, option);
   }
 
   async compress(): Promise<ProcessOutput> {
-    const { width, height } = this.base.getOutputDimension();
-    const { context } = await this.base.createCanvas(width, height);
+    const option = <PngProcessOption>this.option;
+    const { width, height } = this.getOutputDimension();
+    const { context } = await this.createCanvas(width, height);
     const imageData = context.getImageData(0, 0, width, height).data;
 
     try {
@@ -33,20 +42,20 @@ export class PngImage {
       Module.HEAPU8.set(imageData, buffer);
       const imageDataLen = width * height * 4;
       if (imageData.byteLength !== imageDataLen) {
-        return this.base.failResult();
+        return this.failResult();
       }
       const outputSizePointer = Module._malloc(4);
 
       const result = Module._compress(
         width,
         height,
-        this.option.colors,
-        this.option.dithering,
+        option.colors,
+        option.dithering,
         buffer,
         outputSizePointer
       );
       if (result) {
-        return this.base.failResult();
+        return this.failResult();
       }
       const outputSize = Module.getValue(outputSizePointer, "i32", false);
       const output = new Uint8Array(outputSize);
@@ -61,11 +70,7 @@ export class PngImage {
         blob: new Blob([output], { type: this.info.blob.type }),
       };
     } catch (error) {
-      return this.base.failResult();
+      return this.failResult();
     }
-  }
-
-  async preview(): Promise<ProcessOutput> {
-    return this.base.preview();
   }
 }

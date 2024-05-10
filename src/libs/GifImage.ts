@@ -17,21 +17,30 @@ export interface GifProcessOption extends ProcessOption {
   dithering: boolean; // enable or unable dithering
 }
 
-export class GifImage {
-  base: ImageBase;
-
-  constructor(public info: ImageInfo, public option: GifProcessOption) {
-    this.base = new ImageBase(info, option);
+export class GifImage extends ImageBase {
+  /**
+   * Create GifImage instance
+   * @param info
+   * @param option
+   * @returns
+   */
+  public static async create(
+    info: Omit<ImageInfo, "width" | "height">,
+    option: GifProcessOption
+  ) {
+    const dimension = await ImageBase.getDimension(info.blob);
+    return new GifImage({ ...info, ...dimension }, option);
   }
 
   async compress(): Promise<ProcessOutput> {
+    const option = <GifProcessOption>this.option;
     try {
-      const { width, height } = this.base.getOutputDimension();
+      const { width, height } = this.getOutputDimension();
       const commands: string[] = [
         `--resize=${width}x${height}`,
-        `--colors=${this.option.colors}`,
+        `--colors=${option.colors}`,
       ];
-      if (this.option.dithering) {
+      if (option.dithering) {
         commands.push(`--dither=floyd-steinberg`);
       }
       commands.push(`--output=/out/${this.info.name}`);
@@ -48,7 +57,7 @@ export class GifImage {
       });
 
       if (!Array.isArray(result) || result.length !== 1) {
-        return this.base.failResult();
+        return this.failResult();
       }
 
       const blob = new Blob([result[0].file], {
@@ -60,16 +69,17 @@ export class GifImage {
         blob,
       };
     } catch (error) {
-      return this.base.failResult();
+      return this.failResult();
     }
   }
 
   async preview(): Promise<ProcessOutput> {
-    const { width, height } = this.base.getPreviewDimension();
+    const option = <GifProcessOption>this.option;
+    const { width, height } = this.getPreviewDimension();
 
     const commands: string[] = [
       `--resize=${width}x${height}`,
-      `--colors=${this.option.colors}`,
+      `--colors=${option.colors}`,
       `--output=/out/${this.info.name}`,
       this.info.name,
     ];
