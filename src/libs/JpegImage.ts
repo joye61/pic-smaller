@@ -9,6 +9,9 @@ export interface JpegProcessOption extends ProcessOption {
   quality: number; // 0-1
 }
 
+/**
+ * JPEG/JPG/WEBP is compatible
+ */
 export class JpegImage extends ImageBase {
   /**
    * Create JpegImage instance
