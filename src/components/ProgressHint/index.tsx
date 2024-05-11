@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import style from "./index.module.scss";
-import { Flex, Progress, Typography, theme } from "antd";
+import { Flex, Progress, Typography } from "antd";
 import { gstate } from "@/global";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { homeState } from "@/states/home";
@@ -8,7 +8,6 @@ import { formatSize } from "@/functions";
 
 export const ProgressHint = observer(() => {
   const info = homeState.getProgressHintInfo();
-  const {token} = theme.useToken();
 
   let rate: React.ReactNode = null;
   if (info.originSize > info.outputSize) {

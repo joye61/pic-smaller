@@ -6,11 +6,8 @@
   background-color: #f5f5f5;
   overflow: hidden;
   box-sizing: border-box;
-  &:hover {
-    background-color: darken($color: #f5f5f5, $amount: 3);
-  }
   &:active {
-    background-color: darken($color: #f5f5f5, $amount: 6);
+    background-color: darken($color: #f5f5f5, $amount: 3);
   }
   > input {
     display: none;

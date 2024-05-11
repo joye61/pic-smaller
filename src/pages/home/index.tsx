@@ -30,7 +30,12 @@ import { CompressOption } from "@/components/CompressOption";
 import { changeLang, langList } from "@/locale";
 import { DefaultCompressOption, ImageItem, homeState } from "@/states/home";
 import { Indicator } from "@/components/Indicator";
-import { createDownload, formatSize, getUniqNameOnNames } from "@/functions";
+import {
+  createDownload,
+  formatSize,
+  getUniqNameOnNames,
+  wait,
+} from "@/functions";
 import { ProgressHint } from "@/components/ProgressHint";
 import JSZip from "jszip";
 import { UploadCard } from "@/components/UploadCard";
@@ -124,6 +129,9 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.size,
+      sorter(first, second) {
+        return first.blob.size - second.blob.size;
+      },
       render(_, row) {
         return (
           <Typography.Text type="secondary">
@@ -137,6 +145,12 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       align: "right",
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newSize,
+      sorter(first, second) {
+        if (!first.compress || !second.compress) {
+          return 0;
+        }
+        return first.compress.blob.size - second.compress.blob.size;
+      },
       render(_, row) {
         if (!row.compress) return "-";
         const lower = row.blob.size > row.compress.blob.size;
@@ -153,6 +167,17 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       className: style.nowrap,
       title: gstate.locale?.columnTitle.decrease,
       align: "right",
+      sorter(first, second) {
+        if (!first.compress || !second.compress) {
+          return 0;
+        }
+        const firstRate =
+          (first.blob.size - first.compress.blob.size) / first.blob.size;
+        const secondRate =
+          (second.blob.size - second.compress.blob.size) / second.blob.size;
+
+        return firstRate - secondRate;
+      },
       render(_, row) {
         if (!row.compress) return "-";
         const lower = row.blob.size > row.compress.blob.size;
@@ -235,7 +260,7 @@ export default observer(() => {
     if (element) {
       const boxHeight = element.getBoundingClientRect().height;
       const th = document.querySelector(".ant-table-thead");
-      const tbody = document.querySelector(".ant-table-body");
+      const tbody = document.querySelector(".ant-table-tbody");
       const thHeight = th?.getBoundingClientRect().height ?? 0;
       const tbodyHeight = tbody?.getBoundingClientRect().height ?? 0;
       if (boxHeight > thHeight + tbodyHeight) {
@@ -283,7 +308,7 @@ export default observer(() => {
                 <Button
                   disabled={disabled}
                   icon={<ReloadOutlined />}
-                  onClick={() => {
+                  onClick={async () => {
                     homeState.reCompress();
                   }}
                 />
@@ -391,7 +416,8 @@ export default observer(() => {
             menu={{
               items: langList,
               selectedKeys: [gstate.lang],
-              onClick({ key }) {
+              async onClick({ key }) {
+                await wait(300);
                 changeLang(key);
               },
             }}

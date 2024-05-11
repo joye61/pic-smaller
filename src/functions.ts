@@ -28,8 +28,8 @@ export function formatSize(num: number) {
 
 /**
  * 弹出一个下载框
- * @param name 
- * @param blob 
+ * @param name
+ * @param blob
  */
 export function createDownload(name: string, blob: Blob) {
   const anchor = document.createElement("a");
@@ -56,4 +56,15 @@ export function getUniqNameOnNames(names: Set<string>, name: string): string {
     }
   };
   return getName(name);
+}
+
+/**
+ * Wait some time 
+ * @param millisecond 
+ * @returns 
+ */
+export async function wait(millisecond: number) {
+  return new Promise<void>((resolve) => {
+    window.setTimeout(resolve, millisecond);
+  });
 }
