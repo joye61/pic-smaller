@@ -5,13 +5,14 @@ export interface ProcessOption {
 }
 
 export interface ProcessOutput {
+  id: number;
   width: number;
   height: number;
   blob: Blob;
 }
 
 export interface ImageInfo {
-  key: number;
+  id: number;
   name: string;
   width: number;
   height: number;
@@ -28,8 +29,8 @@ export class ImageBase {
 
   /**
    * Get dimension from image blob
-   * @param blob 
-   * @returns 
+   * @param blob
+   * @returns
    */
   static async getDimension(blob: Blob): Promise<Dimension> {
     const bitmap = await createImageBitmap(blob);
@@ -59,8 +60,8 @@ export class ImageBase {
   getOutputDimension(): Dimension {
     if (!this.option.resizeWidth && !this.option.resizeHeight) {
       return {
-        width: this.info.width!,
-        height: this.info.height!,
+        width: this.info.width,
+        height: this.info.height,
       };
     }
 
@@ -94,6 +95,7 @@ export class ImageBase {
    */
   failResult(): ProcessOutput {
     return {
+      id: this.info.id,
       width: this.info.width,
       height: this.info.height,
       blob: this.info.blob,
@@ -134,6 +136,7 @@ export class ImageBase {
   async preview(): Promise<ProcessOutput> {
     const { width, height } = this.getPreviewDimension();
     return {
+      id: this.info.id,
       width,
       height,
       blob: await this.createBlob(width, height),
