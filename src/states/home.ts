@@ -73,20 +73,6 @@ export class HomeState {
     });
   }
 
-  // async updateCompressOption(data: Partial<CompressOption>) {
-    
-  //   // const option: CompressOption = {
-  //   //   ...toJS(this.option),
-  //   //   ...data,
-  //   // };
-  //   // this.option = option;
-  //   // this.list.forEach((info) => {
-  //   //   info.compress = undefined;
-  //   //   info.option = option;
-  //   //   sendToCreateCompress(toJS(info));
-  //   // });
-  // }
-
   hasTaskRunning() {
     for (let [_, value] of this.list) {
       if (!value.preview || !value.compress) {

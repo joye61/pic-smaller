@@ -97,6 +97,7 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       className: style.nowrap,
       title: gstate.locale?.columnTitle.dimension,
       render(_, row) {
+        if (!row.width && !row.height) return "-";
         return (
           <Typography.Text type="secondary">
             {row.width}*{row.height}
@@ -110,10 +111,10 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newDimension,
       render(_, row) {
-        if (!row.width && !row.height) return "-";
+        if (!row.compress?.width && !row.compress?.height) return "-";
         return (
           <Typography.Text>
-            {row.width}*{row.height}
+            {row.compress.width}*{row.compress.height}
           </Typography.Text>
         );
       },
@@ -181,6 +182,7 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       align: "right",
       fixed: "right",
       title: gstate.locale?.columnTitle.action,
+      className: style.action,
       render(_, row) {
         return (
           <Space>
@@ -231,13 +233,22 @@ export default observer(() => {
   const resizeRef = useRef<() => void>(() => {
     const element = scrollBoxRef.current;
     if (element) {
-      const height = element.getBoundingClientRect().height;
+      const boxHeight = element.getBoundingClientRect().height;
       const th = document.querySelector(".ant-table-thead");
+      const tbody = document.querySelector(".ant-table-body");
       const thHeight = th?.getBoundingClientRect().height ?? 0;
-      setScrollHeight(height - thHeight);
+      const tbodyHeight = tbody?.getBoundingClientRect().height ?? 0;
+      if (boxHeight > thHeight + tbodyHeight) {
+        setScrollHeight(undefined);
+      } else {
+        setScrollHeight(boxHeight - thHeight);
+      }
     }
   });
-  const [scrollHeight, setScrollHeight] = useState<number>(0);
+  const [scrollHeight, setScrollHeight] = useState<number | undefined>(
+    undefined
+  );
+  const scrollY = scrollHeight ? { y: scrollHeight } : undefined;
 
   useEffect(() => {
     resizeRef.current();
@@ -322,7 +333,7 @@ export default observer(() => {
               columns={columns}
               size="small"
               pagination={false}
-              scroll={{ y: scrollHeight }}
+              scroll={scrollY}
               dataSource={Array.from(homeState.list.values())}
             />
           </div>
@@ -342,6 +353,7 @@ export default observer(() => {
           <Flex justify="flex-end">
             <Space>
               <Button
+                disabled={disabled}
                 onClick={async () => {
                   homeState.tempOption = { ...DefaultCompressOption };
                   homeState.option = { ...DefaultCompressOption };
@@ -351,6 +363,7 @@ export default observer(() => {
                 {gstate.locale?.optionPannel?.resetBtn}
               </Button>
               <Button
+                disabled={disabled}
                 type="primary"
                 onClick={() => {
                   homeState.option = toJS(homeState.tempOption);

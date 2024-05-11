@@ -32,7 +32,7 @@ export const ProgressHint = observer(() => {
       <Progress
         type="circle"
         percent={info.percent}
-        strokeColor={info.percent === 100 ? token.colorPrimary : token.colorInfo}
+        // strokeColor={info.percent === 100 ? token.colorPrimary : token.colorInfo}
         strokeWidth={20}
         size={14}
       />

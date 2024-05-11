@@ -17,19 +17,20 @@ export interface MessageData {
 let workerC: Worker | null = null;
 let workerP: Worker | null = null;
 
+function message(event: MessageEvent<OutputMessageData>) {
+  const value = homeState.list.get(event.data.key);
+  if (value) {
+    const item = toJS(value);
+    item.width = event.data.width;
+    item.height = event.data.height;
+    item.compress = event.data.compress ?? item.compress;
+    item.preview = event.data.preview ?? item.preview;
+    homeState.list.set(item.key, item);
+  }
+}
+
 export function useWorkerHandler() {
   useEffect(() => {
-    const message = (event: MessageEvent<OutputMessageData>) => {
-      const value = homeState.list.get(event.data.key);
-      if (value) {
-        const item = toJS(value);
-        item.width = event.data.width;
-        item.height = event.data.height;
-        item.compress = event.data.compress ?? item.compress;
-        item.preview = event.data.preview ?? item.preview;
-        homeState.list.set(item.key, item);
-      }
-    };
     workerC = new WorkerC();
     workerP = new WorkerP();
     workerC.addEventListener("message", message);
