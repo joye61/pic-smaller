@@ -3,7 +3,7 @@ import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 import { gstate } from "@/global";
 import { toJS } from "mobx";
-import { createImagesFromFiles } from "@/uitls/ImageInfo";
+import { createImageList } from '@/libs/transform';
 
 export const ImageInput = observer(
   forwardRef((_, ref: ForwardedRef<HTMLInputElement>) => {
@@ -21,7 +21,7 @@ export const ImageInput = observer(
             event.target.value = "";
             return;
           }
-          await createImagesFromFiles(event.target.files);
+          await createImageList(event.target.files);
           event.target.value = "";
         }}
       />

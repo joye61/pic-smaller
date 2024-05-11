@@ -1,4 +1,4 @@
-import { MessageData, createHandler } from "./handler";
+import { MessageData, OutputMessageData, createHandler } from "./handler";
 
 globalThis.addEventListener(
   "message",
@@ -6,7 +6,13 @@ globalThis.addEventListener(
     const handler = await createHandler(event.data);
     if (handler) {
       const output = await handler.compress();
-      globalThis.postMessage(output);
+      const result: OutputMessageData = {
+        key: handler.info.key,
+        width: handler.info.width,
+        height: handler.info.height,
+        compress: output,
+      };
+      globalThis.postMessage(result);
     }
   }
 );

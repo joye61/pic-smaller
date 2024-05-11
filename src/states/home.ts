@@ -1,22 +1,40 @@
-import { CompressOption, ImageInfo } from "@/uitls/ImageInfo";
-import { sendToCreateCompress } from "@/uitls/transform";
-import { makeAutoObservable, toJS } from "mobx";
+import { ProcessOutput } from "@/libs/ImageBase";
+import { createCompressTask } from "@/libs/transform";
+import { makeAutoObservable } from "mobx";
+
+export interface CompressOption {
+  maxPreviewSize: number;
+  resizeMethod: "unChanged" | "toWidth" | "toHeight";
+  resizeWidth?: number;
+  resizeHeight?: number;
+  jpeg: {
+    quality: number;
+  };
+  png: {
+    colors: number;
+    dithering: number;
+  };
+  gif: {
+    colors: number;
+    dithering: boolean;
+  };
+}
 
 export const DefaultCompressOption: CompressOption = {
-  scale: "unChanged",
-  toWidth: undefined,
-  toHeight: undefined,
+  maxPreviewSize: 256,
+  resizeMethod: 'unChanged',
+  resizeWidth: undefined,
+  resizeHeight: undefined,
   jpeg: {
     quality: 0.6,
   },
   png: {
-    engine: "upng",
     colors: 8,
     dithering: 0,
   },
   gif: {
     colors: 16,
-    dither: false,
+    dithering: false,
   },
 };
 
@@ -29,9 +47,20 @@ export interface ProgressHintInfo {
   rate: number;
 }
 
+export type ImageItem = {
+  key: number;
+  name: string;
+  blob: Blob;
+  width?: number;
+  height?: number;
+  preview?: ProcessOutput;
+  compress?: ProcessOutput;
+};
+
 export class HomeState {
-  public list: Map<number, ImageInfo> = new Map();
+  public list: Map<number, ImageItem> = new Map();
   public option: CompressOption = DefaultCompressOption;
+  public tempOption: CompressOption = DefaultCompressOption;
 
   constructor() {
     makeAutoObservable(this);
@@ -39,30 +68,28 @@ export class HomeState {
 
   reCompress() {
     this.list.forEach((info) => {
-      info.output = null;
-      sendToCreateCompress(toJS(info));
+      info.compress = undefined;
+      createCompressTask(info);
     });
   }
 
-  async updateCompressOption(data: Partial<CompressOption>) {
-    await new Promise<void>((resolve) => {
-      window.setTimeout(resolve, 300);
-    });
-    const option: CompressOption = {
-      ...toJS(this.option),
-      ...data,
-    };
-    this.option = option;
-    this.list.forEach((info) => {
-      info.output = null;
-      info.option = option;
-      sendToCreateCompress(toJS(info));
-    });
-  }
+  // async updateCompressOption(data: Partial<CompressOption>) {
+    
+  //   // const option: CompressOption = {
+  //   //   ...toJS(this.option),
+  //   //   ...data,
+  //   // };
+  //   // this.option = option;
+  //   // this.list.forEach((info) => {
+  //   //   info.compress = undefined;
+  //   //   info.option = option;
+  //   //   sendToCreateCompress(toJS(info));
+  //   // });
+  // }
 
   hasTaskRunning() {
     for (let [_, value] of this.list) {
-      if (!value.preview || !value.output) {
+      if (!value.preview || !value.compress) {
         return true;
       }
     }
@@ -79,10 +106,10 @@ export class HomeState {
     let originSize = 0;
     let outputSize = 0;
     for (let [_, info] of this.list) {
-      originSize += info.origin.blob.size;
-      if (info.output) {
+      originSize += info.blob.size;
+      if (info.compress) {
         loadedNum++;
-        outputSize += info.output.blob.size;
+        outputSize += info.compress.blob.size;
       }
     }
     let percent = Math.ceil((loadedNum * 100) / totalNum);

@@ -36,7 +36,6 @@ export class JpegImage extends ImageBase {
       option.quality
     );
     return {
-      id: this.info.id,
       ...dimension,
       blob,
     };

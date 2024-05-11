@@ -26,16 +26,16 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { ImageInput } from "@/components/ImageInput";
 import { gstate } from "@/global";
-import { CompressOptionPannel } from "@/components/CompressOption";
+import { CompressOption } from "@/components/CompressOption";
 import { changeLang, langList } from "@/locale";
-import { homeState } from "@/states/home";
-import { setTransformData } from "@/uitls/transform";
-import { ImageInfo } from "@/uitls/ImageInfo";
+import { DefaultCompressOption, ImageItem, homeState } from "@/states/home";
 import { Indicator } from "@/components/Indicator";
 import { createDownload, formatSize, getUniqNameOnNames } from "@/functions";
 import { ProgressHint } from "@/components/ProgressHint";
 import JSZip from "jszip";
 import { UploadCard } from "@/components/UploadCard";
+import { useWorkerHandler } from "@/libs/transform";
+import { toJS } from "mobx";
 
 /**
  * 获取当前语言字符串
@@ -47,7 +47,7 @@ function getLangStr() {
 }
 
 function getColumns(token: GlobalToken, disabled: boolean) {
-  const columns: TableProps<ImageInfo>["columns"] = [
+  const columns: TableProps<ImageItem>["columns"] = [
     {
       dataIndex: "status",
       title: gstate.locale?.columnTitle.status,
@@ -55,7 +55,7 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       width: 80,
       className: style.status,
       render(_, row) {
-        if (row.output) {
+        if (row.compress && row.preview) {
           return (
             <CheckCircleFilled
               style={{
@@ -85,8 +85,8 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       title: gstate.locale?.columnTitle.name,
       render(_, row) {
         return (
-          <Typography.Text title={row.origin.name} className={style.name}>
-            {row.origin.name}
+          <Typography.Text title={row.name} className={style.name}>
+            {row.name}
           </Typography.Text>
         );
       },
@@ -99,7 +99,7 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       render(_, row) {
         return (
           <Typography.Text type="secondary">
-            {row.origin.width}*{row.origin.height}
+            {row.width}*{row.height}
           </Typography.Text>
         );
       },
@@ -110,10 +110,10 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newDimension,
       render(_, row) {
-        if (!row.output) return "-";
+        if (!row.width && !row.height) return "-";
         return (
           <Typography.Text>
-            {row.output!.width}*{row.output!.height}
+            {row.width}*{row.height}
           </Typography.Text>
         );
       },
@@ -126,7 +126,7 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       render(_, row) {
         return (
           <Typography.Text type="secondary">
-            {formatSize(row.origin.blob.size)}
+            {formatSize(row.blob.size)}
           </Typography.Text>
         );
       },
@@ -137,9 +137,9 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       className: style.nowrap,
       title: gstate.locale?.columnTitle.newSize,
       render(_, row) {
-        if (!row.output) return "-";
-        const lower = row.origin.blob.size > row.output!.blob.size;
-        const format = formatSize(row.output!.blob.size);
+        if (!row.compress) return "-";
+        const lower = row.blob.size > row.compress.blob.size;
+        const format = formatSize(row.compress.blob.size);
         if (lower) {
           return <Typography.Text type="success">{format}</Typography.Text>;
         }
@@ -153,10 +153,9 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       title: gstate.locale?.columnTitle.decrease,
       align: "right",
       render(_, row) {
-        if (!row.output) return "-";
-        const lower = row.origin.blob.size > row.output!.blob.size;
-        const rate =
-          (row.output!.blob.size - row.origin.blob.size) / row.origin.blob.size;
+        if (!row.compress) return "-";
+        const lower = row.blob.size > row.compress.blob.size;
+        const rate = (row.compress.blob.size - row.blob.size) / row.blob.size;
         const formatRate = (Math.abs(rate) * 100).toFixed(2) + "%";
         if (lower) {
           return (
@@ -200,8 +199,8 @@ function getColumns(token: GlobalToken, disabled: boolean) {
               type="secondary"
               disabled={disabled}
               onClick={() => {
-                if (row.output?.blob) {
-                  createDownload(row.origin.name, row.output!.blob);
+                if (row.compress?.blob) {
+                  createDownload(row.name, row.compress.blob);
                 }
               }}
             >
@@ -226,7 +225,7 @@ export default observer(() => {
   const disabled = homeState.hasTaskRunning();
   const columns = getColumns(token, disabled);
 
-  useEffect(setTransformData, []);
+  useWorkerHandler();
 
   const scrollBoxRef = useRef<HTMLDivElement>(null);
   const resizeRef = useRef<() => void>(() => {
@@ -296,13 +295,10 @@ export default observer(() => {
                   const zip = new JSZip();
                   const names: Set<string> = new Set();
                   for (let [_, info] of homeState.list) {
-                    const uniqName = getUniqNameOnNames(
-                      names,
-                      info.origin.name
-                    );
+                    const uniqName = getUniqNameOnNames(names, info.name);
                     names.add(uniqName);
-                    if (info.output?.blob) {
-                      zip.file(uniqName, info.output.blob);
+                    if (info.compress?.blob) {
+                      zip.file(uniqName, info.compress.blob);
                     }
                   }
                   const result = await zip.generateAsync({
@@ -341,15 +337,15 @@ export default observer(() => {
             </Typography.Text>
           </Flex>
           <div>
-            <CompressOptionPannel />
+            <CompressOption />
           </div>
           <Flex justify="flex-end">
             <Space>
               <Button
                 onClick={async () => {
-                  // update(DefaultCompressOption);
-                  // homeState.showOption = false;
-                  // await homeState.updateCompressOption(DefaultCompressOption);
+                  homeState.tempOption = { ...DefaultCompressOption };
+                  homeState.option = { ...DefaultCompressOption };
+                  homeState.reCompress();
                 }}
               >
                 {gstate.locale?.optionPannel?.resetBtn}
@@ -357,8 +353,8 @@ export default observer(() => {
               <Button
                 type="primary"
                 onClick={() => {
-                  // homeState.showOption = false;
-                  // homeState.updateCompressOption(option);
+                  homeState.option = toJS(homeState.tempOption);
+                  homeState.reCompress();
                 }}
               >
                 {gstate.locale?.optionPannel?.confirmBtn}

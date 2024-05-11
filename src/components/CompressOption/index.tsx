@@ -2,28 +2,11 @@ import { Checkbox, Divider, InputNumber, Select, Slider } from "antd";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 import { DefaultCompressOption, homeState } from "@/states/home";
-import { CompressOption } from "@/uitls/ImageInfo";
 import { gstate } from "@/global";
-import { useState } from "react";
 import { OptionItem } from "../OptionItem";
 
-export const CompressOptionPannel = observer(() => {
-  const [option, setOption] = useState<CompressOption>(homeState.option);
-  const update = (data: Partial<CompressOption>) => {
-    setOption({ ...option, ...data });
-  };
-
-  const canSubmit = () => {
-    if (
-      option.scale === "unChanged" ||
-      (option.scale === "toWidth" && typeof option.toWidth === "number") ||
-      (option.scale === "toHeight" && typeof option.toHeight === "number")
-    ) {
-      return true;
-    }
-    return false;
-  };
-
+export const CompressOption = observer(() => {
+  const resizeMethod = homeState.tempOption.resizeMethod;
   const resizeOptions = [
     {
       value: "unChanged",
@@ -41,27 +24,27 @@ export const CompressOptionPannel = observer(() => {
 
   // 显示输入框逻辑
   let input: React.ReactNode = null;
-  if (option.scale === "toWidth") {
+  if (resizeMethod === "toWidth") {
     input = (
       <InputNumber
         min={0}
         step={1}
         placeholder={gstate.locale?.optionPannel?.widthPlaceholder}
-        value={option.toWidth}
+        value={homeState.tempOption.resizeWidth}
         onChange={(value) => {
-          update({ toWidth: value! });
+          homeState.tempOption.resizeWidth = value!;
         }}
       />
     );
-  } else if (option.scale === "toHeight") {
+  } else if (resizeMethod === "toHeight") {
     input = (
       <InputNumber
         min={0}
         step={1}
         placeholder={gstate.locale?.optionPannel?.heightPlaceholder}
-        value={option.toHeight}
+        value={homeState.tempOption.resizeHeight}
         onChange={(value) => {
-          update({ toHeight: value! });
+          homeState.tempOption.resizeHeight = value!;
         }}
       />
     );
@@ -72,23 +55,12 @@ export const CompressOptionPannel = observer(() => {
       <OptionItem desc={gstate.locale?.optionPannel.resize}>
         <Select
           style={{ width: "100%" }}
-          value={option.scale}
+          value={resizeMethod}
           options={resizeOptions}
           onChange={(value) => {
-            const newOption: Partial<CompressOption> = {
-              scale: value as CompressOption["scale"],
-            };
-            if (value === "unChanged") {
-              newOption.toHeight = undefined;
-              newOption.toWidth = undefined;
-            }
-            if (value === "toWidth") {
-              newOption.toHeight = undefined;
-            }
-            if (value === "toHeight") {
-              newOption.toWidth = undefined;
-            }
-            update(newOption);
+            homeState.tempOption.resizeMethod = value;
+            homeState.tempOption.resizeWidth = undefined;
+            homeState.tempOption.resizeHeight = undefined;
           }}
         />
 
@@ -102,15 +74,12 @@ export const CompressOptionPannel = observer(() => {
       <OptionItem desc={gstate.locale?.optionPannel?.qualityTitle}>
         <Slider
           defaultValue={DefaultCompressOption.jpeg.quality}
-          value={option.jpeg.quality}
+          value={homeState.tempOption.jpeg.quality}
           min={0}
           max={1}
           step={0.01}
           onChange={(value) => {
-            const jpeg: CompressOption["jpeg"] = {
-              quality: value,
-            };
-            update({ jpeg });
+            homeState.tempOption.jpeg.quality = value;
           }}
         />
       </OptionItem>
@@ -122,16 +91,12 @@ export const CompressOptionPannel = observer(() => {
       <OptionItem desc={gstate.locale?.optionPannel.colorsDesc}>
         <Slider
           defaultValue={DefaultCompressOption.png.colors}
-          value={option.png.colors}
+          value={homeState.tempOption.png.colors}
           min={2}
           max={256}
           step={1}
           onChange={(value) => {
-            let png: CompressOption["png"] = {
-              ...option.png,
-              colors: value,
-            };
-            update({ png });
+            homeState.tempOption.png.colors = value;
           }}
         />
       </OptionItem>
@@ -139,16 +104,12 @@ export const CompressOptionPannel = observer(() => {
       <OptionItem desc={gstate.locale?.optionPannel.pngDithering}>
         <Slider
           defaultValue={DefaultCompressOption.png.dithering}
-          value={option.png.dithering}
+          value={homeState.tempOption.png.dithering}
           min={0}
           max={1}
           step={0.01}
           onChange={(value) => {
-            let png: CompressOption["png"] = {
-              ...option.png,
-              dithering: value,
-            };
-            update({ png });
+            homeState.tempOption.png.dithering = value;
           }}
         />
       </OptionItem>
@@ -159,13 +120,9 @@ export const CompressOptionPannel = observer(() => {
 
       <OptionItem>
         <Checkbox
-          checked={option.gif.dither}
+          checked={homeState.tempOption.gif.dithering}
           onChange={(event) => {
-            let gif: CompressOption["gif"] = {
-              ...option.gif,
-              dither: event.target.checked,
-            };
-            update({ gif });
+            homeState.tempOption.gif.dithering = event.target.checked;
           }}
         >
           {gstate.locale?.optionPannel.gifDithering}
@@ -175,16 +132,12 @@ export const CompressOptionPannel = observer(() => {
       <OptionItem desc={gstate.locale?.optionPannel.colorsDesc}>
         <Slider
           defaultValue={DefaultCompressOption.gif.colors}
-          value={option.gif.colors}
+          value={homeState.tempOption.gif.colors}
           min={2}
           max={256}
           step={1}
           onChange={(value) => {
-            let gif: CompressOption["gif"] = {
-              ...option.gif,
-              colors: value,
-            };
-            update({ gif });
+            homeState.tempOption.gif.colors = value;
           }}
         />
       </OptionItem>

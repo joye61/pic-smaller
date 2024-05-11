@@ -64,7 +64,6 @@ export class GifImage extends ImageBase {
         type: this.info.blob.type,
       });
       return {
-        id: this.info.id,
         width,
         height,
         blob,
@@ -97,7 +96,6 @@ export class GifImage extends ImageBase {
 
     if (!Array.isArray(result) || result.length !== 1) {
       return {
-        id: this.info.id,
         width: this.info.width,
         height: this.info.height,
         blob: this.info.blob,
@@ -108,7 +106,6 @@ export class GifImage extends ImageBase {
       type: this.info.blob.type,
     });
     return {
-      id: this.info.id,
       width,
       height,
       blob,

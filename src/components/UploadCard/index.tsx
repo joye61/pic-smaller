@@ -7,7 +7,7 @@ import { gstate } from "@/global";
 import { ImageInput } from "../ImageInput";
 import { state } from "./state";
 import { toJS } from "mobx";
-import { FileListLike, createImagesFromFiles } from "@/uitls/ImageInfo";
+import { FileListLike, createImageList } from "@/libs/transform";
 
 function useDragAndDrop(dragRef: React.RefObject<HTMLDivElement>) {
   useEffect(() => {
@@ -41,7 +41,7 @@ function useDragAndDrop(dragRef: React.RefObject<HTMLDivElement>) {
       }
 
       if (files.length) {
-        await createImagesFromFiles(files);
+        await createImageList(files);
       }
     };
 
