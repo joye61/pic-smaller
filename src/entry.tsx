@@ -6,6 +6,7 @@ import { gstate } from "./global";
 import { initHistoryLogic } from "./history";
 import { ContextAction } from "./ContextAction";
 import { initLangSetting } from "./locale";
+import { Analytics } from "@vercel/analytics/react";
 
 const App = observer(() => {
   return (
@@ -23,6 +24,7 @@ const App = observer(() => {
       }}
     >
       <ContextAction />
+      <Analytics />
       {gstate.page}
       {gstate.loading && <Spin fullscreen spinning tip={gstate.loadingTip} />}
     </ConfigProvider>
