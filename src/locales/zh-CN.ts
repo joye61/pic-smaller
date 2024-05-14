@@ -1,11 +1,10 @@
-import { LocaleData } from "./type";
+import { LocaleData } from '@/type';
 import zhCN from "antd/locale/zh_CN";
 
 const localeData: LocaleData = {
   antLocale: zhCN,
   logo: "图小小",
   initial: "初始化中",
-  bundleTip: "打包中",
   uploadCard: {
     title: "选取或者拖拽本地图片文件到这里",
     subTitle: ["支持", "格式"],

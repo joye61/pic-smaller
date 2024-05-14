@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { normalize } from "./functions";
 import { history } from "./history";
-import { LocaleData } from "./locales/type";
+import { LocaleData } from "./type";
 import { Initial } from "./Initial";
 
 export class GlobalState {
@@ -10,7 +10,6 @@ export class GlobalState {
   public lang: string = "en-US";
   public locale: LocaleData | null = null;
   public loading: boolean = false;
-  public loadingTip?: string = undefined;
   public mimes: Record<string, string> = {
     jpg: "image/jpeg",
     jpeg: "image/jpeg",
@@ -22,16 +21,6 @@ export class GlobalState {
 
   constructor() {
     makeAutoObservable(this);
-  }
-
-  showLoading(title?: string) {
-    this.loading = true;
-    this.loadingTip = title;
-  }
-
-  hideLoading() {
-    this.loading = false;
-    this.loadingTip = undefined;
   }
 }
 

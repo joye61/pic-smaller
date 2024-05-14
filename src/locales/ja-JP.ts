@@ -1,13 +1,12 @@
 // 日语
 
-import { LocaleData } from "./type";
+import { LocaleData } from '@/type';
 import jaJP from "antd/locale/ja_JP";
 
 const localeData: LocaleData = {
   antLocale: jaJP,
   logo: "Pic Smaller",
   initial: "初期化中",
-  bundleTip: "パッキング",
   uploadCard: {
     title: "ここでローカル画像ファイルを選択またはドラッグします",
     subTitle: ["サポート", "フォーマット"],

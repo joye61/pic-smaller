@@ -1,11 +1,10 @@
-import { LocaleData } from "./type";
+import { LocaleData } from '@/type';
 import enUS from "antd/locale/en_US";
 
 const localeData: LocaleData = {
   antLocale: enUS,
   logo: "Pic Smaller",
   initial: "Initializing",
-  bundleTip: "Packing",
   uploadCard: {
     title: "Select or drag local image files here",
     subTitle: ["Support", "format"],

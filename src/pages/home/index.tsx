@@ -327,7 +327,7 @@ export default observer(() => {
                 type="primary"
                 disabled={disabled}
                 onClick={async () => {
-                  gstate.showLoading(gstate.locale?.bundleTip);
+                  gstate.loading = true;
                   const zip = new JSZip();
                   const names: Set<string> = new Set();
                   for (let [_, info] of homeState.list) {
@@ -345,7 +345,7 @@ export default observer(() => {
                     },
                   });
                   createDownload("PicSmaller.zip", result);
-                  gstate.hideLoading();
+                  gstate.loading = false;
                 }}
               >
                 {gstate.locale?.listAction.downloadAll}

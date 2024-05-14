@@ -1,4 +1,4 @@
-import { ConfigProvider, Spin } from "antd";
+import { ConfigProvider } from "antd";
 import { observer } from "mobx-react-lite";
 import { configure } from "mobx";
 import ReactDOM from "react-dom/client";
@@ -6,6 +6,7 @@ import { gstate } from "./global";
 import { ContextAction } from "./ContextAction";
 import { initLangSetting } from "./locale";
 import { Analytics } from "@vercel/analytics/react";
+import { Loading } from "./components/Loading";
 
 const App = observer(() => {
   return (
@@ -25,7 +26,7 @@ const App = observer(() => {
       <ContextAction />
       <Analytics />
       {gstate.page}
-      {gstate.loading && <Spin fullscreen spinning tip={gstate.loadingTip} />}
+      {gstate.loading && <Loading />}
     </ConfigProvider>
   );
 });

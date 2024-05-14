@@ -1,7 +1,8 @@
 import getUserLocale from "get-user-locale";
-import { LocaleData } from "./locales/type";
+import { LocaleData } from "@/type";
 import { gstate } from "./global";
 import { MenuProps } from "antd";
+import { locales } from "./modules";
 
 const localeCacheKey = "Pic-Smaller-Locale";
 const defaultLang = "en-US";
@@ -33,11 +34,11 @@ export function getLang() {
 }
 
 export async function setLocaleData() {
-  let importer = localeDataMap[gstate.lang];
+  let importer: any = locales[`/src/locales/${gstate.lang}.ts`];
   if (!importer) {
-    importer = localeDataMap[defaultLang];
+    importer = locales[`/src/locales/${defaultLang}.ts`];
   }
-  gstate.locale = (await importer).default;
+  gstate.locale = (await importer()).default;
 }
 
 export async function changeLang(lang: string) {
