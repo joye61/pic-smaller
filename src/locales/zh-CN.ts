@@ -4,7 +4,7 @@ import zhCN from "antd/locale/zh_CN";
 const localeData: LocaleData = {
   antLocale: zhCN,
   logo: "图小小",
-  readFileTip: "读取中",
+  initial: "初始化中",
   bundleTip: "打包中",
   uploadCard: {
     title: "选取或者拖拽本地图片文件到这里",

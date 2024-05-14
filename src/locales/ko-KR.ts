@@ -6,7 +6,7 @@ import koKR from "antd/locale/ko_KR";
 const localeData: LocaleData = {
   antLocale: koKR,
   logo: "Pic Smaller",
-  readFileTip: "읽는 중",
+  initial: "초기화 중",
   bundleTip: "포장",
   uploadCard: {
     title: "여기에서 로컬 이미지 파일을 선택하거나 드래그하세요.",

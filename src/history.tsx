@@ -1,6 +1,7 @@
 import { createBrowserHistory } from "history";
 import { normalize } from "./functions";
-import { gstate, modules } from "./global";
+import { gstate } from "./global";
+import { modules } from './modules';
 
 export const history = createBrowserHistory();
 

@@ -4,7 +4,7 @@ import enUS from "antd/locale/en_US";
 const localeData: LocaleData = {
   antLocale: enUS,
   logo: "Pic Smaller",
-  readFileTip: "Loading",
+  initial: "Initializing",
   bundleTip: "Packing",
   uploadCard: {
     title: "Select or drag local image files here",

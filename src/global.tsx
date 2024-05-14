@@ -2,10 +2,11 @@ import { makeAutoObservable } from "mobx";
 import { normalize } from "./functions";
 import { history } from "./history";
 import { LocaleData } from "./locales/type";
+import { Initial } from "./Initial";
 
 export class GlobalState {
   public pathname: string = normalize(history.location.pathname);
-  public page: null | React.ReactNode = null;
+  public page: null | React.ReactNode = (<Initial />);
   public lang: string = "en-US";
   public locale: LocaleData | null = null;
   public loading: boolean = false;
@@ -14,10 +15,9 @@ export class GlobalState {
     jpg: "image/jpeg",
     jpeg: "image/jpeg",
     png: "image/png",
-    // apng: "image/apng",
     webp: "image/webp",
     gif: "image/gif",
-    // 'svg': 'image/svg+xml'
+    // svg: "image/svg+xml",
   };
 
   constructor() {
@@ -36,4 +36,3 @@ export class GlobalState {
 }
 
 export const gstate = new GlobalState();
-export const modules = import.meta.glob("@/pages/**/index.tsx");

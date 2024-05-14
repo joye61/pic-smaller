@@ -6,7 +6,7 @@ import jaJP from "antd/locale/ja_JP";
 const localeData: LocaleData = {
   antLocale: jaJP,
   logo: "Pic Smaller",
-  readFileTip: "読み込み中",
+  initial: "初期化中",
   bundleTip: "パッキング",
   uploadCard: {
     title: "ここでローカル画像ファイルを選択またはドラッグします",

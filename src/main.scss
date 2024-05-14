@@ -1,1 +1,12 @@
 @import "antd/dist/reset.css";
+
+.__initial {
+  width: 100vw;
+  height: 100vh;
+  img {
+    width: 30px;
+  }
+  span {
+    margin-top: 10px;
+  }
+}
