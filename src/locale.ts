@@ -1,21 +1,11 @@
+// https://www.techonthenet.com/js/language_tags.php
 import getUserLocale from "get-user-locale";
-import { LocaleData } from "@/type";
 import { gstate } from "./global";
 import { MenuProps } from "antd";
 import { locales } from "./modules";
 
 const localeCacheKey = "Pic-Smaller-Locale";
 const defaultLang = "en-US";
-
-// https://www.techonthenet.com/js/language_tags.php
-const localeDataMap: Record<string, Promise<{ default: LocaleData }>> = {
-  "zh-CN": import("./locales/zh-CN"),
-  "zh-TW": import("./locales/zh-TW"),
-  "zh-Hans": import("./locales/zh-CN"),
-  "en-US": import("./locales/en-US"),
-  "ja-JP": import("./locales/ja-JP"),
-  "ko-KR": import("./locales/ko-KR"),
-};
 
 export const langList: MenuProps["items"] = [
   { key: "en-US", label: "English" },
