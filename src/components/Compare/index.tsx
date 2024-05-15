@@ -221,9 +221,7 @@ export const Compare = observer(() => {
           />
         </Space>
 
-        <Tag className={style.before}>
-          {info.width}*{info.height}&nbsp;&nbsp;{formatSize(info.blob.size)}
-        </Tag>
+        <Tag className={style.before}>{formatSize(info.blob.size)}</Tag>
         <Tag
           className={style.after}
           color={
@@ -232,7 +230,6 @@ export const Compare = observer(() => {
               : token.colorError
           }
         >
-          {info.compress.width}*{info.compress.height}&nbsp;&nbsp;
           {formatSize(info.compress.blob.size)}
         </Tag>
       </>
