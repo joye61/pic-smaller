@@ -34,7 +34,6 @@ const localeData: LocaleData = {
   },
   optionPannel: {
     resize: "이미지 크기 조정",
-    title: "압축 옵션",
     unChanged: "크기 조정 없음",
     toWidth: "너비에 맞춰 조정",
     toHeight: "높이에 맞춰 조정",

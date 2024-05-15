@@ -9,6 +9,7 @@ import { Indicator } from "./components/Indicator";
 export const Initial = observer(() => {
   useEffect(() => {
     (async () => {
+      await import('jszip');
       await fetch(new URL("./libs/png.wasm", import.meta.url));
       await fetch(new URL("./libs/gif.wasm", import.meta.url));
       await import("./libs/WorkerPreview?worker");

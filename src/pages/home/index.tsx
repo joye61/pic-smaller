@@ -37,7 +37,6 @@ import {
   wait,
 } from "@/functions";
 import { ProgressHint } from "@/components/ProgressHint";
-import JSZip from "jszip";
 import { UploadCard } from "@/components/UploadCard";
 import { useWorkerHandler } from "@/libs/transform";
 import { toJS } from "mobx";
@@ -349,7 +348,8 @@ export default observer(() => {
                 disabled={disabled}
                 onClick={async () => {
                   gstate.loading = true;
-                  const zip = new JSZip();
+                  const jszip = await import('jszip');
+                  const zip = new jszip.default();
                   const names: Set<string> = new Set();
                   for (let [_, info] of homeState.list) {
                     const uniqName = getUniqNameOnNames(names, info.name);
@@ -388,14 +388,6 @@ export default observer(() => {
           </Flex>
         </Flex>
         <div className={style.side}>
-          <Flex align="center" justify="space-between">
-            <Typography.Text strong>
-              {gstate.locale?.optionPannel.title}
-            </Typography.Text>
-          </Flex>
-          <div>
-            <CompressOption />
-          </div>
           <Flex justify="flex-end">
             <Space>
               <Button
@@ -420,6 +412,9 @@ export default observer(() => {
               </Button>
             </Space>
           </Flex>
+          <div>
+            <CompressOption />
+          </div>
         </div>
       </>
     );

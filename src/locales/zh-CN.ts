@@ -31,7 +31,6 @@ const localeData: LocaleData = {
   },
   optionPannel: {
     resize: "调整图片尺寸",
-    title: "压缩选项",
     unChanged: "无缩放",
     toWidth: "适应宽度",
     toHeight: "适应高度",

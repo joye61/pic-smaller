@@ -31,7 +31,6 @@ const localeData: LocaleData = {
   },
   optionPannel: {
     resize: "Resize image",
-    title: "Compression options",
     unChanged: "No Zoom",
     toWidth: "Fit Width",
     toHeight: "Fit Height",
