@@ -5,6 +5,7 @@ const localeData: LocaleData = {
   antLocale: zhCN,
   logo: "图小小",
   initial: "初始化中",
+  previewHelp: '拖动分割线对比压缩效果：左边是原始图，右边是压缩图',
   uploadCard: {
     title: "选取或者拖拽本地图片文件到这里",
     subTitle: ["支持", "格式"],

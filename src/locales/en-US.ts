@@ -5,6 +5,7 @@ const localeData: LocaleData = {
   antLocale: enUS,
   logo: "Pic Smaller",
   initial: "Initializing",
+  previewHelp: 'Drag the dividing line to compare the compression effect: the left is the original image, the right is the compressed image',
   uploadCard: {
     title: "Select or drag local image files here",
     subTitle: ["Support", "format"],

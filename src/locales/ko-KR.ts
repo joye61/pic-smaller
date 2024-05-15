@@ -7,6 +7,7 @@ const localeData: LocaleData = {
   antLocale: koKR,
   logo: "Pic Smaller",
   initial: "초기화 중",
+  previewHelp: '압축 효과를 비교하려면 구분선을 드래그하세요. 왼쪽은 원본 이미지, 오른쪽은 압축된 이미지입니다.',
   uploadCard: {
     title: "여기에서 로컬 이미지 파일을 선택하거나 드래그하세요.",
     subTitle: ["지원", "형식"],

@@ -91,7 +91,9 @@ function getColumns(token: GlobalToken, disabled: boolean) {
               <Flex
                 align="center"
                 justify="center"
-                onClick={() => {
+                onClick={async () => {
+                  gstate.loading = true;
+                  await wait(300);
                   homeState.compareId = row.key;
                 }}
               >

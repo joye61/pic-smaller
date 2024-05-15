@@ -1,37 +1,44 @@
 import { useEffect, useRef, useState } from "react";
 import style from "./index.module.scss";
-import { Button, Flex } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
+import { Button, Flex, Popover, Space, Tag, theme } from "antd";
+import { CloseOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { createPortal } from "react-dom";
 import { ImageItem, homeState } from "@/states/home";
 import { observer } from "mobx-react-lite";
-import { Indicator } from "../Indicator";
+import classNames from "classnames";
+import { gstate } from "@/global";
+import { formatSize } from "@/functions";
+import { pick } from "lodash";
 
 interface CompareData {
   base: "x" | "y";
+  dividerWidth: number;
   containerWidth: number;
   containerHeight: number;
   imageWidth: number;
   imageHeight: number;
-  scale: number;
   oldSrc?: string;
   newSrc?: string;
   x: number;
+  scale: number;
 }
 
 export interface CompareState {
   x: number;
   scale: number;
   ready: boolean;
+  moving: boolean;
+  status: "show" | "hide";
 }
 
 export const Compare = observer(() => {
-  const dividerWidth = 8;
   const info = homeState.list.get(homeState.compareId!) as Required<ImageItem>;
+  const { token } = theme.useToken();
   const containerRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const dataRef = useRef<CompareData>({
     base: "x",
+    dividerWidth: 2,
     containerWidth: 0,
     containerHeight: 0,
     imageWidth: 0,
@@ -45,6 +52,8 @@ export const Compare = observer(() => {
     x: 0,
     scale: 1,
     ready: false,
+    moving: false,
+    status: "hide",
   });
 
   const updateRef = useRef<((newState: Partial<CompareState>) => void) | null>(
@@ -54,7 +63,7 @@ export const Compare = observer(() => {
     updateRef.current = (newState) => {
       dataRef.current = {
         ...dataRef.current,
-        ...newState,
+        ...pick(newState, ["x", "scale"]),
       };
       setState({
         ...state,
@@ -98,7 +107,7 @@ export const Compare = observer(() => {
       scale,
       x,
     };
-    updateRef.current?.({ x, scale, ready: true });
+    updateRef.current?.({ x, scale, ready: true, status: "show" });
 
     return () => {
       URL.revokeObjectURL(oldSrc);
@@ -110,7 +119,9 @@ export const Compare = observer(() => {
     if (!state.ready) {
       return;
     }
-    
+
+    gstate.loading = false;
+
     const doc = document.documentElement;
     const bar = barRef.current!;
 
@@ -120,10 +131,12 @@ export const Compare = observer(() => {
     const mousedown = (event: MouseEvent) => {
       isControl = true;
       cursorX = event.clientX;
+      updateRef.current?.({ moving: true });
     };
     const mouseup = () => {
       isControl = false;
       cursorX = 0;
+      updateRef.current?.({ moving: false });
     };
     const mousemove = (event: MouseEvent) => {
       if (isControl) {
@@ -164,8 +177,8 @@ export const Compare = observer(() => {
     width: `${data.containerWidth - data.x}px`,
   };
   const barStyle: React.CSSProperties = {
-    width: `${dividerWidth}px`,
-    left: `${data.x - dividerWidth / 2}px`,
+    width: `${data.dividerWidth}px`,
+    left: `${data.x - data.dividerWidth / 2}px`,
   };
   const leftImageStyle: React.CSSProperties = {
     width: realImageWidth,
@@ -178,12 +191,9 @@ export const Compare = observer(() => {
     right: (data.containerWidth - realImageWidth) / 2 + "px",
   };
 
-  let content: React.ReactNode = (
-    <Flex align="center" justify="center" className={style.loading}>
-      <Indicator size="large" />
-    </Flex>
-  );
-  if (data.oldSrc && data.newSrc) {
+  let content: React.ReactNode = null;
+  if (state.ready) {
+    const help = <div className={style.help}>{gstate.locale?.previewHelp}</div>;
     content = (
       <>
         <div style={leftStyle}>
@@ -192,21 +202,66 @@ export const Compare = observer(() => {
         <div style={rightStyle}>
           <img src={data.newSrc} style={rightImageStyle} />
         </div>
-        <div style={barStyle} ref={barRef} />
-        <Button
-          icon={<CloseOutlined />}
-          className={style.close}
-          shape="circle"
-          onClick={() => {
-            homeState.compareId = null;
-          }}
-        />
+        <div style={barStyle}>
+          <Flex align="center" justify="center" ref={barRef}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M6.45,17.45L1,12L6.45,6.55L7.86,7.96L4.83,11H19.17L16.14,7.96L17.55,6.55L23,12L17.55,17.45L16.14,16.04L19.17,13H4.83L7.86,16.04L6.45,17.45Z" />
+            </svg>
+          </Flex>
+        </div>
+        <Space className={style.action}>
+          <Popover content={help} placement="bottomRight">
+            <Button icon={<QuestionCircleOutlined />} />
+          </Popover>
+          <Button
+            icon={<CloseOutlined />}
+            onClick={() => {
+              updateRef.current?.({ status: "hide" });
+            }}
+          />
+        </Space>
+
+        <Tag className={style.before}>
+          {info.width}*{info.height}&nbsp;&nbsp;{formatSize(info.blob.size)}
+        </Tag>
+        <Tag
+          className={style.after}
+          color={
+            info.blob.size > info.compress.blob.size
+              ? token.colorSuccess
+              : token.colorError
+          }
+        >
+          {info.compress.width}*{info.compress.height}&nbsp;&nbsp;
+          {formatSize(info.compress.blob.size)}
+        </Tag>
       </>
     );
   }
 
+  let statusClass: string | undefined = undefined;
+  if (state.ready && state.status === "show") {
+    statusClass = style.show;
+  }
+  if (state.ready && state.status === "hide") {
+    statusClass = style.hide;
+  }
+
   return createPortal(
-    <div className={style.container} ref={containerRef}>
+    <div
+      className={classNames(
+        style.container,
+        state.ready && style.withBg,
+        state.moving && style.moving,
+        statusClass
+      )}
+      ref={containerRef}
+      onAnimationEnd={(event) => {
+        if (event.animationName === style.BoxHide) {
+          homeState.compareId = null;
+        }
+      }}
+    >
       {content}
     </div>,
     document.body

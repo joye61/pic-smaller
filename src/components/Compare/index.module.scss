@@ -1,3 +1,21 @@
+@keyframes BoxShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes BoxHide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .container {
   width: 100vw;
   height: 100vh;
@@ -7,24 +25,36 @@
   top: 0;
   bottom: 0;
   z-index: 9;
-  background-color: #fff;
   user-select: none;
-  background-image: linear-gradient(
-      45deg,
-      #e0e0e0 25%,
-      transparent 25%,
-      transparent 75%,
-      #e0e0e0 75%
-    ),
-    linear-gradient(
-      45deg,
-      #e0e0e0 25%,
-      transparent 25%,
-      transparent 75%,
-      #e0e0e0 75%
-    );
-  background-size: 20px 20px;
-  background-position: 0 0, 10px 10px;
+  &.show {
+    animation: BoxShow 0.3s ease-in;
+  }
+  &.hide {
+    animation: BoxHide 0.3s ease-out;
+  }
+  &.moving {
+    cursor: grab;
+  }
+  &.withBg {
+    background-color: #fff;
+    background-image: linear-gradient(
+        45deg,
+        #e0e0e0 25%,
+        transparent 25%,
+        transparent 75%,
+        #e0e0e0 75%
+      ),
+      linear-gradient(
+        45deg,
+        #e0e0e0 25%,
+        transparent 25%,
+        transparent 75%,
+        #e0e0e0 75%
+      );
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+  }
+
   > div:nth-child(1),
   > div:nth-child(2) {
     position: absolute;
@@ -40,17 +70,6 @@
   }
   > div:nth-child(1) {
     left: 0;
-    &::after {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      right: -2px;
-      // background-color: #1da565;
-      background-color: #000;
-    }
   }
   > div:nth-child(2) {
     right: 0;
@@ -60,18 +79,46 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    cursor: col-resize;
-    z-index: 9;
+    z-index: 3;
+    background-color: #000;
+    > div {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: grab;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      svg {
+        width: 20px;
+        height: 20px;
+        path {
+          fill: #fff;
+        }
+      }
+    }
   }
 }
 
-.close {
+.action {
   position: absolute;
   top: 16px;
   right: 16px;
 }
 
-.loading {
-  width: 100%;
-  height: 100%;
+.before {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+}
+.after {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+}
+
+.help {
+  width: 240px;
 }

@@ -4,6 +4,7 @@ export interface LocaleData {
   antLocale: Locale;
   logo: string;
   initial: string;
+  previewHelp: string;
   error404: {
     backHome: string;
     description: string;
