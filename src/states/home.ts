@@ -22,7 +22,7 @@ export interface CompressOption {
 
 export const DefaultCompressOption: CompressOption = {
   maxPreviewSize: 256,
-  resizeMethod: 'unChanged',
+  resizeMethod: "unChanged",
   resizeWidth: undefined,
   resizeHeight: undefined,
   jpeg: {
@@ -61,6 +61,7 @@ export class HomeState {
   public list: Map<number, ImageItem> = new Map();
   public option: CompressOption = DefaultCompressOption;
   public tempOption: CompressOption = DefaultCompressOption;
+  public compareId: number | null = null;
 
   constructor() {
     makeAutoObservable(this);

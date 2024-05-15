@@ -41,7 +41,7 @@ import JSZip from "jszip";
 import { UploadCard } from "@/components/UploadCard";
 import { useWorkerHandler } from "@/libs/transform";
 import { toJS } from "mobx";
-import { showCompare } from "@/components/Compare";
+import { Compare } from "@/components/Compare";
 
 /**
  * 获取当前语言字符串
@@ -80,19 +80,19 @@ function getColumns(token: GlobalToken, disabled: boolean) {
       render(_, row) {
         if (!row.preview) return <div className={style.preview} />;
         return (
-          <div className={style.preview}>
+          <div
+            className={style.preview}
+            style={{
+              borderRadius: token.borderRadius,
+            }}
+          >
             <img src={URL.createObjectURL(row.preview.blob)} />
             {row.compress && (
               <Flex
                 align="center"
                 justify="center"
                 onClick={() => {
-                  // showCompare({
-                  //   width: row.width!,
-                  //   height: row.height!,
-                  //   old: row.blob,
-                  //   new: row.compress!.blob,
-                  // });
+                  homeState.compareId = row.key;
                 }}
               >
                 <svg viewBox="0 0 24 24">
@@ -455,6 +455,9 @@ export default observer(() => {
       <Flex align="stretch" className={style.main}>
         {mainContent}
       </Flex>
+
+      {/* Compare */}
+      {homeState.compareId !== null && <Compare />}
     </div>
   );
 });

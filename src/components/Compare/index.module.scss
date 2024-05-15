@@ -6,7 +6,9 @@
   right: 0;
   top: 0;
   bottom: 0;
+  z-index: 9;
   background-color: #fff;
+  user-select: none;
   background-image: linear-gradient(
       45deg,
       #e0e0e0 25%,
@@ -30,6 +32,11 @@
     bottom: 0;
     overflow: hidden;
     box-sizing: border-box;
+    img {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
   > div:nth-child(1) {
     left: 0;
@@ -41,7 +48,8 @@
       bottom: 0;
       width: 4px;
       right: -2px;
-      background-color: #1da565;
+      // background-color: #1da565;
+      background-color: #000;
     }
   }
   > div:nth-child(2) {
@@ -55,4 +63,15 @@
     cursor: col-resize;
     z-index: 9;
   }
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
 }
