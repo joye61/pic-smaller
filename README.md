@@ -1,27 +1,21 @@
-<div style="text-align:center;margin: 20px 0;">
-  <div style="display:flex;align-items:center;flex-direction:column;">
-    <img src="https://txx.cssrefs.com/logo.svg" width="60" height="60">
-    <div style="margin-top:10px;font-size:18px;color:#1da565">Pic Smaller</div>
-  </div>
-</div>
+# Pic Smaller
 
 **Pic Smaller** is a super easy-to-use online image compression tool. Its UI is intuitive and supports compression configuration. At the same time, because it is purely local compression without any server-side logic, it is completely safe.
 
 <br/>
 
-<div style="display:flex;justify-content:space-between;">
-  <div style="width:49%;"><img src="https://txx.cssrefs.com/demo1.png"></div>
-  <div style="width:49%;"><img src="https://txx.cssrefs.com/demo2.png"></div>
-</div>
+<div><img src="https://txx.cssrefs.com/demo1.png"></div>
+<br/>
+<div><img src="https://txx.cssrefs.com/demo2.png"></div>
 
 <br/>
 <br/>
 
-# Usage
+## Usage
 
 Pic smaller has been deployed to [`vercel`](https://vercel.com/), you can use it by visiting the URL [https://pic-smaller.vercel.app](pic-smaller.vercel.app). Due to the GFW, Chinese users can use it by visiting the URL [https://txx.cssrefs.com](https://txx.cssrefs.com)
 
-# Develop
+## Develop
 
 This is a pure [vite](https://vitejs.dev/) + [React](https://react.dev/) project, You have to get familiar with them first
 
@@ -41,7 +35,7 @@ npm install
 npm run dev
 ```
 
-# Thanks
+## Thanks
 
 - [https://github.com/antelle/wasm-image-compressor](https://github.com/antelle/wasm-image-compressor) Provides PNG image compression implementation based on Webassembly
 - [https://github.com/antelle/wasm-image-compressor](https://github.com/antelle/wasm-image-compressor) Provides Gif image compression implementation based on Webassembly
