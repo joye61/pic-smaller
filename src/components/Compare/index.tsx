@@ -151,7 +151,34 @@ export const Compare = observer(() => {
       }
     };
 
+    const wheel = (event: WheelEvent) => {
+      const states = stateRef.current();
+      let scale = -0.005 * event.deltaY + states.scale;
+      if (scale > 1) {
+        scale = 1;
+      }
+      if (scale < 0.1) {
+        scale = 0.1;
+      }
+
+      let imageWidth: number;
+      let imageHeight: number;
+      if (
+        info.width / info.height >
+        states.containerWidth / states.containerHeight
+      ) {
+        imageWidth = states.containerWidth * scale;
+        imageHeight = (imageWidth * info.height) / info.width;
+      } else {
+        imageHeight = states.containerHeight * scale;
+        imageWidth = (imageHeight * info.width) / info.height;
+      }
+
+      updateRef.current({ scale, imageWidth, imageHeight });
+    };
+
     window.addEventListener("resize", resize);
+    window.addEventListener("wheel", wheel);
     bar.addEventListener("mousedown", mousedown);
     doc.addEventListener("mousemove", mousemove);
     doc.addEventListener("mouseup", mouseup);
@@ -160,6 +187,7 @@ export const Compare = observer(() => {
 
     return () => {
       window.removeEventListener("resize", resize);
+      window.removeEventListener("wheel", wheel);
       bar.removeEventListener("mousedown", mousedown);
       doc.removeEventListener("mousemove", mousemove);
       doc.removeEventListener("mouseup", mouseup);
