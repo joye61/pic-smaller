@@ -174,7 +174,12 @@ export const Compare = observer(() => {
         imageWidth = (imageHeight * info.width) / info.height;
       }
 
-      updateRef.current({ scale, imageWidth, imageHeight });
+      let innerRate =
+        (states.x - (states.containerWidth - states.imageWidth) / 2) /
+        states.imageWidth;
+      let x = innerRate * imageWidth + (states.containerWidth - imageWidth) / 2;
+
+      updateRef.current({ scale, imageWidth, imageHeight, x });
     };
 
     window.addEventListener("resize", resize);
