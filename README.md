@@ -4,9 +4,9 @@
 
 <br/>
 
-<div><img src="https://txx.cssrefs.com/demo1.png"></div>
+<div><img style="border:1px solid #f0f0f0;" src="https://txx.cssrefs.com/demo1.png"></div>
 <br/>
-<div><img src="https://txx.cssrefs.com/demo2.png"></div>
+<div><img style="border:1px solid #f0f0f0;" src="https://txx.cssrefs.com/demo2.png"></div>
 
 <br/>
 
