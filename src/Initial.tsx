@@ -28,7 +28,7 @@ export const Initial = observer(() => {
       <Flex vertical align="center">
         <Indicator size="large" />
         <Typography.Text type="secondary">
-          {gstate.locale?.initial}...
+          {gstate.locale?.initial}
         </Typography.Text>
       </Flex>
     </Flex>
