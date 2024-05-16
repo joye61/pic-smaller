@@ -68,7 +68,7 @@ export class ImageBase {
       const rate = this.option.resizeHeight / this.info.height;
       const width = rate * this.info.width;
       return {
-        width,
+        width: Math.ceil(width),
         height: Math.ceil(this.option.resizeHeight),
       };
     }
@@ -78,7 +78,7 @@ export class ImageBase {
       const height = rate * this.info.height;
       return {
         width: Math.ceil(this.option.resizeWidth),
-        height,
+        height: Math.ceil(height),
       };
     }
 
