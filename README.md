@@ -9,7 +9,6 @@
 <div><img src="https://txx.cssrefs.com/demo2.png"></div>
 
 <br/>
-<br/>
 
 ## Usage
 
