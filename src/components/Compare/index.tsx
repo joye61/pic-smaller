@@ -8,27 +8,24 @@ import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { gstate } from "@/global";
 import { formatSize } from "@/functions";
-import { pick } from "lodash";
 
 interface CompareData {
-  base: "x" | "y";
-  dividerWidth: number;
-  containerWidth: number;
-  containerHeight: number;
-  imageWidth: number;
-  imageHeight: number;
   oldSrc?: string;
   newSrc?: string;
-  x: number;
-  scale: number;
 }
 
 export interface CompareState {
   x: number;
+  xrate: number;
   scale: number;
   ready: boolean;
   moving: boolean;
   status: "show" | "hide";
+  dividerWidth: number;
+  imageWidth: number;
+  imageHeight: number;
+  containerWidth: number;
+  containerHeight: number;
 }
 
 export const Compare = observer(() => {
@@ -37,77 +34,53 @@ export const Compare = observer(() => {
   const containerRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const dataRef = useRef<CompareData>({
-    base: "x",
+    oldSrc: undefined,
+    newSrc: undefined,
+  });
+  const [state, setState] = useState<CompareState>({
+    x: 0,
+    xrate: 0.5,
+    scale: 0.8,
+    ready: false,
+    moving: false,
+    status: "hide",
     dividerWidth: 2,
     containerWidth: 0,
     containerHeight: 0,
     imageWidth: 0,
     imageHeight: 0,
-    oldSrc: undefined,
-    newSrc: undefined,
-    x: 0,
-    scale: 1,
-  });
-  const [state, setState] = useState<CompareState>({
-    x: 0,
-    scale: 1,
-    ready: false,
-    moving: false,
-    status: "hide",
   });
 
-  const updateRef = useRef<((newState: Partial<CompareState>) => void) | null>(
-    null
-  );
-  useEffect(() => {
-    updateRef.current = (newState) => {
-      dataRef.current = {
-        ...dataRef.current,
-        ...pick(newState, ["x", "scale"]),
-      };
-      setState({
-        ...state,
-        ...newState,
-      });
-    };
-  }, [state]);
+  const update = (newState: Partial<CompareState>) => {
+    setState({
+      ...state,
+      ...newState,
+    });
+  };
+  const getState = () => {
+    return state;
+  };
 
-  // 初始化
+  const updateRef = useRef<(newState: Partial<CompareState>) => void>(update);
+  const stateRef = useRef<() => CompareState>(getState);
   useEffect(() => {
-    if (!containerRef.current) {
-      return;
-    }
-    const rect = containerRef.current.getBoundingClientRect();
-    let imageWidth = 0;
-    let imageHeight = 0;
-    let base: CompareData["base"];
-    if (info.width / info.height > rect.width / rect.height) {
-      imageWidth = rect.width * 0.8;
-      imageHeight = (imageWidth * info.height) / info.width;
-      base = "x";
-    } else {
-      imageHeight = rect.height * 0.8;
-      imageWidth = (imageHeight * info.width) / info.height;
-      base = "y";
-    }
+    updateRef.current = update;
+    stateRef.current = getState;
+  }, [update, getState]);
 
+  // Initialize
+  useEffect(() => {
     let oldSrc = URL.createObjectURL(info.blob);
     let newSrc = URL.createObjectURL(info.compress.blob);
-    const scale = 1;
-    const x = rect.width / 2;
     dataRef.current = {
-      ...dataRef.current,
-      base,
-      containerWidth: rect.width,
-      containerHeight: rect.height,
-      imageWidth,
-      imageHeight,
       oldSrc,
       newSrc,
-      scale,
-      x,
     };
-    updateRef.current?.({ x, scale, ready: true, status: "show" });
+
+    updateRef.current({
+      ready: true,
+      status: "show",
+    });
 
     return () => {
       URL.revokeObjectURL(oldSrc);
@@ -128,22 +101,45 @@ export const Compare = observer(() => {
     let isControl = false;
     let cursorX = 0;
 
+    const resize = () => {
+      const states = stateRef.current();
+      const rect = containerRef.current!.getBoundingClientRect();
+      let imageWidth: number;
+      let imageHeight: number;
+      if (info.width / info.height > rect.width / rect.height) {
+        imageWidth = rect.width * states.scale;
+        imageHeight = (imageWidth * info.height) / info.width;
+      } else {
+        imageHeight = rect.height * states.scale;
+        imageWidth = (imageHeight * info.width) / info.height;
+      }
+      updateRef.current({
+        x: rect.width * states.xrate,
+        imageWidth,
+        imageHeight,
+        containerWidth: rect.width,
+        containerHeight: rect.height,
+      });
+    };
+
     const mousedown = (event: MouseEvent) => {
       isControl = true;
       cursorX = event.clientX;
-      updateRef.current?.({ moving: true });
+      updateRef.current({ moving: true });
     };
+
     const mouseup = () => {
       isControl = false;
       cursorX = 0;
-      updateRef.current?.({ moving: false });
+      updateRef.current({ moving: false });
     };
+
     const mousemove = (event: MouseEvent) => {
       if (isControl) {
-        const data = dataRef.current;
-        let x = data.x + event.clientX - cursorX;
-        const min = (data.containerWidth - data.imageWidth) / 2;
-        const max = (data.containerWidth + data.imageWidth) / 2;
+        const states = stateRef.current();
+        let x = states.x + event.clientX - cursorX;
+        const min = (states.containerWidth - states.imageWidth) / 2;
+        const max = (states.containerWidth + states.imageWidth) / 2;
         if (x < min) {
           x = min;
         }
@@ -151,44 +147,44 @@ export const Compare = observer(() => {
           x = max;
         }
         cursorX = event.clientX;
-        updateRef.current?.({ x });
+        updateRef.current({ x, xrate: x / states.containerWidth });
       }
     };
 
+    window.addEventListener("resize", resize);
     bar.addEventListener("mousedown", mousedown);
     doc.addEventListener("mousemove", mousemove);
     doc.addEventListener("mouseup", mouseup);
 
+    resize();
+
     return () => {
+      window.removeEventListener("resize", resize);
       bar.removeEventListener("mousedown", mousedown);
       doc.removeEventListener("mousemove", mousemove);
       doc.removeEventListener("mouseup", mouseup);
     };
   }, [state.ready]);
 
-  const data = dataRef.current;
-  const realImageWidth = data.imageWidth * data.scale;
-  const realImageHeight = data.imageHeight * data.scale;
-
   const leftStyle: React.CSSProperties = {
-    width: `${data.x}px`,
+    width: `${state.x}px`,
   };
   const rightStyle: React.CSSProperties = {
-    width: `${data.containerWidth - data.x}px`,
+    width: `${state.containerWidth - state.x}px`,
   };
   const barStyle: React.CSSProperties = {
-    width: `${data.dividerWidth}px`,
-    left: `${data.x - data.dividerWidth / 2}px`,
+    width: `${state.dividerWidth}px`,
+    left: `${state.x - state.dividerWidth / 2}px`,
   };
   const leftImageStyle: React.CSSProperties = {
-    width: realImageWidth,
-    height: realImageHeight,
-    left: (data.containerWidth - realImageWidth) / 2 + "px",
+    width: state.imageWidth,
+    height: state.imageHeight,
+    left: (state.containerWidth - state.imageWidth) / 2 + "px",
   };
   const rightImageStyle: React.CSSProperties = {
-    width: realImageWidth,
-    height: realImageHeight,
-    right: (data.containerWidth - realImageWidth) / 2 + "px",
+    width: state.imageWidth,
+    height: state.imageHeight,
+    right: (state.containerWidth - state.imageWidth) / 2 + "px",
   };
 
   let content: React.ReactNode = null;
@@ -197,10 +193,10 @@ export const Compare = observer(() => {
     content = (
       <>
         <div style={leftStyle}>
-          <img src={data.oldSrc} style={leftImageStyle} />
+          <img src={dataRef.current.oldSrc} style={leftImageStyle} />
         </div>
         <div style={rightStyle}>
-          <img src={data.newSrc} style={rightImageStyle} />
+          <img src={dataRef.current.newSrc} style={rightImageStyle} />
         </div>
         <div style={barStyle}>
           <Flex align="center" justify="center" ref={barRef}>
