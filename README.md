@@ -1,12 +1,12 @@
-# Pic Smaller
+# Pic Smaller (图小小)
 
 **Pic Smaller** is a super easy-to-use online image compression tool. Its UI is intuitive and supports compression configuration. At the same time, because it is purely local compression without any server-side logic, it is completely safe.
 
 <br/>
 
-<div><img style="border:1px solid #f0f0f0;" src="https://txx.cssrefs.com/demo1.png"></div>
+<div><img src="https://txx.cssrefs.com/demo1.png"></div>
 <br/>
-<div><img style="border:1px solid #f0f0f0;" src="https://txx.cssrefs.com/demo2.png"></div>
+<div><img src="https://txx.cssrefs.com/demo2.png"></div>
 
 <br/>
 
