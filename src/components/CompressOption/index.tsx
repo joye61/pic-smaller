@@ -50,6 +50,8 @@ export const CompressOption = observer(() => {
     );
   }
 
+  const disabled = homeState.hasTaskRunning();
+
   return (
     <>
       <OptionItem desc={gstate.locale?.optionPannel.resize}>
@@ -57,6 +59,7 @@ export const CompressOption = observer(() => {
           style={{ width: "100%" }}
           value={resizeMethod}
           options={resizeOptions}
+          disabled={disabled}
           onChange={(value) => {
             homeState.tempOption.resizeMethod = value;
             homeState.tempOption.resizeWidth = undefined;
@@ -78,6 +81,7 @@ export const CompressOption = observer(() => {
           min={0}
           max={1}
           step={0.01}
+          disabled={disabled}
           onChange={(value) => {
             homeState.tempOption.jpeg.quality = value;
           }}
@@ -95,6 +99,7 @@ export const CompressOption = observer(() => {
           min={2}
           max={256}
           step={1}
+          disabled={disabled}
           onChange={(value) => {
             homeState.tempOption.png.colors = value;
           }}
@@ -108,6 +113,7 @@ export const CompressOption = observer(() => {
           min={0}
           max={1}
           step={0.01}
+          disabled={disabled}
           onChange={(value) => {
             homeState.tempOption.png.dithering = value;
           }}
@@ -121,6 +127,7 @@ export const CompressOption = observer(() => {
       <OptionItem>
         <Checkbox
           checked={homeState.tempOption.gif.dithering}
+          disabled={disabled}
           onChange={(event) => {
             homeState.tempOption.gif.dithering = event.target.checked;
           }}
@@ -136,6 +143,7 @@ export const CompressOption = observer(() => {
           min={2}
           max={256}
           step={1}
+          disabled={disabled}
           onChange={(value) => {
             homeState.tempOption.gif.colors = value;
           }}
