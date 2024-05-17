@@ -12,7 +12,7 @@
 
 ## Usage
 
-Pic smaller has been deployed to [`vercel`](https://vercel.com/), you can use it by visiting the URL [https://pic-smaller.vercel.app](pic-smaller.vercel.app). Due to the GFW, Chinese users can use it by visiting the URL [https://txx.cssrefs.com](https://txx.cssrefs.com)
+Pic smaller has been deployed to [`vercel`](https://vercel.com/), you can use it by visiting the URL [https://pic-smaller.vercel.app](https://pic-smaller.vercel.app). Due to the GFW, Chinese users can use it by visiting the URL [https://txx.cssrefs.com](https://txx.cssrefs.com)
 
 ## Develop
 
