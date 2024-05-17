@@ -37,4 +37,4 @@ npm run dev
 ## Thanks
 
 - [https://github.com/antelle/wasm-image-compressor](https://github.com/antelle/wasm-image-compressor) Provides PNG image compression implementation based on Webassembly
-- [https://github.com/antelle/wasm-image-compressor](https://github.com/antelle/wasm-image-compressor) Provides Gif image compression implementation based on Webassembly
+- [https://github.com/renzhezhilu/gifsicle-wasm-browser](https://github.com/renzhezhilu/gifsicle-wasm-browser) Provides Gif image compression implementation based on Webassembly

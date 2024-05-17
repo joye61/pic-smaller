@@ -1,6 +1,6 @@
 /**
  * Reference：
- * https://github.com/antelle/wasm-image-compressor
+ * https://github.com/renzhezhilu/gifsicle-wasm-browser
  * https://www.lcdf.org/gifsicle/man.html
  */
 
