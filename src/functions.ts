@@ -1,4 +1,5 @@
 import { filesize } from "filesize";
+import { Mimes } from './global';
 
 /**
  * 格式化路径
@@ -68,3 +69,72 @@ export async function wait(millisecond: number) {
     window.setTimeout(resolve, millisecond);
   });
 }
+
+/**
+ * Get file list from FileSystemEntry
+ * @param entry
+ * @returns
+ */
+export async function getFilesFromEntry(entry: FileSystemEntry): Promise<Array<File>> {
+  // If entry is a file
+  if (entry.isFile) {
+    const fileEntry = entry as FileSystemFileEntry;
+    return new Promise<Array<File>>((resolve) => {
+      fileEntry.file(
+        (result) => {
+          const types = Object.values(Mimes);
+          resolve(types.includes(result.type) ? [result] : []);
+        },
+        () => []
+      );
+    });
+  }
+
+  // If entry is a directory
+  if (entry.isDirectory) {
+    const dirEntry = entry as FileSystemDirectoryEntry;
+    const list = await new Promise<Array<FileSystemEntry>>((resolve) => {
+      dirEntry.createReader().readEntries(resolve, () => []);
+    });
+    const result: Array<File> = [];
+    for (let item of list) {
+      const subList = await getFilesFromEntry(item);
+      result.push(...subList);
+    }
+    return result;
+  }
+
+  // Otherwise
+  return [];
+}
+
+/**
+ * Get file list from FileSystemHandle
+ * @param entry
+ * @returns
+ */
+export async function getFilesFromHandle(
+  handle: FileSystemHandle
+): Promise<Array<File>> {
+  // If handle is a file
+  if (handle.kind === "file") {
+    const fileHandle = handle as FileSystemFileHandle;
+    const file = await fileHandle.getFile();
+    const types = Object.values(Mimes);
+    return types.includes(file.type) ? [file] : [];
+  }
+
+  // If handle is a directory
+  if (handle.kind === "directory") {
+    const result: Array<File> = [];
+    for await (const item of (handle as any).values()) {
+      const subList = await getFilesFromHandle(item);
+      result.push(...subList);
+    }
+    return result;
+  }
+
+  return [];
+}
+
+
