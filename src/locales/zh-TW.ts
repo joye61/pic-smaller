@@ -1,19 +1,20 @@
 // 台湾繁体
 
-import { LocaleData } from '@/type';
+import { LocaleData } from "@/type";
 import zhTW from "antd/locale/zh_TW";
 
 const localeData: LocaleData = {
   antLocale: zhTW,
   logo: "圖小小",
   initial: "初始化中",
-  previewHelp: '拖曳分割線對比壓縮效果：左邊是原始圖，右邊是壓縮圖',
+  previewHelp: "拖曳分割線對比壓縮效果：左邊是原始圖，右邊是壓縮圖",
   uploadCard: {
-    title: "選取或拖曳本地圖片檔案到這裡",
-    subTitle: ["支援", "格式"],
+    title: "選取文件到這裡，支援拖曳文件和資料夾",
+    subTitle: '圖小小是一款完全開源且免費的大量圖片壓縮工具，支援 %s 格式',
   },
   listAction: {
     batchAppend: "大量新增",
+    addFolder: "新增資料夾",
     clear: "清空清單",
     downloadAll: "下載全部",
     downloadOne: "下載圖片",
@@ -32,12 +33,16 @@ const localeData: LocaleData = {
     newDimension: "新尺寸",
   },
   optionPannel: {
-    resize: "調整圖片尺寸",
+    resizeLable: "調整圖片尺寸",
+    formatLable: "設定輸出格式",
+    jpegLable: "JPEG/WEBP參數",
+    pngLable: "PNG參數",
+    gifLable: "GIF參數",
     unChanged: "無縮放",
     toWidth: "適應寬度",
     toHeight: "適應高度",
-    widthPlaceholder: "設定壓縮後圖片寬度",
-    heightPlaceholder: "設定壓縮後圖片高度",
+    widthPlaceholder: "設定輸出圖片寬度",
+    heightPlaceholder: "設定輸出圖片高度",
     resetBtn: "重置選項",
     confirmBtn: "應用選項",
     qualityTitle: "設定輸出圖片品質（0-1）",

@@ -11,10 +11,11 @@ export interface LocaleData {
   };
   uploadCard: {
     title: string;
-    subTitle: [string, string];
+    subTitle: string;
   };
   listAction: {
     batchAppend: string;
+    addFolder: string;
     clear: string;
     downloadAll: string;
     downloadOne: string;
@@ -33,7 +34,12 @@ export interface LocaleData {
     action: string;
   };
   optionPannel: {
-    resize: string;
+    resizeLable: string;
+    formatLable: string;
+    jpegLable: string;
+    pngLable: string;
+    gifLable: string;
+    
     unChanged: string;
     toWidth: string;
     toHeight: string;

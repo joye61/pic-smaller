@@ -93,7 +93,7 @@ $border: 1px solid #dfdfdf;
   }
 }
 
-.content{
+.content {
   $h1: 60px;
   $h3: 60px;
   height: 100%;
@@ -132,9 +132,17 @@ $border: 1px solid #dfdfdf;
     padding: 0 16px;
   }
   > div:nth-child(2) {
-    padding: 16px;
+    padding: 0 16px;
     overflow-y: auto;
     flex: 1;
     height: calc(100% - $h1);
+  }
+}
+
+a.github {
+  cursor: pointer;
+  color: #000;
+  span {
+    font-size: 24px;
   }
 }

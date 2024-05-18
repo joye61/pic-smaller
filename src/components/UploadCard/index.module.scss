@@ -35,10 +35,9 @@
   > div:nth-child(3) {
     margin-top: 16px;
     color: #aaa;
-    span {
-      color: #999;
-      font-weight: bold;
-    }
+    text-align: center;
+    padding: 0 32px;
+    line-height: 1.6;
   }
 }
 

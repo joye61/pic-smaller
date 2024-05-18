@@ -3,12 +3,18 @@ import style from "./index.module.scss";
 import { useEffect, useRef } from "react";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import { gstate } from "@/global";
+import { Mimes, gstate } from "@/global";
 import { ImageInput } from "../ImageInput";
 import { state } from "./state";
-import { toJS } from "mobx";
-import { FileListLike, createImageList } from "@/libs/transform";
+import { createImageList } from "@/libs/transform";
+import { getFilesFromEntry, getFilesFromHandle } from "@/functions";
+import { sprintf } from "sprintf-js";
 
+/**
+ * 使用拖拽功能
+ *
+ * @param dragRef 拖拽区域的引用对象
+ */
 function useDragAndDrop(dragRef: React.RefObject<HTMLDivElement>) {
   useEffect(() => {
     const dragLeave = () => {
@@ -21,28 +27,37 @@ function useDragAndDrop(dragRef: React.RefObject<HTMLDivElement>) {
     const drop = async (event: DragEvent) => {
       event.preventDefault();
       state.dragActive = false;
-
-      let files: FileListLike = [];
+      const files: Array<File> = [];
       if (event.dataTransfer?.items) {
-        const list: File[] = [];
         for (let i = 0; i < event.dataTransfer.items.length; i++) {
           const item = event.dataTransfer.items[i];
-          const types = Object.values(toJS(gstate.mimes));
-          if (item.kind === "file" && types.includes(item.type)) {
-            const file = item.getAsFile();
-            if (file) {
-              list.push(file);
+          if (typeof item.getAsFileSystemHandle === "function") {
+            const handle = await item.getAsFileSystemHandle();
+            const result = await getFilesFromHandle(handle);
+            files.push(...result);
+            continue;
+          }
+          if (typeof item.webkitGetAsEntry === "function") {
+            const entry = await item.webkitGetAsEntry();
+            if (entry) {
+              const result = await getFilesFromEntry(entry);
+              files.push(...result);
+              continue;
             }
           }
         }
-        files = list;
       } else if (event.dataTransfer?.files) {
-        files = event.dataTransfer?.files;
+        const list = event.dataTransfer?.files;
+        for (let index = 0; index < list.length; index++) {
+          const file = list.item(index);
+          file && files.push(file);
+          if (file) {
+            files.push(file);
+          }
+        }
       }
 
-      if (files.length) {
-        await createImageList(files);
-      }
+      files.length > 0 && createImageList(files);
     };
 
     const target = dragRef.current!;
@@ -79,13 +94,12 @@ export const UploadCard = observer(() => {
         </svg>
         <Typography.Text>{gstate.locale?.uploadCard.title}</Typography.Text>
         <div>
-          {gstate.locale?.uploadCard.subTitle[0]}&nbsp;
-          <span>
-            {Object.keys(toJS(gstate.mimes))
+          {sprintf(
+            gstate.locale?.uploadCard.subTitle ?? "",
+            Object.keys(Mimes)
               .map((item) => item.toUpperCase())
-              .join("/")}
-          </span>
-          &nbsp;{gstate.locale?.uploadCard.subTitle[1]}
+              .join("/")
+          )}
         </div>
       </Flex>
       <ImageInput ref={fileRef} />

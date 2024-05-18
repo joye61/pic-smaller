@@ -1,17 +1,19 @@
-import { LocaleData } from '@/type';
+import { LocaleData } from "@/type";
 import enUS from "antd/locale/en_US";
 
 const localeData: LocaleData = {
   antLocale: enUS,
   logo: "Pic Smaller",
   initial: "Initializing",
-  previewHelp: 'Drag the dividing line to compare the compression effect: the left is the original image, the right is the compressed image',
+  previewHelp:
+    "Drag the dividing line to compare the compression effect: the left is the original image, the right is the compressed image",
   uploadCard: {
-    title: "Select or drag local image files here",
-    subTitle: ["Support", "format"],
+    title: "Select files here, support dragging files and folders",
+    subTitle: "Pic Smaller is a completely open source and free batch image compression tool that supports %s format.",
   },
   listAction: {
     batchAppend: "Batch append",
+    addFolder: "Add folder",
     clear: "Clear all",
     downloadAll: "Download all",
     downloadOne: "Download image",
@@ -30,12 +32,16 @@ const localeData: LocaleData = {
     newDimension: "New Dimension",
   },
   optionPannel: {
-    resize: "Resize image",
+    resizeLable: "Resize image",
+    formatLable: "Set output format",
+    jpegLable: "JPEG/WEBP parameters",
+    pngLable: "PNG parameter",
+    gifLable: "GIF parameters",
     unChanged: "No Zoom",
     toWidth: "Fit Width",
     toHeight: "Fit Height",
-    widthPlaceholder: "Enter the compressed image width",
-    heightPlaceholder: "Enter the compressed image height",
+    widthPlaceholder: "Set the width of the output image",
+    heightPlaceholder: "Set the height of the output image",
     resetBtn: "Reset options",
     confirmBtn: "Apply options",
     qualityTitle: "Set output image quality (0-1)",

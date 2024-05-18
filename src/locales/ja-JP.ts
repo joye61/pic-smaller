@@ -1,19 +1,21 @@
 // 日语
 
-import { LocaleData } from '@/type';
+import { LocaleData } from "@/type";
 import jaJP from "antd/locale/ja_JP";
 
 const localeData: LocaleData = {
   antLocale: jaJP,
   logo: "Pic Smaller",
   initial: "初期化中",
-  previewHelp: '分割線をドラッグして圧縮効果を比較します。左が元の画像、右が圧縮された画像です',
+  previewHelp:
+    "分割線をドラッグして圧縮効果を比較します。左が元の画像、右が圧縮された画像です",
   uploadCard: {
-    title: "ここでローカル画像ファイルを選択またはドラッグします",
-    subTitle: ["サポート", "フォーマット"],
+    title: "ここでファイルを選択し、ファイルとフォルダーのドラッグをサポートします",
+    subTitle: "Pic Smaller は完全にオープンソースで、%s 形式をサポートする無料のバッチ画像圧縮ツールです。",
   },
   listAction: {
     batchAppend: "バッチ追加",
+    addFolder: "フォルダーを追加",
     clear: "リストをクリア",
     downloadAll: "すべてダウンロード",
     downloadOne: "画像をダウンロード",
@@ -32,12 +34,16 @@ const localeData: LocaleData = {
     newDimension: "新しいディメンション",
   },
   optionPannel: {
-    resize: "画像のサイズを変更する",
+    resizeLable: "画像のサイズを変更する",
+    formatLable: "出力形式を設定",
+    jpegLable: "JPEG/WEBPパラメータ",
+    pngLable: "PNG パラメータ",
+    gifLable: "GIF パラメータ",
     unChanged: "スケーリングなし",
     toWidth: "幅に合わせる",
     toHeight: "高さに適応する",
-    widthPlaceholder: "圧縮された画像の幅を設定します",
-    heightPlaceholder: "圧縮画像の高さを設定します",
+    widthPlaceholder: "出力画像の幅を設定します",
+    heightPlaceholder: "出力画像の高さを設定します",
     resetBtn: "オプションをリセット",
     confirmBtn: "オプションを適用",
     qualityTitle: "出力画質を設定します(0-1)",

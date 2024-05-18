@@ -54,7 +54,10 @@ export const CompressOption = observer(() => {
 
   return (
     <>
-      <OptionItem desc={gstate.locale?.optionPannel.resize}>
+      <Divider orientation="left" orientationMargin="0">
+        {gstate.locale?.optionPannel.resizeLable}
+      </Divider>
+      <OptionItem>
         <Select
           style={{ width: "100%" }}
           value={resizeMethod}
@@ -71,7 +74,7 @@ export const CompressOption = observer(() => {
       </OptionItem>
 
       <Divider orientation="left" orientationMargin="0">
-        JPG/JPEG/WEBP
+        {gstate.locale?.optionPannel.jpegLable}
       </Divider>
 
       <OptionItem desc={gstate.locale?.optionPannel?.qualityTitle}>
@@ -89,7 +92,7 @@ export const CompressOption = observer(() => {
       </OptionItem>
 
       <Divider orientation="left" orientationMargin="0">
-        PNG
+        {gstate.locale?.optionPannel.pngLable}
       </Divider>
 
       <OptionItem desc={gstate.locale?.optionPannel.colorsDesc}>
@@ -121,7 +124,7 @@ export const CompressOption = observer(() => {
       </OptionItem>
 
       <Divider orientation="left" orientationMargin="0">
-        GIF
+        {gstate.locale?.optionPannel.gifLable}
       </Divider>
 
       <OptionItem>
