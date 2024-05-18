@@ -3,7 +3,7 @@ import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 import { gstate } from "@/global";
 import { toJS } from "mobx";
-import { createImageList } from '@/libs/transform';
+import { createImageList } from "@/libs/transform";
 
 export const ImageInput = observer(
   forwardRef((_, ref: ForwardedRef<HTMLInputElement>) => {
@@ -17,11 +17,19 @@ export const ImageInput = observer(
           .map((item) => "." + item)
           .join(",")}
         onChange={async (event) => {
-          if (!event.target.files?.length) {
+          const files = event.target.files;
+          if (!files?.length) {
             event.target.value = "";
             return;
           }
-          await createImageList(event.target.files);
+          const list: Array<File> = [];
+          for (let index = 0; index < files.length; index++) {
+            const file = files.item(index);
+            if (file) {
+              list.push(file);
+            }
+          }
+          await createImageList(list);
           event.target.value = "";
         }}
       />

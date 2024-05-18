@@ -26,14 +26,14 @@ export const DefaultCompressOption: CompressOption = {
   resizeWidth: undefined,
   resizeHeight: undefined,
   jpeg: {
-    quality: 0.6,
+    quality: 0.7,
   },
   png: {
-    colors: 8,
+    colors: 32,
     dithering: 0,
   },
   gif: {
-    colors: 16,
+    colors: 32,
     dithering: false,
   },
 };
