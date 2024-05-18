@@ -14,6 +14,7 @@ const localeData: LocaleData = {
   },
   listAction: {
     batchAppend: "バッチ追加",
+    addFolder: 'フォルダーを追加',
     clear: "リストをクリア",
     downloadAll: "すべてダウンロード",
     downloadOne: "画像をダウンロード",

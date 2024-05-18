@@ -3,58 +3,12 @@ import style from "./index.module.scss";
 import { useEffect, useRef } from "react";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import { gstate } from "@/global";
+import { Mimes, gstate } from "@/global";
 import { ImageInput } from "../ImageInput";
 import { state } from "./state";
-import { toJS } from "mobx";
-import { FileListLike, createImageList } from "@/libs/transform";
+import { createImageList } from "@/libs/transform";
+import { getFilesFromEntry, getFilesFromHandle } from "@/functions";
 
-
-let max = 0
-let fileBuffer: FileSystemEntry[] = []
-let now = 0;
-/**
- * 递归地从文件系统条目中获取文件放入fileBuffer中
- *
- * @param entry 文件系统条目
- * @param dirCall 可选参数，处理目录的回调函数
- */
-function getFileFromEntryRecursively(entry: FileSystemEntry, dirCall?: any) {
-  if ((entry as FileSystemFileEntry).isFile) {
-    fileBuffer.push(entry)
-  } else if ((entry as FileSystemDirectoryEntry).isDirectory) {
-    max++;
-    // 这里可以添加处理目录的逻辑，比如递归遍历目录中的文件
-    (entry as FileSystemDirectoryEntry).createReader().readEntries((entries) => {
-      now++;
-
-      entries.map((e) => getFileFromEntryRecursively(e, dirCall));
-      if (now === max) {
-        dirCall && dirCall()
-      }
-    })
-  }
-}
-/**
- * 从文件缓冲区中获取文件
- *
- * @param call 遍历每个文件时的回调函数，可选
- * @param endCall 所有文件遍历完成后的回调函数，可选
- */
-function getFileFromFileBuffer(call?: any, endCall?: any) {
-  let maxFiles = fileBuffer.length
-  let nowFiles = 0
-  for (let i = 0; i < maxFiles; i++) {
-    (fileBuffer[i] as FileSystemFileEntry)?.file((f) => {
-      nowFiles++
-      call && call(f)
-      if (nowFiles === maxFiles) {
-
-        endCall && endCall()
-      }
-    })
-  }
-}
 /**
  * 使用拖拽功能
  *
@@ -71,65 +25,38 @@ function useDragAndDrop(dragRef: React.RefObject<HTMLDivElement>) {
     };
     const drop = async (event: DragEvent) => {
       event.preventDefault();
-      fileBuffer = []
-      now = 0;
-      max = 0;
       state.dragActive = false;
-      let files: FileListLike = [];
-
-      const types = Object.values(toJS(gstate.mimes));
+      const files: Array<File> = [];
       if (event.dataTransfer?.items) {
-        const list: File[] = [];
-        const entrys = []
         for (let i = 0; i < event.dataTransfer.items.length; i++) {
           const item = event.dataTransfer.items[i];
-          if (item.webkitGetAsEntry) {
-            let entry = item.webkitGetAsEntry()
-            entrys.push(entry)
-            getFileFromEntryRecursively(entry as FileSystemEntry, () => {
-              getFileFromFileBuffer((f: File) => {
-                if (types.includes(f.type)) {
-                  list.push(f as File)
-                }
-              }, async () => {
-                files = list;
-                if (files.length) {
-                  await createImageList(files);
-                }
-              })
-            })
-          } else {
-            if (item.kind === "file" && types.includes(item.type)) {
-              const file = item.getAsFile();
-              if (file) {
-                list.push(file);
-              }
+          if (typeof item.getAsFileSystemHandle === "function") {
+            const handle = await item.getAsFileSystemHandle();
+            const result = await getFilesFromHandle(handle);
+            files.push(...result);
+            continue;
+          }
+          if (typeof item.webkitGetAsEntry === "function") {
+            const entry = await item.webkitGetAsEntry();
+            if (entry) {
+              const result = await getFilesFromEntry(entry);
+              files.push(...result);
+              continue;
             }
           }
         }
-        if (max === 0) {
-          getFileFromFileBuffer((f: File) => {
-            if (types.includes(f.type)) {
-              list.push(f as File)
-            }
-          }, async () => {
-            files = list;
-            if (files.length) {
-              await createImageList(files);
-            }
-          })
-        }
-        files = list;
-        if (files.length) {
-          await createImageList(files);
-        }
       } else if (event.dataTransfer?.files) {
-        files = event.dataTransfer?.files;
-        if (files.length) {
-          await createImageList(files);
+        const list = event.dataTransfer?.files;
+        for (let index = 0; index < list.length; index++) {
+          const file = list.item(index);
+          file && files.push(file);
+          if (file) {
+            files.push(file);
+          }
         }
       }
 
+      files.length > 0 && createImageList(files);
     };
 
     const target = dragRef.current!;
@@ -168,7 +95,7 @@ export const UploadCard = observer(() => {
         <div>
           {gstate.locale?.uploadCard.subTitle[0]}&nbsp;
           <span>
-            {Object.keys(toJS(gstate.mimes))
+            {Object.keys(Mimes)
               .map((item) => item.toUpperCase())
               .join("/")}
           </span>

@@ -14,6 +14,7 @@ const localeData: LocaleData = {
   },
   listAction: {
     batchAppend: "大量新增",
+    addFolder: '新增資料夾',
     clear: "清空清單",
     downloadAll: "下載全部",
     downloadOne: "下載圖片",
