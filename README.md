@@ -14,6 +14,7 @@
 
 Pic smaller has been deployed to [`vercel`](https://vercel.com/), you can use it by visiting the URL [pic-smaller.vercel.app](https://pic-smaller.vercel.app). Due to the GFW, Chinese users can use it by visiting the URL [txx.cssrefs.com](https://txx.cssrefs.com)
 
+
 ## Develop
 
 This is a pure [vite](https://vitejs.dev/) + [React](https://react.dev/) project, You have to get familiar with them first. Pic smaller uses modern browser technologies such as `OffScreenCanvas`, `WebAssembly`, and `Web Worker`. You should also be familiar with them before developing.
