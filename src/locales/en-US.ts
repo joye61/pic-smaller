@@ -12,6 +12,7 @@ const localeData: LocaleData = {
   },
   listAction: {
     batchAppend: "Batch append",
+    addFolder: 'Add folder',
     clear: "Clear all",
     downloadAll: "Download all",
     downloadOne: "Download image",

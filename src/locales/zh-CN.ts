@@ -12,6 +12,7 @@ const localeData: LocaleData = {
   },
   listAction: {
     batchAppend: "批量添加",
+    addFolder: "添加文件夹",
     clear: "清空列表",
     downloadAll: "下载全部",
     downloadOne: "下载图片",

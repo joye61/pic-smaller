@@ -15,6 +15,7 @@ export interface LocaleData {
   };
   listAction: {
     batchAppend: string;
+    addFolder: string;
     clear: string;
     downloadAll: string;
     downloadOne: string;

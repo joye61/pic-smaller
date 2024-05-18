@@ -20,6 +20,7 @@ import {
   ClearOutlined,
   DeleteOutlined,
   DownloadOutlined,
+  FolderAddOutlined,
   PlusOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
@@ -33,12 +34,13 @@ import { Indicator } from "@/components/Indicator";
 import {
   createDownload,
   formatSize,
+  getFilesFromHandle,
   getUniqNameOnNames,
   wait,
 } from "@/functions";
 import { ProgressHint } from "@/components/ProgressHint";
 import { UploadCard } from "@/components/UploadCard";
-import { useWorkerHandler } from "@/libs/transform";
+import { createImageList, useWorkerHandler } from "@/libs/transform";
 import { toJS } from "mobx";
 import { Compare } from "@/components/Compare";
 
@@ -313,16 +315,32 @@ export default observer(() => {
       <>
         <Flex align="stretch" vertical className={style.content}>
           <Flex align="center" justify="space-between" className={style.menu}>
-            <Button
-              disabled={disabled}
-              icon={<PlusOutlined />}
-              type="primary"
-              onClick={() => {
-                fileRef.current?.click();
-              }}
-            >
-              {gstate.locale?.listAction.batchAppend}
-            </Button>
+            <Space>
+              <Button
+                disabled={disabled}
+                icon={<PlusOutlined />}
+                type="primary"
+                onClick={() => {
+                  fileRef.current?.click();
+                }}
+              >
+                {gstate.locale?.listAction.batchAppend}
+              </Button>
+              {window.showDirectoryPicker && (
+                <Button
+                  disabled={disabled}
+                  icon={<FolderAddOutlined />}
+                  type="primary"
+                  onClick={async () => {
+                    const handle = await window.showDirectoryPicker!();
+                    const result = await getFilesFromHandle(handle);
+                    await createImageList(result);
+                  }}
+                >
+                  {gstate.locale?.listAction.addFolder}
+                </Button>
+              )}
+            </Space>
             <Space>
               <Tooltip title={gstate.locale?.listAction.reCompress}>
                 <Button
@@ -348,7 +366,7 @@ export default observer(() => {
                 disabled={disabled}
                 onClick={async () => {
                   gstate.loading = true;
-                  const jszip = await import('jszip');
+                  const jszip = await import("jszip");
                   const zip = new jszip.default();
                   const names: Set<string> = new Set();
                   for (let [_, info] of homeState.list) {

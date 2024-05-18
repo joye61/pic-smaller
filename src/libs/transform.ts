@@ -84,16 +84,11 @@ export function createPreviewTask(item: ImageItem) {
   workerP?.postMessage(createMessageData(item));
 }
 
-export interface FileListLike {
-  length: number;
-  [index: number]: File;
-}
-
 /**
  * 处理上传的图片文件
  * @param files
  */
-export async function createImageList(files: FileListLike) {
+export async function createImageList(files: Array<File>) {
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const info: ImageItem = {

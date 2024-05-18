@@ -15,6 +15,7 @@ const localeData: LocaleData = {
 
   listAction: {
     batchAppend: "일괄 추가",
+    addFolder: '폴더 추가',
     clear: "목록 지우기",
     downloadAll: "모두 다운로드",
     downloadOne: "사진 다운로드",
