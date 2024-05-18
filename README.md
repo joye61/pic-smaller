@@ -12,7 +12,7 @@
 
 ## Usage
 
-Pic smaller has been deployed to [`vercel`](https://vercel.com/), you can use it by visiting the URL [https://pic-smaller.vercel.app](pic-smaller.vercel.app). Due to the GFW, Chinese users can use it by visiting the URL [https://txx.cssrefs.com](https://txx.cssrefs.com)
+Pic smaller has been deployed to [`vercel`](https://vercel.com/), you can use it by visiting the URL [pic-smaller.vercel.app](pic-smaller.vercel.app). Due to the GFW, Chinese users can use it by visiting the URL [txx.cssrefs.com](https://txx.cssrefs.com)
 
 ## Develop
 
@@ -34,5 +34,5 @@ npm run dev
 
 ## Thanks
 
-- [https://github.com/antelle/wasm-image-compressor](https://github.com/antelle/wasm-image-compressor) Provides PNG image compression implementation based on Webassembly
-- [https://github.com/renzhezhilu/gifsicle-wasm-browser](https://github.com/renzhezhilu/gifsicle-wasm-browser) Provides Gif image compression implementation based on Webassembly
+- [wasm-image-compressor](https://github.com/antelle/wasm-image-compressor) Provides PNG image compression implementation based on Webassembly
+- [gifsicle-wasm-browser](https://github.com/renzhezhilu/gifsicle-wasm-browser) Provides Gif image compression implementation based on Webassembly
