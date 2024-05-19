@@ -4,6 +4,7 @@ import {
   Dropdown,
   Flex,
   GlobalToken,
+  Popover,
   Space,
   Table,
   Tooltip,
@@ -16,11 +17,11 @@ import { Logo } from "@/components/Logo";
 import { TableProps } from "antd/es/table";
 import {
   ArrowDownOutlined,
-  ArrowUpOutlined,
   CheckCircleFilled,
   ClearOutlined,
   DeleteOutlined,
   DownloadOutlined,
+  ExclamationCircleOutlined,
   FolderAddOutlined,
   GithubOutlined,
   PlusOutlined,
@@ -220,8 +221,12 @@ function getColumns(token: GlobalToken, disabled: boolean) {
 
         return (
           <Flex align="center" justify="flex-end">
-            <Typography.Text type="danger">{formatRate}&nbsp;</Typography.Text>
-            <ArrowUpOutlined style={{ color: token.colorError }} />
+            <Typography.Text type="danger">+{formatRate}&nbsp;</Typography.Text>
+            <Tooltip title={gstate.locale?.optionPannel.failTip}>
+              <ExclamationCircleOutlined
+                style={{ color: token.colorError, cursor: "pointer" }}
+              />
+            </Tooltip>
           </Flex>
         );
       },
@@ -408,7 +413,21 @@ export default observer(() => {
           </Flex>
         </Flex>
         <div className={style.side}>
-          <Flex justify="flex-end">
+          <Flex justify="space-between" align="center">
+            <Popover
+              placement="bottom"
+              content={
+                <div className={style.optionHelpBox}>
+                  <Typography.Text>
+                    {gstate.locale?.optionPannel.help}
+                  </Typography.Text>
+                </div>
+              }
+            >
+              <Typography.Text type="secondary" className={style.optionHelp}>
+                <ExclamationCircleOutlined />
+              </Typography.Text>
+            </Popover>
             <Space>
               <Button
                 disabled={disabled}
@@ -465,7 +484,7 @@ export default observer(() => {
               <Typography.Text>{getLangStr()}</Typography.Text>
             </Flex>
           </Dropdown>
-          <Divider type="vertical" />
+          <Divider type="vertical" style={{ background: "#dfdfdf" }} />
           <Typography.Link
             className={style.github}
             target="_blank"

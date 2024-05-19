@@ -39,7 +39,8 @@ export interface LocaleData {
     jpegLable: string;
     pngLable: string;
     gifLable: string;
-    
+    help: string;
+    failTip: string;
     unChanged: string;
     toWidth: string;
     toHeight: string;
