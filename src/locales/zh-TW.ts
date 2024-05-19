@@ -10,7 +10,7 @@ const localeData: LocaleData = {
   previewHelp: "拖曳分割線對比壓縮效果：左邊是原始圖，右邊是壓縮圖",
   uploadCard: {
     title: "選取文件到這裡，支援拖曳文件和資料夾",
-    subTitle: '圖小小是一款完全開源且免費的大量圖片壓縮工具，支援 %s 格式',
+    subTitle: '開源的批量圖片壓縮工具，支援 %s 格式',
   },
   listAction: {
     batchAppend: "大量新增",

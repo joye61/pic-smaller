@@ -11,7 +11,7 @@ const localeData: LocaleData = {
     "分割線をドラッグして圧縮効果を比較します。左が元の画像、右が圧縮された画像です",
   uploadCard: {
     title: "ここでファイルを選択し、ファイルとフォルダーのドラッグをサポートします",
-    subTitle: "Pic Smaller は完全にオープンソースで、%s 形式をサポートする無料のバッチ画像圧縮ツールです。",
+    subTitle: "オープンソースのバッチ画像圧縮ツール、%s 形式をサポート",
   },
   listAction: {
     batchAppend: "バッチ追加",

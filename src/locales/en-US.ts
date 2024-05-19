@@ -9,7 +9,7 @@ const localeData: LocaleData = {
     "Drag the dividing line to compare the compression effect: the left is the original image, the right is the compressed image",
   uploadCard: {
     title: "Select files here, support dragging files and folders",
-    subTitle: "Pic Smaller is a completely open source and free batch image compression tool that supports %s format.",
+    subTitle: "Open source batch image compression tool, supports %s format",
   },
   listAction: {
     batchAppend: "Batch append",

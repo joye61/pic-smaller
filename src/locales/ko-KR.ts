@@ -11,7 +11,7 @@ const localeData: LocaleData = {
     "압축 효과를 비교하려면 구분선을 드래그하세요. 왼쪽은 원본 이미지, 오른쪽은 압축된 이미지입니다.",
   uploadCard: {
     title: "여기에서 파일을 선택하고 파일 및 폴더 끌기를 지원합니다.",
-    subTitle: "Pic Smaller는 %s 형식을 지원하는 완전 오픈 소스 및 무료 배치 이미지 압축 도구입니다.",
+    subTitle: "오픈 소스 배치 이미지 압축 도구, %s 형식 지원",
   },
 
   listAction: {
