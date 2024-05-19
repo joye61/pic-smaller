@@ -10,10 +10,10 @@ export const Initial = observer(() => {
   useEffect(() => {
     (async () => {
       await import('jszip');
-      await fetch(new URL("./libs/png.wasm", import.meta.url));
-      await fetch(new URL("./libs/gif.wasm", import.meta.url));
-      await import("./libs/WorkerPreview?worker");
-      await import("./libs/WorkerCompress?worker");
+      await fetch(new URL("./engines/png.wasm", import.meta.url));
+      await fetch(new URL("./engines/gif.wasm", import.meta.url));
+      await import("./engines/WorkerPreview?worker");
+      await import("./engines/WorkerCompress?worker");
       const langs = Object.values(locales);
       const pages = Object.values(modules);
       for (let load of [...langs, ...pages]) {

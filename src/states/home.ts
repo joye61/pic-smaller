@@ -1,24 +1,8 @@
-import { ProcessOutput } from "@/libs/ImageBase";
-import { createCompressTask } from "@/libs/transform";
+import { CompressOption, ProcessOutput } from "@/engines/ImageBase";
+import { createCompressTask } from "@/engines/transform";
+// import { ProcessOutput } from "@/libs/ImageBase";
+// import { createCompressTask } from "@/libs/transform";
 import { makeAutoObservable } from "mobx";
-
-export interface CompressOption {
-  maxPreviewSize: number;
-  resizeMethod: "unChanged" | "toWidth" | "toHeight";
-  resizeWidth?: number;
-  resizeHeight?: number;
-  jpeg: {
-    quality: number;
-  };
-  png: {
-    colors: number;
-    dithering: number;
-  };
-  gif: {
-    colors: number;
-    dithering: boolean;
-  };
-}
 
 export const DefaultCompressOption: CompressOption = {
   maxPreviewSize: 256,

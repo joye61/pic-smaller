@@ -1,18 +1,30 @@
-export interface ProcessOption {
-  maxPreviewSize: number;
-  resizeWidth?: number;
-  resizeHeight?: number;
-}
-
-export interface ProcessOutput {
+export interface ImageInfo {
+  key: number;
+  name: string;
   width: number;
   height: number;
   blob: Blob;
 }
 
-export interface ImageInfo {
-  key: number;
-  name: string;
+export interface CompressOption {
+  maxPreviewSize: number;
+  resizeMethod: "unChanged" | "toWidth" | "toHeight";
+  resizeWidth?: number;
+  resizeHeight?: number;
+  jpeg: {
+    quality: number;
+  };
+  png: {
+    colors: number;
+    dithering: number;
+  };
+  gif: {
+    colors: number;
+    dithering: boolean;
+  };
+}
+
+export interface ProcessOutput {
   width: number;
   height: number;
   blob: Blob;
@@ -24,7 +36,7 @@ export interface Dimension {
 }
 
 export class ImageBase {
-  constructor(public info: ImageInfo, public option: ProcessOption) {}
+  constructor(public info: ImageInfo, public option: CompressOption) {}
 
   /**
    * Get dimension from image blob

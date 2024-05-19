@@ -10,14 +10,14 @@ const localeData: LocaleData = {
   previewHelp: "拖曳分割線對比壓縮效果：左邊是原始圖，右邊是壓縮圖",
   uploadCard: {
     title: "選取文件到這裡，支援拖曳文件和資料夾",
-    subTitle: '開源的批量圖片壓縮工具，支援 %s 格式',
+    subTitle: "開源的批量圖片壓縮工具，支援 %s 格式",
   },
   listAction: {
     batchAppend: "大量新增",
     addFolder: "新增資料夾",
     clear: "清空清單",
-    downloadAll: "下載全部",
-    downloadOne: "下載圖片",
+    downloadAll: "儲存全部",
+    downloadOne: "儲存圖片",
     removeOne: "移除圖片",
     reCompress: "重新壓縮",
   },

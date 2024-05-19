@@ -6,16 +6,11 @@
 
 import { gifsicle } from "./GifWasmModule";
 import {
+  CompressOption,
   ImageBase,
   ImageInfo,
-  ProcessOption,
   ProcessOutput,
 } from "./ImageBase";
-
-export interface GifProcessOption extends ProcessOption {
-  colors: number; // 2-256
-  dithering: boolean; // enable or unable dithering
-}
 
 export class GifImage extends ImageBase {
   /**
@@ -26,21 +21,20 @@ export class GifImage extends ImageBase {
    */
   public static async create(
     info: Omit<ImageInfo, "width" | "height">,
-    option: GifProcessOption
+    option: CompressOption
   ) {
     const dimension = await ImageBase.getDimension(info.blob);
     return new GifImage({ ...info, ...dimension }, option);
   }
 
   async compress(): Promise<ProcessOutput> {
-    const option = <GifProcessOption>this.option;
     try {
       const { width, height } = this.getOutputDimension();
       const commands: string[] = [
         `--resize=${width}x${height}`,
-        `--colors=${option.colors}`,
+        `--colors=${this.option.gif.colors}`,
       ];
-      if (option.dithering) {
+      if (this.option.gif.dithering) {
         commands.push(`--dither=floyd-steinberg`);
       }
       commands.push(`--output=/out/${this.info.name}`);
@@ -74,12 +68,11 @@ export class GifImage extends ImageBase {
   }
 
   async preview(): Promise<ProcessOutput> {
-    const option = <GifProcessOption>this.option;
     const { width, height } = this.getPreviewDimension();
 
     const commands: string[] = [
       `--resize=${width}x${height}`,
-      `--colors=${option.colors}`,
+      `--colors=${this.option.gif.colors}`,
       `--output=/out/${this.info.name}`,
       this.info.name,
     ];

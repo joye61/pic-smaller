@@ -1,6 +1,3 @@
-import { GifProcessOption } from "./GifImage";
-import { JpegProcessOption } from "./JpegImage";
-import { PngProcessOption } from "./PngImage";
 import WorkerC from "./WorkerCompress?worker";
 import WorkerP from "./WorkerPreview?worker";
 import { useEffect } from "react";
@@ -8,10 +5,11 @@ import { uniqId } from "@/functions";
 import { toJS } from "mobx";
 import { ImageItem, homeState } from "@/states/home";
 import { OutputMessageData } from "./handler";
+import { CompressOption } from "./ImageBase";
 
 export interface MessageData {
   info: ImageItem;
-  option: JpegProcessOption | GifProcessOption | PngProcessOption;
+  option: CompressOption;
 }
 
 let workerC: Worker | null = null;
@@ -48,31 +46,13 @@ export function useWorkerHandler() {
 }
 
 export function createMessageData(item: ImageItem): MessageData {
-  const option: Partial<MessageData["option"]> = {
-    maxPreviewSize: homeState.option.maxPreviewSize,
-    resizeWidth: homeState.option.resizeWidth,
-    resizeHeight: homeState.option.resizeHeight,
-  };
-  const mime = item.blob.type.toLowerCase();
-  if (["image/jpeg", "image/webp"].includes(mime)) {
-    (<JpegProcessOption>option).quality = homeState.option.jpeg.quality;
-  }
-  if (mime === "image/png") {
-    (<PngProcessOption>option).colors = homeState.option.png.colors;
-    (<PngProcessOption>option).dithering = homeState.option.png.dithering;
-  }
-  if (mime === "image/gif") {
-    (<GifProcessOption>option).colors = homeState.option.gif.colors;
-    (<GifProcessOption>option).dithering = homeState.option.gif.dithering;
-  }
-
   return {
     info: {
       key: item.key,
       name: item.name,
       blob: item.blob,
     },
-    option: option as MessageData["option"],
+    option: toJS(homeState.option),
   };
 }
 

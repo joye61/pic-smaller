@@ -1,13 +1,9 @@
 import {
+  CompressOption,
   ImageBase,
   ImageInfo,
-  ProcessOption,
   ProcessOutput,
 } from "./ImageBase";
-
-export interface JpegProcessOption extends ProcessOption {
-  quality: number; // 0-1
-}
 
 /**
  * JPEG/JPG/WEBP is compatible
@@ -21,19 +17,18 @@ export class JpegImage extends ImageBase {
    */
   public static async create(
     info: Omit<ImageInfo, "width" | "height">,
-    option: JpegProcessOption
+    option: CompressOption
   ) {
     const dimension = await ImageBase.getDimension(info.blob);
     return new JpegImage({ ...info, ...dimension }, option);
   }
 
   async compress(): Promise<ProcessOutput> {
-    const option = <JpegProcessOption>this.option;
     const dimension = this.getOutputDimension();
     const blob = await this.createBlob(
       dimension.width,
       dimension.height,
-      option.quality
+      this.option.jpeg.quality
     );
     return {
       ...dimension,

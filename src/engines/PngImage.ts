@@ -4,17 +4,12 @@
  */
 
 import {
+  CompressOption,
   ImageBase,
   ImageInfo,
-  ProcessOption,
   ProcessOutput,
 } from "./ImageBase";
 import { Module } from "./PngWasmModule";
-
-export interface PngProcessOption extends ProcessOption {
-  colors: number; // 2-256
-  dithering: number; // 0-1,
-}
 
 export class PngImage extends ImageBase {
   /**
@@ -25,14 +20,13 @@ export class PngImage extends ImageBase {
    */
   public static async create(
     info: Omit<ImageInfo, "width" | "height">,
-    option: PngProcessOption
+    option: CompressOption
   ) {
     const dimension = await ImageBase.getDimension(info.blob);
     return new PngImage({ ...info, ...dimension }, option);
   }
 
   async compress(): Promise<ProcessOutput> {
-    const option = <PngProcessOption>this.option;
     const { width, height } = this.getOutputDimension();
     const { context } = await this.createCanvas(width, height);
     const imageData = context.getImageData(0, 0, width, height).data;
@@ -49,8 +43,8 @@ export class PngImage extends ImageBase {
       const result = Module._compress(
         width,
         height,
-        option.colors,
-        option.dithering,
+        this.option.png.colors,
+        this.option.png.dithering,
         buffer,
         outputSizePointer
       );

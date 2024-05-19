@@ -35,5 +35,6 @@ npm run dev
 
 ## Thanks
 
+- [ant-design](https://github.com/ant-design/ant-design) Provides React-based UI solutions
 - [wasm-image-compressor](https://github.com/antelle/wasm-image-compressor) Provides PNG image compression implementation based on Webassembly
 - [gifsicle-wasm-browser](https://github.com/renzhezhilu/gifsicle-wasm-browser) Provides Gif image compression implementation based on Webassembly
