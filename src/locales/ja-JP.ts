@@ -35,13 +35,15 @@ const localeData: LocaleData = {
     newDimension: "新しいディメンション",
   },
   optionPannel: {
-    failTip: '小さくすることができません。パラメータを調整して再試行してください。',
-    help: '一般に、オプションの値が大きいほど圧縮率は低くなりますが、画像はより鮮明になります。 このオプションの機能がわからない場合は、複数回試して圧縮効果を比較してください。',
+    failTip:
+      "小さくすることができません。パラメータを調整して再試行してください。",
+    help: "一般に、オプションの値が大きいほど圧縮率は低くなりますが、画像はより鮮明になります。 このオプションの機能がわからない場合は、複数回試して圧縮効果を比較してください。",
     resizeLable: "画像のサイズを変更する",
     formatLable: "出力形式を設定",
     jpegLable: "JPEG/WEBPパラメータ",
     pngLable: "PNG パラメータ",
     gifLable: "GIF パラメータ",
+    avifLable: "AVIF パラメータ",
     unChanged: "スケーリングなし",
     toWidth: "幅を設定し、高さは自動的に拡大縮小します",
     toHeight: "高さを設定すると、幅は自動的に拡大縮小されます",
@@ -53,6 +55,8 @@ const localeData: LocaleData = {
     colorsDesc: "出力色の数を設定します (2-256)",
     pngDithering: "ディザリング係数を設定します (0-1)",
     gifDithering: "ディザリングをオンにする",
+    avifQuality: "出力画質を設定します (1-100)",
+    avifSpeed: "圧縮速度を設定します (1-10)",
   },
   error404: {
     backHome: "ホームページに戻る",

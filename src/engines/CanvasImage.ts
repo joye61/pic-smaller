@@ -8,7 +8,7 @@ import {
 /**
  * JPEG/JPG/WEBP is compatible
  */
-export class JpegImage extends ImageBase {
+export class CanvasImage extends ImageBase {
   /**
    * Create JpegImage instance
    * @param info
@@ -20,7 +20,7 @@ export class JpegImage extends ImageBase {
     option: CompressOption
   ) {
     const dimension = await ImageBase.getDimension(info.blob);
-    return new JpegImage({ ...info, ...dimension }, option);
+    return new CanvasImage({ ...info, ...dimension }, option);
   }
 
   async compress(): Promise<ProcessOutput> {

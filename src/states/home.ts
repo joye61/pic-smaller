@@ -1,7 +1,5 @@
 import { CompressOption, ProcessOutput } from "@/engines/ImageBase";
 import { createCompressTask } from "@/engines/transform";
-// import { ProcessOutput } from "@/libs/ImageBase";
-// import { createCompressTask } from "@/libs/transform";
 import { makeAutoObservable } from "mobx";
 
 export const DefaultCompressOption: CompressOption = {
@@ -19,6 +17,10 @@ export const DefaultCompressOption: CompressOption = {
   gif: {
     colors: 32,
     dithering: false,
+  },
+  avif: {
+    quality: 50,
+    speed: 8,
   },
 };
 

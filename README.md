@@ -7,13 +7,14 @@
 <div><img src="https://txx.cssrefs.com/demo1.png"></div>
 <br/>
 <div><img src="https://txx.cssrefs.com/demo2.png"></div>
+<br/>
+<div><img src="https://txx.cssrefs.com/demo3.png"></div>
 
 <br/>
 
 ## Usage
 
 Pic smaller has been deployed to [`vercel`](https://vercel.com/), you can use it by visiting the URL [pic-smaller.vercel.app](https://pic-smaller.vercel.app). Due to the GFW, Chinese users can use it by visiting the URL [txx.cssrefs.com](https://txx.cssrefs.com)
-
 
 ## Develop
 
@@ -37,4 +38,5 @@ npm run dev
 
 - [ant-design](https://github.com/ant-design/ant-design) Provides React-based UI solutions
 - [wasm-image-compressor](https://github.com/antelle/wasm-image-compressor) Provides PNG image compression implementation based on Webassembly
-- [gifsicle-wasm-browser](https://github.com/renzhezhilu/gifsicle-wasm-browser) Provides Gif image compression implementation based on Webassembly
+- [gifsicle-wasm-browser](https://github.com/renzhezhilu/gifsicle-wasm-browser) Provides GIF image compression implementation based on Webassembly
+- [wasm_avif](https://github.com/packurl/wasm_avif) Provides AVIF image compression implementation based on Webassembly

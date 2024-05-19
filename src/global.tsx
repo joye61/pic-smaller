@@ -20,15 +20,6 @@ export class GlobalState {
   public lang: string = "en-US";
   public locale: LocaleData | null = null;
   public loading: boolean = false;
-  public mimes: Record<string, string> = {
-    jpg: "image/jpeg",
-    jpeg: "image/jpeg",
-    png: "image/png",
-    webp: "image/webp",
-    gif: "image/gif",
-    // svg: "image/svg+xml",
-  };
-
   constructor() {
     makeAutoObservable(this);
   }

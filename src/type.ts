@@ -39,6 +39,9 @@ export interface LocaleData {
     jpegLable: string;
     pngLable: string;
     gifLable: string;
+    avifLable: string;
+    avifQuality: string;
+    avifSpeed: string;
     help: string;
     failTip: string;
     unChanged: string;

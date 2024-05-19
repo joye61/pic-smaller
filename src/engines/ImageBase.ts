@@ -12,15 +12,19 @@ export interface CompressOption {
   resizeWidth?: number;
   resizeHeight?: number;
   jpeg: {
-    quality: number;
+    quality: number; // 0-1
   };
   png: {
-    colors: number;
-    dithering: number;
+    colors: number; // 2-256
+    dithering: number; // 0-1
   };
   gif: {
-    colors: number;
-    dithering: boolean;
+    colors: number; // 2-256
+    dithering: boolean; // boolean
+  };
+  avif: {
+    quality: number; // 1 - 100
+    speed: number; //  1 - 10
   };
 }
 

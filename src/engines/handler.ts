@@ -1,7 +1,8 @@
 import { CompressOption, ImageInfo, ProcessOutput } from "./ImageBase";
 import { GifImage } from "./GifImage";
-import { JpegImage } from "./JpegImage";
+import { CanvasImage } from "./CanvasImage";
 import { PngImage } from "./PngImage";
+import { AvifImage } from "./AvifImage";
 
 export interface MessageData {
   info: Omit<ImageInfo, "width" | "height">;
@@ -16,7 +17,11 @@ export interface OutputMessageData extends Omit<ImageInfo, "name" | "blob"> {
 export async function createHandler(data: MessageData) {
   const mime = data.info.blob.type.toLowerCase();
   if (["image/jpeg", "image/webp"].includes(mime)) {
-    return JpegImage.create(data.info, data.option);
+    return CanvasImage.create(data.info, data.option);
+  }
+
+  if (mime === "image/avif") {
+    return AvifImage.create(data.info, data.option);
   }
 
   if (mime === "image/png") {

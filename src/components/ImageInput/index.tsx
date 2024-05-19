@@ -1,8 +1,7 @@
 import { ForwardedRef, forwardRef } from "react";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
-import { gstate } from "@/global";
-import { toJS } from "mobx";
+import { Mimes } from "@/global";
 import { createImageList } from "@/engines/transform";
 
 export const ImageInput = observer(
@@ -13,7 +12,7 @@ export const ImageInput = observer(
         className={style.file}
         type="file"
         multiple
-        accept={Object.keys(toJS(gstate.mimes))
+        accept={Object.keys(Mimes)
           .map((item) => "." + item)
           .join(",")}
         onChange={async (event) => {
