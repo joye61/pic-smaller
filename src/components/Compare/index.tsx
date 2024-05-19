@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import style from "./index.module.scss";
-import { Button, Flex, Popover, Space, Tag, theme } from "antd";
+import { Button, Flex, Popover, Space } from "antd";
 import { CloseOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { createPortal } from "react-dom";
 import { ImageItem, homeState } from "@/states/home";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { gstate } from "@/global";
-import { formatSize } from "@/functions";
 
 interface CompareData {
   oldSrc?: string;
@@ -30,7 +29,6 @@ export interface CompareState {
 
 export const Compare = observer(() => {
   const info = homeState.list.get(homeState.compareId!) as Required<ImageItem>;
-  const { token } = theme.useToken();
   const containerRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const dataRef = useRef<CompareData>({
@@ -249,18 +247,6 @@ export const Compare = observer(() => {
             }}
           />
         </Space>
-
-        <Tag className={style.before}>{formatSize(info.blob.size)}</Tag>
-        <Tag
-          className={style.after}
-          color={
-            info.blob.size > info.compress.blob.size
-              ? token.colorSuccess
-              : token.colorError
-          }
-        >
-          {formatSize(info.compress.blob.size)}
-        </Tag>
       </>
     );
   }

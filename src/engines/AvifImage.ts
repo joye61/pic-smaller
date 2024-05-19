@@ -33,7 +33,7 @@ export class AvifImage extends ImageBase {
       const imageData = context.getImageData(0, 0, width, height).data;
 
       const bytes = new Uint8Array(imageData);
-      const result: Uint8Array = avif(
+      const result: Uint8Array = await avif(
         bytes,
         width,
         height,

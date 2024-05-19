@@ -1,26 +1,5 @@
 import avifWasmBinaryFile from "./avif.wasm?url";
 
-const imports = {
-  wbg: {
-    __wbg_log_12edb8942696c207: (p, n) => {
-      console.log(
-        new TextDecoder().decode(
-          new Uint8Array(wasm.memory.buffer).subarray(p, p + n)
-        )
-      );
-    },
-  },
-};
-const {
-  instance: { exports: wasm },
-} = await WebAssembly.instantiateStreaming(
-  await fetch(avifWasmBinaryFile, { cache: "force-cache" }),
-  imports
-);
-const malloc = wasm.__wbindgen_malloc;
-const free = wasm.__wbindgen_free;
-const pointer = wasm.__wbindgen_add_to_stack_pointer;
-
 /**
  * Encodes the supplied ImageData rgba array.
  * @param {Uint8Array} bytes
@@ -30,7 +9,26 @@ const pointer = wasm.__wbindgen_add_to_stack_pointer;
  * @param {number} speed (1 to 10)
  * @return {Uint8Array}
  */
-export const avif = (bytes, width, height, quality = 50, speed = 6) => {
+export const avif = async (bytes, width, height, quality = 50, speed = 6) => {
+  const imports = {
+    wbg: {
+      __wbg_log_12edb8942696c207: (p, n) => {
+        new TextDecoder().decode(
+          new Uint8Array(wasm.memory.buffer).subarray(p, p + n)
+        );
+      },
+    },
+  };
+  const {
+    instance: { exports: wasm },
+  } = await WebAssembly.instantiateStreaming(
+    await fetch(avifWasmBinaryFile, { cache: "force-cache" }),
+    imports
+  );
+  const malloc = wasm.__wbindgen_malloc;
+  const free = wasm.__wbindgen_free;
+  const pointer = wasm.__wbindgen_add_to_stack_pointer;
+
   const n1 = bytes.length;
   const p1 = malloc(n1, 1);
   const r = pointer(-16);
