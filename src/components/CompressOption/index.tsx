@@ -2,7 +2,7 @@ import { Checkbox, Divider, InputNumber, Select, Slider } from "antd";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 import { DefaultCompressOption, homeState } from "@/states/home";
-import { gstate } from "@/global";
+import { Mimes, gstate } from "@/global";
 import { OptionItem } from "../OptionItem";
 
 export const CompressOption = observer(() => {
@@ -153,37 +153,41 @@ export const CompressOption = observer(() => {
         />
       </OptionItem>
 
-      <Divider orientation="left" orientationMargin="0">
-        {gstate.locale?.optionPannel.avifLable}
-      </Divider>
+      {Mimes.avif && (
+        <>
+          <Divider orientation="left" orientationMargin="0">
+            {gstate.locale?.optionPannel.avifLable}
+          </Divider>
 
-      <OptionItem desc={gstate.locale?.optionPannel.avifQuality}>
-        <Slider
-          defaultValue={DefaultCompressOption.png.colors}
-          value={homeState.tempOption.avif.quality}
-          min={1}
-          max={100}
-          step={1}
-          disabled={disabled}
-          onChange={(value) => {
-            homeState.tempOption.avif.quality = value;
-          }}
-        />
-      </OptionItem>
+          <OptionItem desc={gstate.locale?.optionPannel.avifQuality}>
+            <Slider
+              defaultValue={DefaultCompressOption.png.colors}
+              value={homeState.tempOption.avif.quality}
+              min={1}
+              max={100}
+              step={1}
+              disabled={disabled}
+              onChange={(value) => {
+                homeState.tempOption.avif.quality = value;
+              }}
+            />
+          </OptionItem>
 
-      <OptionItem desc={gstate.locale?.optionPannel.avifSpeed}>
-        <Slider
-          defaultValue={DefaultCompressOption.avif.speed}
-          value={homeState.tempOption.avif.speed}
-          min={1}
-          max={10}
-          step={1}
-          disabled={disabled}
-          onChange={(value) => {
-            homeState.tempOption.avif.speed = value;
-          }}
-        />
-      </OptionItem>
+          <OptionItem desc={gstate.locale?.optionPannel.avifSpeed}>
+            <Slider
+              defaultValue={DefaultCompressOption.avif.speed}
+              value={homeState.tempOption.avif.speed}
+              min={1}
+              max={10}
+              step={1}
+              disabled={disabled}
+              onChange={(value) => {
+                homeState.tempOption.avif.speed = value;
+              }}
+            />
+          </OptionItem>
+        </>
+      )}
     </>
   );
 });
