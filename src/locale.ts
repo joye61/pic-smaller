@@ -15,12 +15,12 @@ export const langList: MenuProps["items"] = [
   { key: "zh-CN", label: "简体中文" },
 ];
 
-export function getLang() {
+function getLang() {
   let lang = window.localStorage.getItem(localeCacheKey);
   if (!lang) {
     lang = getUserLocale();
   }
-  gstate.lang = lang ?? defaultLang;
+  return lang ?? defaultLang;
 }
 
 export async function setLocaleData() {
@@ -38,6 +38,6 @@ export async function changeLang(lang: string) {
 }
 
 export async function initLangSetting() {
-  getLang();
-  await setLocaleData();
+  const lang = getLang();
+  await changeLang(lang);
 }
