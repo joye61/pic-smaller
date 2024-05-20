@@ -23,8 +23,8 @@ function getLang() {
   return lang ?? defaultLang;
 }
 
-async function setLocaleData() {
-  let importer: any = locales[`/src/locales/${gstate.lang}.ts`];
+async function setLocaleData(lang: string) {
+  let importer: any = locales[`/src/locales/${lang}.ts`];
   if (!importer) {
     importer = locales[`/src/locales/${defaultLang}.ts`];
   }
@@ -33,8 +33,8 @@ async function setLocaleData() {
 
 export async function changeLang(lang: string) {
   gstate.lang = lang;
-  window.localStorage.setItem(localeCacheKey, gstate.lang);
-  await setLocaleData();
+  window.localStorage.setItem(localeCacheKey, lang);
+  await setLocaleData(lang);
 }
 
 export async function initLangSetting() {
