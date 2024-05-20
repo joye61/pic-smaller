@@ -4,17 +4,19 @@
 
 <br/>
 
-<div><img src="https://txx.cssrefs.com/demo1.png"></div>
+<div><img src="https://picsmaller.com/demo1.png"></div>
 <br/>
-<div><img src="https://txx.cssrefs.com/demo2.png"></div>
+<div><img src="https://picsmaller.com/demo2.png"></div>
 <br/>
-<div><img src="https://txx.cssrefs.com/demo3.png"></div>
+<div><img src="https://picsmaller.com/demo3.png"></div>
 
 <br/>
 
 ## Usage
 
-Pic smaller has been deployed to [`vercel`](https://vercel.com/), you can use it by visiting the URL [pic-smaller.vercel.app](https://pic-smaller.vercel.app). Due to the GFW, Chinese users can use it by visiting the URL [txx.cssrefs.com](https://txx.cssrefs.com)
+Pic smaller has been deployed to [`vercel`](https://vercel.com/), you can use it by visiting the URL [pic-smaller.vercel.app](https://pic-smaller.vercel.app). Due to the GFW, Chinese users can use it by visiting the URL [picsmaller.com](https://picsmaller.com/)
+
+> [picsmaller.com](https://picsmaller.com/) is a new domain that has just been applied for. The old domain [txx.cssrefs.com](https://txx.cssrefs.com/) is still accessible, but will be expired on `2025-02-22` and payment will not continue. Please use the latest domain to access the service.
 
 ## Develop
 
