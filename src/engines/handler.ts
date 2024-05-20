@@ -3,6 +3,7 @@ import { GifImage } from "./GifImage";
 import { CanvasImage } from "./CanvasImage";
 import { PngImage } from "./PngImage";
 import { AvifImage } from "./AvifImage";
+import { SvgImage } from "./SvgImage";
 
 export interface MessageData {
   info: Omit<ImageInfo, "width" | "height">;
@@ -30,5 +31,9 @@ export async function createHandler(data: MessageData) {
 
   if (mime === "image/gif") {
     return GifImage.create(data.info, data.option);
+  }
+
+  if (mime === "image/svg+xml") {
+    return SvgImage.create(data.info, data.option);
   }
 }

@@ -11,7 +11,7 @@ export const Mimes: Record<string, string> = {
   png: "image/png",
   webp: "image/webp",
   gif: "image/gif",
-  // svg: "image/svg+xml",
+  svg: "image/svg+xml",
 };
 
 export class GlobalState {
