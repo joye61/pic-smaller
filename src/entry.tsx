@@ -39,6 +39,6 @@ export async function runApp() {
 
   await initLang();
 
-  const root = document.getElementById("root") as HTMLElement;
+  const root = document.getElementById("root")!
   ReactDOM.createRoot(root).render(<App />);
 }
