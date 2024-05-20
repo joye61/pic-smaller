@@ -58,17 +58,6 @@ export class ImageBase {
   }
 
   /**
-   * Ensure original dimension exists
-   */
-  async ensureOriginalDimension() {
-    if (!this.info.width || !this.info.height) {
-      const bitmap = await createImageBitmap(this.info.blob);
-      this.info.width = bitmap.width;
-      this.info.height = bitmap.height;
-    }
-  }
-
-  /**
    * Get output image dimension, based on resize param
    * @returns Dimension
    */
