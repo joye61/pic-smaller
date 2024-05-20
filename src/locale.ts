@@ -23,7 +23,7 @@ function getLang() {
   return lang ?? defaultLang;
 }
 
-export async function setLocaleData() {
+async function setLocaleData() {
   let importer: any = locales[`/src/locales/${gstate.lang}.ts`];
   if (!importer) {
     importer = locales[`/src/locales/${defaultLang}.ts`];
