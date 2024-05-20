@@ -8,7 +8,6 @@ import { Mimes } from "./global";
  */
 export function normalize(pathname: string) {
   const base = import.meta.env.BASE_URL;
-  console.log(base, pathname);
   if (pathname.startsWith(base)) {
     pathname = pathname.substring(base.length);
   }
