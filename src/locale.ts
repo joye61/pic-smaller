@@ -37,7 +37,7 @@ export async function changeLang(lang: string) {
   await setLocaleData(lang);
 }
 
-export async function initLangSetting() {
+export async function initLang() {
   const lang = getLang();
   await changeLang(lang);
 }
