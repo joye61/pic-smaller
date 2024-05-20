@@ -1,5 +1,5 @@
 import { filesize } from "filesize";
-import { Mimes } from './global';
+import { Mimes } from "./global";
 
 /**
  * 格式化路径
@@ -7,14 +7,18 @@ import { Mimes } from './global';
  * @returns
  */
 export function normalize(pathname: string) {
+  const base = import.meta.env.BASE_URL;
+  if (pathname.startsWith(base)) {
+    pathname = pathname.substring(base.length);
+  }
   return pathname.replace(/^\/*|\/*$/g, "");
 }
 
 // 通过自增生成全局唯一的数字ID
-let __UnidIdIndex = 0;
+let __UniqIdIndex = 0;
 export function uniqId() {
-  __UnidIdIndex += 1;
-  return __UnidIdIndex;
+  __UniqIdIndex += 1;
+  return __UniqIdIndex;
 }
 
 /**
@@ -60,9 +64,9 @@ export function getUniqNameOnNames(names: Set<string>, name: string): string {
 }
 
 /**
- * Wait some time 
- * @param millisecond 
- * @returns 
+ * Wait some time
+ * @param millisecond
+ * @returns
  */
 export async function wait(millisecond: number) {
   return new Promise<void>((resolve) => {
@@ -75,7 +79,9 @@ export async function wait(millisecond: number) {
  * @param entry
  * @returns
  */
-export async function getFilesFromEntry(entry: FileSystemEntry): Promise<Array<File>> {
+export async function getFilesFromEntry(
+  entry: FileSystemEntry
+): Promise<Array<File>> {
   // If entry is a file
   if (entry.isFile) {
     const fileEntry = entry as FileSystemFileEntry;
@@ -136,5 +142,3 @@ export async function getFilesFromHandle(
 
   return [];
 }
-
-
