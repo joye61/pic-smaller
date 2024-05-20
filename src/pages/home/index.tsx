@@ -17,6 +17,7 @@ import { Logo } from "@/components/Logo";
 import { TableProps } from "antd/es/table";
 import {
   ArrowDownOutlined,
+  ArrowUpOutlined,
   CheckCircleFilled,
   ClearOutlined,
   DeleteOutlined,
@@ -26,7 +27,6 @@ import {
   GithubOutlined,
   PlusOutlined,
   ReloadOutlined,
-  WarningOutlined,
 } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 import { ImageInput } from "@/components/ImageInput";
@@ -224,7 +224,7 @@ function getColumns(token: GlobalToken, disabled: boolean) {
           <Flex align="center" justify="flex-end">
             <Typography.Text type="danger">+{formatRate}&nbsp;</Typography.Text>
             <Tooltip title={gstate.locale?.optionPannel.failTip}>
-              <WarningOutlined
+              <ArrowUpOutlined
                 style={{ color: token.colorError, cursor: "pointer" }}
               />
             </Tooltip>
