@@ -1,5 +1,5 @@
 /**
- * Ref: https://github.com/image-size/image-size/blob/main/lib/types/svg.ts
+ * Reference: https://github.com/image-size/image-size/blob/main/lib/types/svg.ts
  */
 
 import { Dimension } from "./ImageBase";

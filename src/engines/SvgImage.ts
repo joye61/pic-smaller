@@ -6,6 +6,7 @@ import {
   ProcessOutput,
 } from "./ImageBase";
 import { getSvgDimension } from "./svgParse";
+import { optimize } from "svgo";
 
 /**
  * JPEG/JPG/WEBP is compatible
@@ -42,9 +43,7 @@ export class SvgImage extends ImageBase {
       return this.failResult();
     }
 
-    const loader = await import("svgo");
-    const result = loader.optimize(this.data);
-    console.log(this.data, result.data);
+    const result = optimize(this.data);
     return {
       width: this.info.width,
       height: this.info.height,
@@ -57,7 +56,6 @@ export class SvgImage extends ImageBase {
    * @returns
    */
   async preview(): Promise<ProcessOutput> {
-    console.log(this);
     return this.failResult();
   }
 }
