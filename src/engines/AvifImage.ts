@@ -20,7 +20,7 @@ export class AvifImage extends ImageBase {
    */
   public static async create(
     info: Omit<ImageInfo, "width" | "height">,
-    option: CompressOption
+    option: CompressOption,
   ) {
     const dimension = await ImageBase.getDimension(info.blob);
     return new AvifImage({ ...info, ...dimension }, option);
@@ -38,7 +38,7 @@ export class AvifImage extends ImageBase {
         width,
         height,
         this.option.avif.quality,
-        this.option.avif.speed
+        this.option.avif.speed,
       );
       return {
         width,
@@ -46,7 +46,6 @@ export class AvifImage extends ImageBase {
         blob: new Blob([result]),
       };
     } catch (error) {
-      console.log(error);
       return this.failResult();
     }
   }

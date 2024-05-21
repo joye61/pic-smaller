@@ -1,5 +1,5 @@
 import { filesize } from "filesize";
-import { Mimes } from "./global";
+import { Mimes } from "./mimes";
 
 /**
  * 格式化路径

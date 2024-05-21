@@ -40,7 +40,10 @@ export interface Dimension {
 }
 
 export class ImageBase {
-  constructor(public info: ImageInfo, public option: CompressOption) {}
+  constructor(
+    public info: ImageInfo,
+    public option: CompressOption,
+  ) {}
 
   /**
    * Get dimension from image blob
@@ -55,17 +58,6 @@ export class ImageBase {
     };
     bitmap.close();
     return result;
-  }
-
-  /**
-   * Ensure original dimension exists
-   */
-  async ensureOriginalDimension() {
-    if (!this.info.width || !this.info.height) {
-      const bitmap = await createImageBitmap(this.info.blob);
-      this.info.width = bitmap.width;
-      this.info.height = bitmap.height;
-    }
   }
 
   /**
@@ -158,7 +150,7 @@ export class ImageBase {
 
   async createCanvas(
     width: number,
-    height: number
+    height: number,
   ): Promise<{
     canvas: OffscreenCanvas;
     context: OffscreenCanvasRenderingContext2D;
@@ -175,7 +167,7 @@ export class ImageBase {
       0,
       0,
       width,
-      height
+      height,
     );
     image.close();
     return { canvas, context };

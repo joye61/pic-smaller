@@ -14,7 +14,7 @@ export const avif = async (bytes, width, height, quality = 50, speed = 6) => {
     wbg: {
       __wbg_log_12edb8942696c207: (p, n) => {
         new TextDecoder().decode(
-          new Uint8Array(wasm.memory.buffer).subarray(p, p + n)
+          new Uint8Array(wasm.memory.buffer).subarray(p, p + n),
         );
       },
     },
@@ -23,7 +23,7 @@ export const avif = async (bytes, width, height, quality = 50, speed = 6) => {
     instance: { exports: wasm },
   } = await WebAssembly.instantiateStreaming(
     await fetch(avifWasmBinaryFile, { cache: "force-cache" }),
-    imports
+    imports,
   );
   const malloc = wasm.__wbindgen_malloc;
   const free = wasm.__wbindgen_free;

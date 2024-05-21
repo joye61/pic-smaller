@@ -20,7 +20,7 @@ export class PngImage extends ImageBase {
    */
   public static async create(
     info: Omit<ImageInfo, "width" | "height">,
-    option: CompressOption
+    option: CompressOption,
   ) {
     const dimension = await ImageBase.getDimension(info.blob);
     return new PngImage({ ...info, ...dimension }, option);
@@ -46,7 +46,7 @@ export class PngImage extends ImageBase {
         this.option.png.colors,
         this.option.png.dithering,
         buffer,
-        outputSizePointer
+        outputSizePointer,
       );
       if (result) {
         return this.failResult();

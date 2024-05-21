@@ -17,7 +17,7 @@ export class CanvasImage extends ImageBase {
    */
   public static async create(
     info: Omit<ImageInfo, "width" | "height">,
-    option: CompressOption
+    option: CompressOption,
   ) {
     const dimension = await ImageBase.getDimension(info.blob);
     return new CanvasImage({ ...info, ...dimension }, option);
@@ -28,7 +28,7 @@ export class CanvasImage extends ImageBase {
     const blob = await this.createBlob(
       dimension.width,
       dimension.height,
-      this.option.jpeg.quality
+      this.option.jpeg.quality,
     );
     return {
       ...dimension,

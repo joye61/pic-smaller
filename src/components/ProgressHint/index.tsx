@@ -36,7 +36,9 @@ export const ProgressHint = observer(() => {
         size={14}
       />
       <div className={style.progress}>
-        <Typography.Text strong type="success">{info.loadedNum}</Typography.Text>
+        <Typography.Text strong type="success">
+          {info.loadedNum}
+        </Typography.Text>
         <Typography.Text type="secondary">
           &nbsp;/&nbsp;{info.totalNum}&nbsp;&nbsp;&nbsp;&nbsp;
         </Typography.Text>

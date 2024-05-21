@@ -301,7 +301,7 @@ export default observer(() => {
     }
   });
   const [scrollHeight, setScrollHeight] = useState<number | undefined>(
-    undefined
+    undefined,
   );
   const scrollY = scrollHeight ? { y: scrollHeight } : undefined;
 
