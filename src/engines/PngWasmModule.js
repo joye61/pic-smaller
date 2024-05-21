@@ -28,7 +28,7 @@ if (Module["ENVIRONMENT"]) {
     ENVIRONMENT_IS_SHELL = true;
   } else {
     throw new Error(
-      "The provided Module['ENVIRONMENT'] value is not valid. It must be one of: WEB|WORKER|NODE|SHELL."
+      "The provided Module['ENVIRONMENT'] value is not valid. It must be one of: WEB|WORKER|NODE|SHELL.",
     );
   }
 } else {
@@ -272,7 +272,7 @@ var Runtime = {
     if (!type) return Math.min(size, 8);
     return Math.min(
       size || (type ? Runtime.getNativeFieldSize(type) : 0),
-      Runtime.QUANTUM_SIZE
+      Runtime.QUANTUM_SIZE,
     );
   },
   dynCall: function (sig, ptr, args) {
@@ -324,7 +324,7 @@ var Runtime = {
           return Runtime.dynCall(
             sig,
             func,
-            Array.prototype.slice.call(arguments)
+            Array.prototype.slice.call(arguments),
           );
         };
       }
@@ -393,7 +393,7 @@ function getCFunc(ident) {
     func,
     "Cannot call unknown function " +
       ident +
-      " (perhaps LLVM optimizations or closure removed it?)"
+      " (perhaps LLVM optimizations or closure removed it?)",
   );
   return func;
 }
@@ -541,7 +541,7 @@ function setValue(ptr, value, type, noSafe) {
                 0) >>>
               0
             : ~~+Math_ceil(
-                (tempDouble - +(~~tempDouble >>> 0)) / 4294967296
+                (tempDouble - +(~~tempDouble >>> 0)) / 4294967296,
               ) >>> 0
           : 0),
       ]),
@@ -613,7 +613,7 @@ function allocate(slab, types, allocator, ptr) {
       Runtime.staticAlloc,
       Runtime.dynamicAlloc,
     ][allocator === undefined ? ALLOC_STATIC : allocator](
-      Math.max(size, singleType ? 1 : types.length)
+      Math.max(size, singleType ? 1 : types.length),
     );
   }
   if (zeroinit) {
@@ -689,7 +689,7 @@ function Pointer_stringify(ptr, length) {
     while (length > 0) {
       curr = String.fromCharCode.apply(
         String,
-        HEAPU8.subarray(ptr, ptr + Math.min(length, MAX_CHUNK))
+        HEAPU8.subarray(ptr, ptr + Math.min(length, MAX_CHUNK)),
       );
       ret = ret ? ret + curr : curr;
       ptr += MAX_CHUNK;
@@ -871,7 +871,7 @@ function demangle(func) {
     return func;
   }
   Runtime.warnOnce(
-    "warning: build with  -s DEMANGLE_SUPPORT=1  to link in libcxxabi demangling"
+    "warning: build with  -s DEMANGLE_SUPPORT=1  to link in libcxxabi demangling",
   );
   return func;
 }
@@ -950,7 +950,7 @@ function abortOnCannotGrowMemory() {
   abort(
     "Cannot enlarge memory arrays. Either (1) compile with  -s TOTAL_MEMORY=X  with X higher than the current value " +
       TOTAL_MEMORY +
-      ", (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 "
+      ", (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ",
   );
 }
 if (!Module["reallocBuffer"])
@@ -986,7 +986,7 @@ function enlargeMemory() {
     } else {
       TOTAL_MEMORY = Math.min(
         alignUp((3 * TOTAL_MEMORY + 2147483648) / 4, PAGE_MULTIPLE),
-        LIMIT
+        LIMIT,
       );
     }
   }
@@ -1002,7 +1002,7 @@ function enlargeMemory() {
 var byteLength;
 try {
   byteLength = Function.prototype.call.bind(
-    Object.getOwnPropertyDescriptor(ArrayBuffer.prototype, "byteLength").get
+    Object.getOwnPropertyDescriptor(ArrayBuffer.prototype, "byteLength").get,
   );
   byteLength(new ArrayBuffer(4));
 } catch (e) {
@@ -1018,7 +1018,7 @@ if (TOTAL_MEMORY < TOTAL_STACK)
       TOTAL_MEMORY +
       "! (TOTAL_STACK=" +
       TOTAL_STACK +
-      ")"
+      ")",
   );
 if (Module["buffer"]) {
   buffer = Module["buffer"];
@@ -1153,7 +1153,7 @@ function intArrayToString(array) {
 Module["intArrayToString"] = intArrayToString;
 function writeStringToMemory(string, buffer, dontAddNull) {
   Runtime.warnOnce(
-    "writeStringToMemory is deprecated and should not be called! Use stringToUTF8() instead!"
+    "writeStringToMemory is deprecated and should not be called! Use stringToUTF8() instead!",
   );
   var lastChar, end;
   if (dontAddNull) {
@@ -1320,7 +1320,7 @@ function integrateWasmJS() {
     var oldBuffer = Module["buffer"];
     if (newBuffer.byteLength < oldBuffer.byteLength) {
       Module["printErr"](
-        "the new buffer in mergeMemory is smaller than the previous one. in native wasm, we should grow memory here"
+        "the new buffer in mergeMemory is smaller than the previous one. in native wasm, we should grow memory here",
       );
     }
     var oldView = new Int8Array(oldBuffer);
@@ -1329,9 +1329,9 @@ function integrateWasmJS() {
       oldView.set(
         newView.subarray(
           Module["STATIC_BASE"],
-          Module["STATIC_BASE"] + Module["STATIC_BUMP"]
+          Module["STATIC_BASE"] + Module["STATIC_BUMP"],
         ),
-        Module["STATIC_BASE"]
+        Module["STATIC_BASE"],
       );
     }
     newView.set(oldView);
@@ -1377,7 +1377,7 @@ function integrateWasmJS() {
             throw "failed to load wasm binary file at '" + wasmBinaryFile + "'";
           }
           return response["arrayBuffer"]();
-        }
+        },
       );
     }
     return new Promise(function (resolve, reject) {
@@ -1410,7 +1410,7 @@ function integrateWasmJS() {
         return Module["instantiateWasm"](info, receiveInstance);
       } catch (e) {
         Module["printErr"](
-          "Module.instantiateWasm callback failed with error: " + e
+          "Module.instantiateWasm callback failed with error: " + e,
         );
         return false;
       }
@@ -1426,7 +1426,7 @@ function integrateWasmJS() {
         .then(receiver)
         .catch(function (reason) {
           Module["printErr"](
-            "failed to asynchronously prepare wasm: " + reason
+            "failed to asynchronously prepare wasm: " + reason,
           );
           abort(reason);
         });
@@ -1437,7 +1437,7 @@ function integrateWasmJS() {
     ) {
       WebAssembly.instantiateStreaming(
         fetch(wasmBinaryFile, { credentials: "same-origin" }),
-        info
+        info,
       )
         .then(receiveInstantiatedSource)
         .catch(function (reason) {
@@ -1519,7 +1519,7 @@ function integrateWasmJS() {
     exports = doNativeWasm(global, env, providedBuffer);
     if (!exports)
       abort(
-        "no binaryen method succeeded. consider enabling more options, like interpreting, if you want that: https://github.com/kripken/emscripten/wiki/WebAssembly#binaryen-methods"
+        "no binaryen method succeeded. consider enabling more options, like interpreting, if you want that: https://github.com/kripken/emscripten/wiki/WebAssembly#binaryen-methods",
       );
     return exports;
   };
@@ -1642,7 +1642,7 @@ function ___syscall146(which, varargs) {
         assert(buffer);
         if (curr === 0 || curr === 10) {
           (stream === 1 ? Module["print"] : Module["printErr"])(
-            UTF8ArrayToString(buffer, 0)
+            UTF8ArrayToString(buffer, 0),
           );
           buffer.length = 0;
         } else {
@@ -2022,7 +2022,7 @@ if (memoryInitializer) {
         applyMemoryInitializer,
         function () {
           throw "could not load memory initializer " + memoryInitializer;
-        }
+        },
       );
     }
     if (Module["memoryInitializerRequest"]) {
@@ -2033,7 +2033,7 @@ if (memoryInitializer) {
             "a problem seems to have happened with Module.memoryInitializerRequest, status: " +
               request.status +
               ", retrying " +
-              memoryInitializer
+              memoryInitializer,
           );
           doBrowserLoad();
           return;

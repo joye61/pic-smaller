@@ -7,12 +7,10 @@ interface LogoProps {
   title?: string;
 }
 
-export const Logo = observer(
-  ({ title = "PicSmaller" }: LogoProps) => {
-    return (
-      <Flex justify="flex-start" className={style.container}>
-        <Typography.Text>{title}</Typography.Text>
-      </Flex>
-    );
-  }
-);
+export const Logo = observer(({ title = "PicSmaller" }: LogoProps) => {
+  return (
+    <Flex justify="flex-start" className={style.container}>
+      <Typography.Text>{title}</Typography.Text>
+    </Flex>
+  );
+});

@@ -19,5 +19,5 @@ globalThis.addEventListener(
         globalThis.postMessage(result);
       }
     });
-  }
+  },
 );

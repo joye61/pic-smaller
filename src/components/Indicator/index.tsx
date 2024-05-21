@@ -16,7 +16,7 @@ export function Indicator({ size, white = false }: IndicatorProps) {
       className={clsx(
         style.container,
         size === "large" && style.large,
-        white && style.white
+        white && style.white,
       )}
     >
       {bars}

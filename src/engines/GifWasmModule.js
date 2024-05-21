@@ -165,7 +165,7 @@ export const gifsicle = (function () {
         if (scriptDirectory.indexOf("blob:") !== 0) {
           scriptDirectory = scriptDirectory.substr(
             0,
-            scriptDirectory.lastIndexOf("/") + 1
+            scriptDirectory.lastIndexOf("/") + 1,
           );
         } else {
           scriptDirectory = "";
@@ -256,7 +256,7 @@ export const gifsicle = (function () {
               var ch = u0 - 65536;
               str += String.fromCharCode(
                 55296 | (ch >> 10),
-                56320 | (ch & 1023)
+                56320 | (ch & 1023),
               );
             }
           }
@@ -650,7 +650,7 @@ export const gifsicle = (function () {
               filename ? UTF8ToString(filename) : "unknown filename",
               line,
               func ? UTF8ToString(func) : "unknown function",
-            ]
+            ],
         );
       }
       var _emscripten_get_now;
@@ -727,7 +727,7 @@ export const gifsicle = (function () {
             path.split("/").filter(function (p) {
               return !!p;
             }),
-            !isAbsolute
+            !isAbsolute,
           ).join("/");
           if (!path && !isAbsolute) {
             path = ".";
@@ -788,7 +788,7 @@ export const gifsicle = (function () {
             resolvedPath.split("/").filter(function (p) {
               return !!p;
             }),
-            !resolvedAbsolute
+            !resolvedAbsolute,
           ).join("/");
           return (resolvedAbsolute ? "/" : "") + resolvedPath || ".";
         },
@@ -910,7 +910,7 @@ export const gifsicle = (function () {
                     buf,
                     0,
                     BUFSIZE,
-                    null
+                    null,
                   );
                 } catch (e) {
                   if (e.toString().indexOf("EOF") != -1) bytesRead = 0;
@@ -1077,7 +1077,7 @@ export const gifsicle = (function () {
             newCapacity,
             (prevCapacity *
               (prevCapacity < CAPACITY_DOUBLING_MAX ? 2 : 1.125)) >>>
-              0
+              0,
           );
           if (prevCapacity != 0) newCapacity = Math.max(newCapacity, 256);
           var oldContents = node.contents;
@@ -1098,7 +1098,7 @@ export const gifsicle = (function () {
             node.contents = new Uint8Array(newSize);
             if (oldContents) {
               node.contents.set(
-                oldContents.subarray(0, Math.min(newSize, node.usedBytes))
+                oldContents.subarray(0, Math.min(newSize, node.usedBytes)),
               );
             }
             node.usedBytes = newSize;
@@ -1233,7 +1233,7 @@ export const gifsicle = (function () {
               } else if (position + length <= node.usedBytes) {
                 node.contents.set(
                   buffer.subarray(offset, offset + length),
-                  position
+                  position,
                 );
                 return length;
               }
@@ -1242,7 +1242,7 @@ export const gifsicle = (function () {
             if (node.contents.subarray && buffer.subarray)
               node.contents.set(
                 buffer.subarray(offset, offset + length),
-                position
+                position,
               );
             else {
               for (var i = 0; i < length; i++) {
@@ -1270,7 +1270,7 @@ export const gifsicle = (function () {
             MEMFS.expandFileStorage(stream.node, offset + length);
             stream.node.usedBytes = Math.max(
               stream.node.usedBytes,
-              offset + length
+              offset + length,
             );
           },
           mmap: function (stream, address, length, position, prot, flags) {
@@ -1292,7 +1292,7 @@ export const gifsicle = (function () {
                   contents = Array.prototype.slice.call(
                     contents,
                     position,
-                    position + length
+                    position + length,
                   );
                 }
               }
@@ -1369,7 +1369,7 @@ export const gifsicle = (function () {
             path.split("/").filter(function (p) {
               return !!p;
             }),
-            false
+            false,
           );
           var current = FS.root;
           var current_path = "/";
@@ -1391,7 +1391,7 @@ export const gifsicle = (function () {
                 var link = FS.readlink(current_path);
                 current_path = PATH_FS.resolve(
                   PATH.dirname(current_path),
-                  link
+                  link,
                 );
                 var lookup = FS.lookupPath(current_path, {
                   recurse_count: opts.recurse_count,
@@ -1698,7 +1698,7 @@ export const gifsicle = (function () {
             err(
               "warning: " +
                 FS.syncFSRequests +
-                " FS.syncfs operations in flight at once, probably just doing extra work"
+                " FS.syncfs operations in flight at once, probably just doing extra work",
             );
           }
           var mounts = FS.getMounts(FS.root.mount);
@@ -1938,7 +1938,7 @@ export const gifsicle = (function () {
                 "', '" +
                 new_path +
                 "') threw an exception: " +
-                e.message
+                e.message,
             );
           }
           FS.hashRemoveNode(old_node);
@@ -1958,7 +1958,7 @@ export const gifsicle = (function () {
                 "', '" +
                 new_path +
                 "') threw an exception: " +
-                e.message
+                e.message,
             );
           }
         },
@@ -1986,7 +1986,7 @@ export const gifsicle = (function () {
               "FS.trackingDelegate['willDeletePath']('" +
                 path +
                 "') threw an exception: " +
-                e.message
+                e.message,
             );
           }
           parent.node_ops.rmdir(parent, name);
@@ -1998,7 +1998,7 @@ export const gifsicle = (function () {
               "FS.trackingDelegate['onDeletePath']('" +
                 path +
                 "') threw an exception: " +
-                e.message
+                e.message,
             );
           }
         },
@@ -2036,7 +2036,7 @@ export const gifsicle = (function () {
               "FS.trackingDelegate['willDeletePath']('" +
                 path +
                 "') threw an exception: " +
-                e.message
+                e.message,
             );
           }
           parent.node_ops.unlink(parent, name);
@@ -2048,7 +2048,7 @@ export const gifsicle = (function () {
               "FS.trackingDelegate['onDeletePath']('" +
                 path +
                 "') threw an exception: " +
-                e.message
+                e.message,
             );
           }
         },
@@ -2063,7 +2063,7 @@ export const gifsicle = (function () {
           }
           return PATH_FS.resolve(
             FS.getPath(link.parent),
-            link.node_ops.readlink(link)
+            link.node_ops.readlink(link),
           );
         },
         stat: function (path, dontFollow) {
@@ -2253,7 +2253,7 @@ export const gifsicle = (function () {
               error: false,
             },
             fd_start,
-            fd_end
+            fd_end,
           );
           if (stream.stream_ops.open) {
             stream.stream_ops.open(stream);
@@ -2273,7 +2273,7 @@ export const gifsicle = (function () {
               "FS.trackingDelegate['onOpenFile']('" +
                 path +
                 "', flags) threw an exception: " +
-                e.message
+                e.message,
             );
           }
           return stream;
@@ -2338,7 +2338,7 @@ export const gifsicle = (function () {
             buffer,
             offset,
             length,
-            position
+            position,
           );
           if (!seeking) stream.position += bytesRead;
           return bytesRead;
@@ -2374,7 +2374,7 @@ export const gifsicle = (function () {
             offset,
             length,
             position,
-            canOwn
+            canOwn,
           );
           if (!seeking) stream.position += bytesWritten;
           try {
@@ -2385,7 +2385,7 @@ export const gifsicle = (function () {
               "FS.trackingDelegate['onWriteToFile']('" +
                 stream.path +
                 "') threw an exception: " +
-                e.message
+                e.message,
             );
           }
           return bytesWritten;
@@ -2428,7 +2428,7 @@ export const gifsicle = (function () {
             length,
             position,
             prot,
-            flags
+            flags,
           );
         },
         msync: function (stream, buffer, offset, length, mmapFlags) {
@@ -2440,7 +2440,7 @@ export const gifsicle = (function () {
             buffer,
             offset,
             length,
-            mmapFlags
+            mmapFlags,
           );
         },
         munmap: function (stream) {
@@ -2587,7 +2587,7 @@ export const gifsicle = (function () {
               },
             },
             {},
-            "/proc/self/fd"
+            "/proc/self/fd",
           );
         },
         createStandardStreams: function () {
@@ -2726,7 +2726,7 @@ export const gifsicle = (function () {
         createFolder: function (parent, name, canRead, canWrite) {
           var path = PATH.join2(
             typeof parent === "string" ? parent : FS.getPath(parent),
-            name
+            name,
           );
           var mode = FS.getMode(canRead, canWrite);
           return FS.mkdir(path, mode);
@@ -2748,7 +2748,7 @@ export const gifsicle = (function () {
         createFile: function (parent, name, properties, canRead, canWrite) {
           var path = PATH.join2(
             typeof parent === "string" ? parent : FS.getPath(parent),
-            name
+            name,
           );
           var mode = FS.getMode(canRead, canWrite);
           return FS.create(path, mode);
@@ -2759,12 +2759,12 @@ export const gifsicle = (function () {
           data,
           canRead,
           canWrite,
-          canOwn
+          canOwn,
         ) {
           var path = name
             ? PATH.join2(
                 typeof parent === "string" ? parent : FS.getPath(parent),
-                name
+                name,
               )
             : parent;
           var mode = FS.getMode(canRead, canWrite);
@@ -2787,7 +2787,7 @@ export const gifsicle = (function () {
         createDevice: function (parent, name, input, output) {
           var path = PATH.join2(
             typeof parent === "string" ? parent : FS.getPath(parent),
-            name
+            name,
           );
           var mode = FS.getMode(!!input, !!output);
           if (!FS.createDevice.major) FS.createDevice.major = 64;
@@ -2841,7 +2841,7 @@ export const gifsicle = (function () {
         createLink: function (parent, name, target, canRead, canWrite) {
           var path = PATH.join2(
             typeof parent === "string" ? parent : FS.getPath(parent),
-            name
+            name,
           );
           return FS.symlink(target, path);
         },
@@ -2851,7 +2851,7 @@ export const gifsicle = (function () {
           var success = true;
           if (typeof XMLHttpRequest !== "undefined") {
             throw new Error(
-              "Lazy loading should have been performed (contents set) in createLazyFile, but it was not. Lazy loading only works in web workers. Use --embed-file or --preload-file in emcc on the main thread."
+              "Lazy loading should have been performed (contents set) in createLazyFile, but it was not. Lazy loading only works in web workers. Use --embed-file or --preload-file in emcc on the main thread.",
             );
           } else if (read_) {
             try {
@@ -2892,7 +2892,7 @@ export const gifsicle = (function () {
                 !((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304)
               )
                 throw new Error(
-                  "Couldn't load " + url + ". Status: " + xhr.status
+                  "Couldn't load " + url + ". Status: " + xhr.status,
                 );
               var datalength = Number(xhr.getResponseHeader("Content-length"));
               var header;
@@ -2911,11 +2911,13 @@ export const gifsicle = (function () {
                       from +
                       ", " +
                       to +
-                      ") or no bytes requested!"
+                      ") or no bytes requested!",
                   );
                 if (to > datalength - 1)
                   throw new Error(
-                    "only " + datalength + " bytes available! programmer error!"
+                    "only " +
+                      datalength +
+                      " bytes available! programmer error!",
                   );
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", url, false);
@@ -2934,7 +2936,7 @@ export const gifsicle = (function () {
                   )
                 )
                   throw new Error(
-                    "Couldn't load " + url + ". Status: " + xhr.status
+                    "Couldn't load " + url + ". Status: " + xhr.status,
                   );
                 if (xhr.response !== undefined) {
                   return new Uint8Array(xhr.response || []);
@@ -2959,7 +2961,7 @@ export const gifsicle = (function () {
                 datalength = this.getter(0).length;
                 chunkSize = datalength;
                 out(
-                  "LazyFiles on gzip forces download of the whole file when length is accessed"
+                  "LazyFiles on gzip forces download of the whole file when length is accessed",
                 );
               }
               this._length = datalength;
@@ -3028,7 +3030,7 @@ export const gifsicle = (function () {
             buffer,
             offset,
             length,
-            position
+            position,
           ) {
             if (!FS.forceLoadFile(node)) {
               throw new FS.ErrnoError(29);
@@ -3060,7 +3062,7 @@ export const gifsicle = (function () {
           onerror,
           dontCreateFile,
           canOwn,
-          preFinish
+          preFinish,
         ) {
           Browser.init();
           var fullname = name
@@ -3077,7 +3079,7 @@ export const gifsicle = (function () {
                   byteArray,
                   canRead,
                   canWrite,
-                  canOwn
+                  canOwn,
                 );
               }
               if (onload) onload();
@@ -3103,7 +3105,7 @@ export const gifsicle = (function () {
               function (byteArray) {
                 processData(byteArray);
               },
-              onerror
+              onerror,
             );
           } else {
             processData(url);
@@ -3151,7 +3153,7 @@ export const gifsicle = (function () {
             paths.forEach(function (path) {
               var putRequest = files.put(
                 FS.analyzePath(path).object.contents,
-                path
+                path,
               );
               putRequest.onsuccess = function putRequest_onsuccess() {
                 ok++;
@@ -3205,7 +3207,7 @@ export const gifsicle = (function () {
                   getRequest.result,
                   true,
                   true,
-                  true
+                  true,
                 );
                 ok++;
                 if (ok + fail == total) finish();
@@ -3269,7 +3271,7 @@ export const gifsicle = (function () {
                     0) >>>
                   0
                 : ~~+Math_ceil(
-                    (tempDouble - +(~~tempDouble >>> 0)) / 4294967296
+                    (tempDouble - +(~~tempDouble >>> 0)) / 4294967296,
                   ) >>> 0
               : 0),
           ]),
@@ -3292,7 +3294,7 @@ export const gifsicle = (function () {
                     0) >>>
                   0
                 : ~~+Math_ceil(
-                    (tempDouble - +(~~tempDouble >>> 0)) / 4294967296
+                    (tempDouble - +(~~tempDouble >>> 0)) / 4294967296,
                   ) >>> 0
               : 0),
           ]),
@@ -3593,14 +3595,14 @@ export const gifsicle = (function () {
           var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown);
           overGrownHeapSize = Math.min(
             overGrownHeapSize,
-            requestedSize + 100663296
+            requestedSize + 100663296,
           );
           var newSize = Math.min(
             maxHeapSize,
             alignUp(
               Math.max(minHeapSize, requestedSize, overGrownHeapSize),
-              PAGE_MULTIPLE
-            )
+              PAGE_MULTIPLE,
+            ),
           );
           var replacement = emscripten_realloc_buffer(newSize);
           if (replacement) {
@@ -3688,10 +3690,10 @@ export const gifsicle = (function () {
           var type = stream.tty
             ? 2
             : FS.isDir(stream.mode)
-            ? 3
-            : FS.isLink(stream.mode)
-            ? 7
-            : 4;
+              ? 3
+              : FS.isLink(stream.mode)
+                ? 7
+                : 4;
           HEAP8[pbuf >> 0] = type;
           return 0;
         } catch (e) {
@@ -3733,7 +3735,7 @@ export const gifsicle = (function () {
                     0) >>>
                   0
                 : ~~+Math_ceil(
-                    (tempDouble - +(~~tempDouble >>> 0)) / 4294967296
+                    (tempDouble - +(~~tempDouble >>> 0)) / 4294967296,
                   ) >>> 0
               : 0),
           ]),
@@ -3826,7 +3828,7 @@ export const gifsicle = (function () {
           stringy,
           u8array,
           0,
-          u8array.length
+          u8array.length,
         );
         if (dontAddNull) u8array.length = numBytesWritten;
         return u8array;
@@ -3865,7 +3867,7 @@ export const gifsicle = (function () {
       var _malloc = (Module["_malloc"] = function () {
         return (_malloc = Module["_malloc"] = Module["asm"]["x"]).apply(
           null,
-          arguments
+          arguments,
         );
       });
       var ___errno_location = (Module["___errno_location"] = function () {
@@ -3878,13 +3880,13 @@ export const gifsicle = (function () {
       var stackAlloc = (Module["stackAlloc"] = function () {
         return (stackAlloc = Module["stackAlloc"] = Module["asm"]["A"]).apply(
           null,
-          arguments
+          arguments,
         );
       });
       Module["dynCall_vi"] = function () {
         return (Module["dynCall_vi"] = Module["asm"]["B"]).apply(
           null,
-          arguments
+          arguments,
         );
       };
       var calledRun;

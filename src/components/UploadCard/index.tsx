@@ -9,7 +9,7 @@ import { state } from "./state";
 import { createImageList } from "@/engines/transform";
 import { getFilesFromEntry, getFilesFromHandle } from "@/functions";
 import { sprintf } from "sprintf-js";
-import { Mimes } from '@/mimes';
+import { Mimes } from "@/mimes";
 
 /**
  * 使用拖拽功能
@@ -99,7 +99,7 @@ export const UploadCard = observer(() => {
             gstate.locale?.uploadCard.subTitle ?? "",
             Object.keys(Mimes)
               .map((item) => item.toUpperCase())
-              .join("/")
+              .join("/"),
           )}
         </div>
       </Flex>

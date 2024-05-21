@@ -265,7 +265,7 @@ export const Compare = observer(() => {
         style.container,
         state.ready && style.withBg,
         state.moving && style.moving,
-        statusClass
+        statusClass,
       )}
       ref={containerRef}
       onAnimationEnd={(event) => {
@@ -276,6 +276,6 @@ export const Compare = observer(() => {
     >
       {content}
     </div>,
-    document.body
+    document.body,
   );
 });

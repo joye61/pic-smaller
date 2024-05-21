@@ -14,7 +14,7 @@ export class Queue {
 
   /**
    * Add new task for executing
-   * @param task 
+   * @param task
    */
   public push(task: Task) {
     this.list.push(task);
@@ -25,7 +25,7 @@ export class Queue {
 
   /**
    * Execute a batch of tasks
-   * @returns 
+   * @returns
    */
   private async do() {
     // If list is empty, end run

@@ -19,6 +19,6 @@ export const Loading = observer(() => {
         <Indicator size="large" white />
       </Flex>
     </Flex>,
-    document.body
+    document.body,
   );
 });

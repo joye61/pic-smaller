@@ -9,10 +9,8 @@ export interface OptionItemProps extends HTMLProps<HTMLDivElement> {
 
 export function OptionItem(props: OptionItemProps) {
   let { desc, children, ...extra } = props;
-  if (desc && typeof desc === 'string') {
-    desc = (
-      <Typography.Text className={style.desc}>{desc}</Typography.Text>
-    );
+  if (desc && typeof desc === "string") {
+    desc = <Typography.Text className={style.desc}>{desc}</Typography.Text>;
   }
   return (
     <div className={style.container} {...extra}>

@@ -28,7 +28,7 @@ export class SvgImage extends ImageBase {
    */
   public static async create(
     info: Omit<ImageInfo, "width" | "height">,
-    option: CompressOption
+    option: CompressOption,
   ) {
     const data = await info.blob.text();
     let dimension = { width: 0, height: 0 };

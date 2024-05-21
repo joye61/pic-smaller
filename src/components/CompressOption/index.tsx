@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { DefaultCompressOption, homeState } from "@/states/home";
 import { gstate } from "@/global";
 import { OptionItem } from "../OptionItem";
-import { Mimes } from '@/mimes';
+import { Mimes } from "@/mimes";
 
 export const CompressOption = observer(() => {
   const resizeMethod = homeState.tempOption.resizeMethod;

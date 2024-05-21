@@ -33,7 +33,7 @@ const units: { [unit: string]: number } = {
 };
 
 const unitsReg = new RegExp(
-  `^([0-9.]+(?:e\\d+)?)(${Object.keys(units).join("|")})?$`
+  `^([0-9.]+(?:e\\d+)?)(${Object.keys(units).join("|")})?$`,
 );
 
 function parseLength(len: string) {
@@ -72,7 +72,7 @@ function calculateByDimensions(attrs: IAttributes): Dimension {
 
 function calculateByViewbox(
   attrs: IAttributes,
-  viewbox: IAttributes
+  viewbox: IAttributes,
 ): Dimension {
   const ratio = (viewbox.width as number) / (viewbox.height as number);
   if (attrs.width) {
