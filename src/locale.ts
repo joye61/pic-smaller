@@ -39,5 +39,12 @@ export async function changeLang(lang: string) {
 
 export async function initLang() {
   const lang = getLang();
-  await changeLang(lang);
+  /**
+   * Q: Why is the lang value not stored in localStorage here?
+   * A: Considering that the user's language might be the default language 
+   * and that the user's language settings can change, 
+   * the lang value is not stored in localStorage here.
+  */ 
+  gstate.lang = lang;
+  await setLocaleData(lang);
 }
