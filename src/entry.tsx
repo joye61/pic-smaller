@@ -14,9 +14,6 @@ const App = observer(() => {
       locale={gstate.locale?.antLocale}
       theme={{
         token: {
-          // borderRadius: 0,
-          // borderRadiusSM: 0,
-          // borderRadiusLG: 0,
           colorPrimary: "#1da565",
           colorLink: "#1da565",
           colorSuccess: "#1da565",

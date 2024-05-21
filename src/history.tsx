@@ -13,7 +13,7 @@ export function goto(
   let query = "";
   if (params) {
     const search = new URLSearchParams();
-    for (let key in params) {
+    for (const key in params) {
       search.append(key, String(params[key]));
     }
     query = search.toString();
@@ -45,7 +45,7 @@ export async function showPageByPath(pathname: string) {
   }
   gstate.pathname = pathname;
   try {
-    type ModuleResult = { default: React.FunctionComponentFactory<{}> };
+    type ModuleResult = { default: React.FunctionComponentFactory<object> };
     const importer = modules[`/src/pages/${pathname}/index.tsx`]();
     const result: ModuleResult = (await importer) as ModuleResult;
     gstate.page = <result.default />;
