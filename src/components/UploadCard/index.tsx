@@ -3,12 +3,13 @@ import style from "./index.module.scss";
 import { useEffect, useRef } from "react";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import { Mimes, gstate } from "@/global";
+import { gstate } from "@/global";
 import { ImageInput } from "../ImageInput";
 import { state } from "./state";
 import { createImageList } from "@/engines/transform";
 import { getFilesFromEntry, getFilesFromHandle } from "@/functions";
 import { sprintf } from "sprintf-js";
+import { Mimes } from '@/mimes';
 
 /**
  * 使用拖拽功能

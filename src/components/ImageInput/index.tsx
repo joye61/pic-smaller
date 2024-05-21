@@ -1,8 +1,8 @@
 import { ForwardedRef, forwardRef } from "react";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
-import { Mimes } from "@/global";
 import { createImageList } from "@/engines/transform";
+import { Mimes } from '@/mimes';
 
 export const ImageInput = observer(
   forwardRef((_, ref: ForwardedRef<HTMLInputElement>) => {

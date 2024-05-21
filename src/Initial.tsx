@@ -3,9 +3,10 @@ import { Flex, Typography } from "antd";
 import { useEffect } from "react";
 import { locales, modules } from "./modules";
 import { initHistoryLogic } from "./history";
-import { Mimes, gstate } from "./global";
+import { gstate } from "./global";
 import { Indicator } from "./components/Indicator";
 import { isAvifSupport } from "./engines/support";
+import { Mimes } from './mimes';
 
 export const Initial = observer(() => {
   useEffect(() => {
