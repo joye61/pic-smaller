@@ -377,7 +377,7 @@ export default observer(() => {
                   const jszip = await import("jszip");
                   const zip = new jszip.default();
                   const names: Set<string> = new Set();
-                  for (let [_, info] of homeState.list) {
+                  for (const [_, info] of homeState.list) {
                     const uniqName = getUniqNameOnNames(names, info.name);
                     names.add(uniqName);
                     if (info.compress?.blob) {

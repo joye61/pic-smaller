@@ -61,7 +61,7 @@ export class HomeState {
   }
 
   hasTaskRunning() {
-    for (let [_, value] of this.list) {
+    for (const [_, value] of this.list) {
       if (!value.preview || !value.compress) {
         return true;
       }
@@ -74,18 +74,18 @@ export class HomeState {
    * @returns
    */
   getProgressHintInfo(): ProgressHintInfo {
+    const totalNum = this.list.size;
     let loadedNum = 0;
-    let totalNum = this.list.size;
     let originSize = 0;
     let outputSize = 0;
-    for (let [_, info] of this.list) {
+    for (const [_, info] of this.list) {
       originSize += info.blob.size;
       if (info.compress) {
         loadedNum++;
         outputSize += info.compress.blob.size;
       }
     }
-    let percent = Math.ceil((loadedNum * 100) / totalNum);
+    const percent = Math.ceil((loadedNum * 100) / totalNum);
     const originRate = ((outputSize - originSize) * 100) / originSize;
     const rate = Number(Math.abs(originRate).toFixed(2));
 
