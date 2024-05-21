@@ -80,7 +80,7 @@ export async function wait(millisecond: number) {
  * @returns
  */
 export async function getFilesFromEntry(
-  entry: FileSystemEntry
+  entry: FileSystemEntry,
 ): Promise<Array<File>> {
   // If entry is a file
   if (entry.isFile) {
@@ -91,7 +91,7 @@ export async function getFilesFromEntry(
           const types = Object.values(Mimes);
           resolve(types.includes(result.type) ? [result] : []);
         },
-        () => []
+        () => [],
       );
     });
   }
@@ -120,7 +120,7 @@ export async function getFilesFromEntry(
  * @returns
  */
 export async function getFilesFromHandle(
-  handle: FileSystemHandle
+  handle: FileSystemHandle,
 ): Promise<Array<File>> {
   // If handle is a file
   if (handle.kind === "file") {
