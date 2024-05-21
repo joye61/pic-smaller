@@ -151,7 +151,7 @@ export const Compare = observer(() => {
 
     const wheel = (event: WheelEvent) => {
       const states = stateRef.current();
-      let scale = -0.005 * event.deltaY + states.scale;
+      let scale = -0.001 * event.deltaY + states.scale;
       if (scale > 1) {
         scale = 1;
       }
@@ -206,6 +206,7 @@ export const Compare = observer(() => {
   const barStyle: React.CSSProperties = {
     width: `${state.dividerWidth}px`,
     left: `${state.x - state.dividerWidth / 2}px`,
+    opacity: state.x === 0 ? 0 : 1,
   };
   const leftImageStyle: React.CSSProperties = {
     width: state.imageWidth,
