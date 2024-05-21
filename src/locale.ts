@@ -15,16 +15,16 @@ export const langList: MenuProps["items"] = [
   { key: "zh-CN", label: "简体中文" },
 ];
 
-export function getLang() {
+function getLang() {
   let lang = window.localStorage.getItem(localeCacheKey);
   if (!lang) {
     lang = getUserLocale();
   }
-  gstate.lang = lang ?? defaultLang;
+  return lang ?? defaultLang;
 }
 
-export async function setLocaleData() {
-  let importer: any = locales[`/src/locales/${gstate.lang}.ts`];
+async function setLocaleData(lang: string) {
+  let importer: any = locales[`/src/locales/${lang}.ts`];
   if (!importer) {
     importer = locales[`/src/locales/${defaultLang}.ts`];
   }
@@ -33,11 +33,18 @@ export async function setLocaleData() {
 
 export async function changeLang(lang: string) {
   gstate.lang = lang;
-  window.localStorage.setItem(localeCacheKey, gstate.lang);
-  await setLocaleData();
+  window.localStorage.setItem(localeCacheKey, lang);
+  await setLocaleData(lang);
 }
 
-export async function initLangSetting() {
-  getLang();
-  await setLocaleData();
+export async function initLang() {
+  const lang = getLang();
+  /**
+   * Q: Why is the lang value not stored in localStorage here?
+   * A: Considering that the user's language might be the default language 
+   * and that the user's language settings can change, 
+   * the lang value is not stored in localStorage here.
+  */ 
+  gstate.lang = lang;
+  await setLocaleData(lang);
 }
