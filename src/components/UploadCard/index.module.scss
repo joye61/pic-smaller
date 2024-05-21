@@ -7,14 +7,14 @@
   overflow: hidden;
   box-sizing: border-box;
   &:active {
-    background-color: darken($color: #f5f5f5, $amount: 3);
+    background-color: darken($color: #f5f5f5, $amount: 5);
   }
   > input {
     display: none;
   }
 
   &.active {
-    background-color: #f5f5db !important;
+    background-color: darken($color: #f5f5f5, $amount: 5);
   }
 }
 
