@@ -1,16 +1,16 @@
-import { createBrowserHistory } from 'history';
-import { normalize } from './functions';
-import { gstate } from './global';
-import { modules } from './modules';
+import { createBrowserHistory } from "history";
+import { normalize } from "./functions";
+import { gstate } from "./global";
+import { modules } from "./modules";
 
 export const history = createBrowserHistory();
 
 export function goto(
-  pathname: string = '/',
+  pathname: string = "/",
   params?: Record<string, string | number> | null,
-  type: string = 'push',
+  type: string = "push",
 ) {
-  let query = '';
+  let query = "";
   if (params) {
     const search = new URLSearchParams();
     for (let key in params) {
@@ -19,15 +19,15 @@ export function goto(
     query = search.toString();
   }
   if (query) {
-    pathname += '?' + query;
+    pathname += "?" + query;
   }
 
-  if (type === 'push') {
+  if (type === "push") {
     history.push(pathname);
-  } else if (type === 'replace') {
+  } else if (type === "replace") {
     history.replace(pathname);
   } else {
-    throw new Error('Error history route method');
+    throw new Error("Error history route method");
   }
 }
 
@@ -41,7 +41,7 @@ export function initHistoryLogic() {
 export async function showPageByPath(pathname: string) {
   pathname = normalize(pathname);
   if (!pathname) {
-    pathname = 'home';
+    pathname = "home";
   }
   gstate.pathname = pathname;
   try {
