@@ -61,6 +61,7 @@ export class GifImage extends ImageBase {
         width,
         height,
         blob,
+        src: URL.createObjectURL(blob),
       };
     } catch (error) {
       return this.failResult();
@@ -92,6 +93,7 @@ export class GifImage extends ImageBase {
         width: this.info.width,
         height: this.info.height,
         blob: this.info.blob,
+        src: URL.createObjectURL(this.info.blob),
       };
     }
 
@@ -102,6 +104,7 @@ export class GifImage extends ImageBase {
       width,
       height,
       blob,
+      src: URL.createObjectURL(blob),
     };
   }
 }

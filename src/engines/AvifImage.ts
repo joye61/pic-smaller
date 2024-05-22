@@ -3,6 +3,7 @@
  * https://github.com/packurl/wasm_avif
  */
 
+import { Mimes } from "@/mimes";
 import { avif } from "./AvifWasmModule";
 import {
   CompressOption,
@@ -40,10 +41,14 @@ export class AvifImage extends ImageBase {
         this.option.avif.quality,
         this.option.avif.speed,
       );
+
+      const blob = new Blob([result], { type: Mimes.avif });
+      console.log(blob);
       return {
         width,
         height,
-        blob: new Blob([result]),
+        blob,
+        src: URL.createObjectURL(blob),
       };
     } catch (error) {
       return this.failResult();

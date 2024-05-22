@@ -37,6 +37,7 @@ export type ImageItem = {
   key: number;
   name: string;
   blob: Blob;
+  src: string;
   width?: number;
   height?: number;
   preview?: ProcessOutput;
@@ -55,6 +56,7 @@ export class HomeState {
 
   reCompress() {
     this.list.forEach((info) => {
+      URL.revokeObjectURL(info.compress!.src);
       info.compress = undefined;
       createCompressTask(info);
     });

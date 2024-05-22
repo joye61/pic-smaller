@@ -11,7 +11,8 @@ export interface MessageData {
   option: CompressOption;
 }
 
-export interface OutputMessageData extends Omit<ImageInfo, "name" | "blob"> {
+export interface OutputMessageData
+  extends Omit<ImageInfo, "name" | "blob" | "src"> {
   compress?: ProcessOutput;
   preview?: ProcessOutput;
 }

@@ -51,6 +51,7 @@ export function createMessageData(item: ImageItem): MessageData {
       key: item.key,
       name: item.name,
       blob: item.blob,
+      src: item.src,
     },
     option: toJS(homeState.option),
   };
@@ -75,7 +76,9 @@ export async function createImageList(files: Array<File>) {
       key: uniqId(),
       name: file.name,
       blob: file,
+      src: URL.createObjectURL(file),
     };
+
     homeState.list.set(info.key, info);
   }
 

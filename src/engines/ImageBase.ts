@@ -4,6 +4,7 @@ export interface ImageInfo {
   width: number;
   height: number;
   blob: Blob;
+  src: string;
 }
 
 export interface CompressOption {
@@ -32,6 +33,7 @@ export interface ProcessOutput {
   width: number;
   height: number;
   blob: Blob;
+  src: string;
 }
 
 export interface Dimension {
@@ -105,6 +107,7 @@ export class ImageBase {
       width: this.info.width,
       height: this.info.height,
       blob: this.info.blob,
+      src: URL.createObjectURL(this.info.blob),
     };
   }
 
@@ -141,10 +144,12 @@ export class ImageBase {
    */
   async preview(): Promise<ProcessOutput> {
     const { width, height } = this.getPreviewDimension();
+    const blob = await this.createBlob(width, height);
     return {
       width,
       height,
-      blob: await this.createBlob(width, height),
+      blob,
+      src: URL.createObjectURL(blob),
     };
   }
 
