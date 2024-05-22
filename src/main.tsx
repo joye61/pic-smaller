@@ -11,6 +11,6 @@ window.onload = async () => {
     useProxies: "ifavailable",
   });
 
-  const root = document.getElementById("root") as HTMLElement;
+  const root = document.getElementById("root")!;
   ReactDOM.createRoot(root).render(<App />);
 };
