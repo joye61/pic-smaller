@@ -28,7 +28,7 @@ import {
   PlusOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ImageInput } from "@/components/ImageInput";
 import { gstate } from "@/global";
 import { CompressOption } from "@/components/CompressOption";
@@ -274,18 +274,18 @@ function getColumns(token: GlobalToken, disabled: boolean) {
   return columns;
 }
 
-export default observer(() => {
+const Home = observer(() => {
   const fileRef = useRef<HTMLInputElement>(null);
   const { token } = theme.useToken();
 
-  // 当前是否禁用操作
   const disabled = homeState.hasTaskRunning();
   const columns = getColumns(token, disabled);
 
   useWorkerHandler();
 
   const scrollBoxRef = useRef<HTMLDivElement>(null);
-  const resizeRef = useRef<() => void>(() => {
+  const [scrollHeight, setScrollHeight] = useState<number>(0);
+  const resize = useCallback(() => {
     const element = scrollBoxRef.current;
     if (element) {
       const boxHeight = element.getBoundingClientRect().height;
@@ -294,27 +294,23 @@ export default observer(() => {
       const thHeight = th?.getBoundingClientRect().height ?? 0;
       const tbodyHeight = tbody?.getBoundingClientRect().height ?? 0;
       if (boxHeight > thHeight + tbodyHeight) {
-        setScrollHeight(undefined);
+        setScrollHeight(0);
       } else {
         setScrollHeight(boxHeight - thHeight);
       }
     }
-  });
-  const [scrollHeight, setScrollHeight] = useState<number | undefined>(
-    undefined,
-  );
-  const scrollY = scrollHeight ? { y: scrollHeight } : undefined;
-
-  useEffect(() => {
-    resizeRef.current();
-  }, [homeState.list.size]);
-
-  useEffect(() => {
-    window.addEventListener("resize", resizeRef.current!);
-    return () => {
-      window.removeEventListener("resize", resizeRef.current!);
-    };
   }, []);
+
+  /* eslint-disable react-hooks/exhaustive-deps */
+  // Everytime list change, recalc the scroll height
+  useEffect(resize, [homeState.list.size]);
+
+  useEffect(() => {
+    window.addEventListener("resize", resize);
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
+  }, [resize]);
 
   // Main content switch
   let mainContent = <UploadCard />;
@@ -377,6 +373,7 @@ export default observer(() => {
                   const jszip = await import("jszip");
                   const zip = new jszip.default();
                   const names: Set<string> = new Set();
+                  /* eslint-disable @typescript-eslint/no-unused-vars */
                   for (const [_, info] of homeState.list) {
                     const uniqName = getUniqNameOnNames(names, info.name);
                     names.add(uniqName);
@@ -405,7 +402,7 @@ export default observer(() => {
               columns={columns}
               size="small"
               pagination={false}
-              scroll={scrollY}
+              scroll={scrollHeight ? { y: scrollHeight } : undefined}
               dataSource={Array.from(homeState.list.values())}
             />
           </div>
@@ -506,3 +503,5 @@ export default observer(() => {
     </div>
   );
 });
+
+export default Home;

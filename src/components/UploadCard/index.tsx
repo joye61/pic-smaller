@@ -11,12 +11,11 @@ import { getFilesFromEntry, getFilesFromHandle } from "@/functions";
 import { sprintf } from "sprintf-js";
 import { Mimes } from "@/mimes";
 
-/**
- * 使用拖拽功能
- *
- * @param dragRef 拖拽区域的引用对象
- */
-function useDragAndDrop(dragRef: React.RefObject<HTMLDivElement>) {
+export const UploadCard = observer(() => {
+  const { token } = theme.useToken();
+  const fileRef = useRef<HTMLInputElement>(null);
+  const dragRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const dragLeave = () => {
       state.dragActive = false;
@@ -72,15 +71,6 @@ function useDragAndDrop(dragRef: React.RefObject<HTMLDivElement>) {
       target.removeEventListener("drop", drop);
     };
   }, []);
-}
-
-export const UploadCard = observer(() => {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const dragRef = useRef<HTMLDivElement>(null);
-
-  useDragAndDrop(dragRef);
-
-  const { token } = theme.useToken();
 
   return (
     <Flex

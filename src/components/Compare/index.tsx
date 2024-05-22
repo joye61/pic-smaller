@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import style from "./index.module.scss";
 import { Button, Flex, Popover, Space } from "antd";
 import { CloseOutlined, QuestionCircleOutlined } from "@ant-design/icons";
@@ -28,7 +28,10 @@ export interface CompareState {
 }
 
 export const Compare = observer(() => {
-  const info = homeState.list.get(homeState.compareId!) as Required<ImageItem>;
+  // const info = homeState.list.get(homeState.compareId!) as Required<ImageItem>;
+  const infoRef = useRef<Required<ImageItem>>(
+    homeState.list.get(homeState.compareId!) as Required<ImageItem>,
+  );
   const containerRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const dataRef = useRef<CompareData>({
@@ -49,15 +52,19 @@ export const Compare = observer(() => {
     imageHeight: 0,
   });
 
-  const update = (newState: Partial<CompareState>) => {
-    setState({
-      ...state,
-      ...newState,
-    });
-  };
-  const getState = () => {
+  const update = useCallback(
+    (newState: Partial<CompareState>) => {
+      setState({
+        ...state,
+        ...newState,
+      });
+    },
+    [state],
+  );
+
+  const getState = useCallback(() => {
     return state;
-  };
+  }, [state]);
 
   const updateRef = useRef<(newState: Partial<CompareState>) => void>(update);
   const stateRef = useRef<() => CompareState>(getState);
@@ -68,8 +75,8 @@ export const Compare = observer(() => {
 
   // Initialize
   useEffect(() => {
-    let oldSrc = URL.createObjectURL(info.blob);
-    let newSrc = URL.createObjectURL(info.compress.blob);
+    const oldSrc = URL.createObjectURL(infoRef.current.blob);
+    const newSrc = URL.createObjectURL(infoRef.current.compress.blob);
     dataRef.current = {
       oldSrc,
       newSrc,
@@ -104,12 +111,17 @@ export const Compare = observer(() => {
       const rect = containerRef.current!.getBoundingClientRect();
       let imageWidth: number;
       let imageHeight: number;
-      if (info.width / info.height > rect.width / rect.height) {
+      if (
+        infoRef.current.width / infoRef.current.height >
+        rect.width / rect.height
+      ) {
         imageWidth = rect.width * states.scale;
-        imageHeight = (imageWidth * info.height) / info.width;
+        imageHeight =
+          (imageWidth * infoRef.current.height) / infoRef.current.width;
       } else {
         imageHeight = rect.height * states.scale;
-        imageWidth = (imageHeight * info.width) / info.height;
+        imageWidth =
+          (imageHeight * infoRef.current.width) / infoRef.current.height;
       }
       updateRef.current({
         x: rect.width * states.xrate,
@@ -162,20 +174,23 @@ export const Compare = observer(() => {
       let imageWidth: number;
       let imageHeight: number;
       if (
-        info.width / info.height >
+        infoRef.current.width / infoRef.current.height >
         states.containerWidth / states.containerHeight
       ) {
         imageWidth = states.containerWidth * scale;
-        imageHeight = (imageWidth * info.height) / info.width;
+        imageHeight =
+          (imageWidth * infoRef.current.height) / infoRef.current.width;
       } else {
         imageHeight = states.containerHeight * scale;
-        imageWidth = (imageHeight * info.width) / info.height;
+        imageWidth =
+          (imageHeight * infoRef.current.width) / infoRef.current.height;
       }
 
-      let innerRate =
+      const innerRate =
         (states.x - (states.containerWidth - states.imageWidth) / 2) /
         states.imageWidth;
-      let x = innerRate * imageWidth + (states.containerWidth - imageWidth) / 2;
+      const x =
+        innerRate * imageWidth + (states.containerWidth - imageWidth) / 2;
 
       updateRef.current({ scale, imageWidth, imageHeight, x });
     };

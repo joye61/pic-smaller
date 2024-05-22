@@ -4,7 +4,7 @@ import { Button, Flex, Result } from "antd";
 import { observer } from "mobx-react-lite";
 import { gstate } from "@/global";
 
-export default observer(() => {
+const Error404 = observer(() => {
   const backToHome = (
     <Button
       type="primary"
@@ -27,3 +27,5 @@ export default observer(() => {
     </Flex>
   );
 });
+
+export default Error404;

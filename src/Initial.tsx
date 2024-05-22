@@ -11,20 +11,27 @@ import { Mimes } from "./mimes";
 export const Initial = observer(() => {
   useEffect(() => {
     (async () => {
-      await import("jszip");
-      await fetch(new URL("./engines/png.wasm", import.meta.url));
-      await fetch(new URL("./engines/gif.wasm", import.meta.url));
-      await fetch(new URL("./engines/avif.wasm", import.meta.url));
-      await import("./engines/WorkerPreview?worker");
-      await import("./engines/WorkerCompress?worker");
+      const loadList: Array<Promise<any>> = [
+        import("jszip"),
+        fetch(new URL("./engines/png.wasm", import.meta.url)),
+        fetch(new URL("./engines/gif.wasm", import.meta.url)),
+        fetch(new URL("./engines/avif.wasm", import.meta.url)),
+        import("./engines/WorkerPreview?worker"),
+        import("./engines/WorkerCompress?worker"),
+      ];
       const langs = Object.values(locales);
       const pages = Object.values(modules);
-      for (let load of [...langs, ...pages]) {
-        await load();
+      for (const load of [...langs, ...pages]) {
+        loadList.push(load());
       }
-      if (await isAvifSupport()) {
-        Mimes.avif = "image/avif";
-      }
+      loadList.push(
+        (async () => {
+          if (await isAvifSupport()) {
+            Mimes.avif = "image/avif";
+          }
+        })(),
+      );
+      await Promise.all(loadList);
       initHistoryLogic();
     })();
   }, []);

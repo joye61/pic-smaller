@@ -8,6 +8,7 @@ export interface OptionItemProps extends HTMLProps<HTMLDivElement> {
 }
 
 export function OptionItem(props: OptionItemProps) {
+  /* eslint-disable prefer-const */
   let { desc, children, ...extra } = props;
   if (desc && typeof desc === "string") {
     desc = <Typography.Text className={style.desc}>{desc}</Typography.Text>;

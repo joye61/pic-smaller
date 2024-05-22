@@ -103,7 +103,7 @@ export async function getFilesFromEntry(
       dirEntry.createReader().readEntries(resolve, () => []);
     });
     const result: Array<File> = [];
-    for (let item of list) {
+    for (const item of list) {
       const subList = await getFilesFromEntry(item);
       result.push(...subList);
     }

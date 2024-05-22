@@ -61,6 +61,7 @@ export class HomeState {
   }
 
   hasTaskRunning() {
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     for (const [_, value] of this.list) {
       if (!value.preview || !value.compress) {
         return true;
@@ -78,6 +79,7 @@ export class HomeState {
     let loadedNum = 0;
     let originSize = 0;
     let outputSize = 0;
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     for (const [_, info] of this.list) {
       originSize += info.blob.size;
       if (info.compress) {

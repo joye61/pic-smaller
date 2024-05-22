@@ -7,6 +7,7 @@ import { OptionItem } from "../OptionItem";
 import { Mimes } from "@/mimes";
 
 export const CompressOption = observer(() => {
+  const disabled = homeState.hasTaskRunning();
   const resizeMethod = homeState.tempOption.resizeMethod;
   const resizeOptions = [
     {
@@ -30,6 +31,7 @@ export const CompressOption = observer(() => {
       <InputNumber
         min={0}
         step={1}
+        disabled={disabled}
         placeholder={gstate.locale?.optionPannel?.widthPlaceholder}
         value={homeState.tempOption.resizeWidth}
         onChange={(value) => {
@@ -42,6 +44,7 @@ export const CompressOption = observer(() => {
       <InputNumber
         min={0}
         step={1}
+        disabled={disabled}
         placeholder={gstate.locale?.optionPannel?.heightPlaceholder}
         value={homeState.tempOption.resizeHeight}
         onChange={(value) => {
@@ -50,8 +53,6 @@ export const CompressOption = observer(() => {
       />
     );
   }
-
-  const disabled = homeState.hasTaskRunning();
 
   return (
     <>

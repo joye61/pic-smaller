@@ -79,7 +79,8 @@ export async function createImageList(files: Array<File>) {
     homeState.list.set(info.key, info);
   }
 
-  for (let [_, item] of homeState.list) {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  for (const [_, item] of homeState.list) {
     createPreviewTask(item);
     createCompressTask(item);
   }

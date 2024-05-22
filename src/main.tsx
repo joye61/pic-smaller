@@ -1,6 +1,16 @@
 import "./main.scss";
+import { configure } from "mobx";
+import ReactDOM from "react-dom/client";
+import { initLang } from "./locale";
+import { App } from "./App";
 
 window.onload = async () => {
-  const entry = await import("./entry");
-  await entry.runApp();
+  await initLang();
+  configure({
+    enforceActions: "never",
+    useProxies: "ifavailable",
+  });
+
+  const root = document.getElementById("root") as HTMLElement;
+  ReactDOM.createRoot(root).render(<App />);
 };
