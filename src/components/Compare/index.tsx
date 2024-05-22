@@ -7,11 +7,7 @@ import { ImageItem, homeState } from "@/states/home";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { gstate } from "@/global";
-
-interface CompareData {
-  oldSrc?: string;
-  newSrc?: string;
-}
+import { preloadImage } from "@/functions";
 
 export interface CompareState {
   x: number;
@@ -28,16 +24,11 @@ export interface CompareState {
 }
 
 export const Compare = observer(() => {
-  // const info = homeState.list.get(homeState.compareId!) as Required<ImageItem>;
   const infoRef = useRef<Required<ImageItem>>(
     homeState.list.get(homeState.compareId!) as Required<ImageItem>,
   );
   const containerRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
-  const dataRef = useRef<CompareData>({
-    oldSrc: undefined,
-    newSrc: undefined,
-  });
   const [state, setState] = useState<CompareState>({
     x: 0,
     xrate: 0.5,
@@ -75,30 +66,21 @@ export const Compare = observer(() => {
 
   // Initialize
   useEffect(() => {
-    const oldSrc = URL.createObjectURL(infoRef.current.blob);
-    const newSrc = URL.createObjectURL(infoRef.current.compress.blob);
-    dataRef.current = {
-      oldSrc,
-      newSrc,
-    };
-
-    updateRef.current({
-      ready: true,
-      status: "show",
+    Promise.all([
+      preloadImage(infoRef.current.src),
+      preloadImage(infoRef.current.compress.src),
+    ]).then(() => {
+      updateRef.current({
+        ready: true,
+        status: "show",
+      });
     });
-
-    return () => {
-      URL.revokeObjectURL(oldSrc);
-      URL.revokeObjectURL(newSrc);
-    };
   }, []);
 
   useEffect(() => {
     if (!state.ready) {
       return;
     }
-
-    gstate.loading = false;
 
     const doc = document.documentElement;
     const bar = barRef.current!;
@@ -240,10 +222,14 @@ export const Compare = observer(() => {
     content = (
       <>
         <div style={leftStyle}>
-          <img src={dataRef.current.oldSrc} style={leftImageStyle} />
+          <img src={infoRef.current.src} style={leftImageStyle} />
         </div>
         <div style={rightStyle}>
-          <img src={dataRef.current.newSrc} style={rightImageStyle} />
+          <img
+            src={infoRef.current.compress.src}
+            style={rightImageStyle}
+            onLoad={() => {}}
+          />
         </div>
         <div style={barStyle}>
           <Flex align="center" justify="center" ref={barRef}>

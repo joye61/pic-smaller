@@ -91,14 +91,14 @@ function getColumns(token: GlobalToken, disabled: boolean) {
               borderRadius: token.borderRadius,
             }}
           >
-            <img src={URL.createObjectURL(row.preview.blob)} />
+            <img src={row.preview.src} />
             {row.compress && (
               <Flex
                 align="center"
                 justify="center"
                 onClick={async () => {
-                  gstate.loading = true;
-                  await wait(300);
+                  // gstate.loading = true;
+                  // await wait(300);
                   homeState.compareId = row.key;
                 }}
               >

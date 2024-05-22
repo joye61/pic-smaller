@@ -5,8 +5,7 @@ import { locales, modules } from "./modules";
 import { initHistoryLogic } from "./history";
 import { gstate } from "./global";
 import { Indicator } from "./components/Indicator";
-import { isAvifSupport } from "./engines/support";
-import { Mimes } from "./mimes";
+import { avifCheck } from "./engines/support";
 
 export const Initial = observer(() => {
   useEffect(() => {
@@ -24,13 +23,7 @@ export const Initial = observer(() => {
       for (const load of [...langs, ...pages]) {
         loadList.push(load());
       }
-      loadList.push(
-        (async () => {
-          if (await isAvifSupport()) {
-            Mimes.avif = "image/avif";
-          }
-        })(),
-      );
+      loadList.push(avifCheck());
       await Promise.all(loadList);
       initHistoryLogic();
     })();

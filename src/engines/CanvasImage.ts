@@ -33,6 +33,7 @@ export class CanvasImage extends ImageBase {
     return {
       ...dimension,
       blob,
+      src: URL.createObjectURL(blob),
     };
   }
 }

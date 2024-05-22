@@ -44,10 +44,12 @@ export class SvgImage extends ImageBase {
     }
 
     const result = optimize(this.data);
+    const blob = new Blob([result.data], { type: Mimes.svg });
     return {
       width: this.info.width,
       height: this.info.height,
-      blob: new Blob([result.data], { type: Mimes.svg }),
+      blob,
+      src: URL.createObjectURL(blob),
     };
   }
 
