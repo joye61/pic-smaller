@@ -75,6 +75,19 @@ export async function wait(millisecond: number) {
 }
 
 /**
+ * Preload image by src
+ * @param src
+ */
+export async function preloadImage(src: string) {
+  return new Promise<void>((resolve) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => resolve();
+    img.onerror = () => resolve();
+  });
+}
+
+/**
  * Get file list from FileSystemEntry
  * @param entry
  * @returns
