@@ -26,35 +26,34 @@
   bottom: 0;
   z-index: 9;
   user-select: none;
+  background-color: #fff;
+  background-image: linear-gradient(
+      45deg,
+      #e0e0e0 25%,
+      transparent 25%,
+      transparent 75%,
+      #e0e0e0 75%
+    ),
+    linear-gradient(
+      45deg,
+      #e0e0e0 25%,
+      transparent 25%,
+      transparent 75%,
+      #e0e0e0 75%
+    );
+  background-size: 20px 20px;
+  background-position:
+    0 0,
+    10px 10px;
+
   &.show {
-    animation: BoxShow 0.3s ease-in;
+    animation: BoxShow 0.3s ease-in forwards;
   }
   &.hide {
-    animation: BoxHide 0.3s ease-out;
+    animation: BoxHide 0.3s ease-out forwards;
   }
   &.moving {
     cursor: grab;
-  }
-  &.withBg {
-    background-color: #fff;
-    background-image: linear-gradient(
-        45deg,
-        #e0e0e0 25%,
-        transparent 25%,
-        transparent 75%,
-        #e0e0e0 75%
-      ),
-      linear-gradient(
-        45deg,
-        #e0e0e0 25%,
-        transparent 25%,
-        transparent 75%,
-        #e0e0e0 75%
-      );
-    background-size: 20px 20px;
-    background-position:
-      0 0,
-      10px 10px;
   }
 
   > div:nth-child(1),
