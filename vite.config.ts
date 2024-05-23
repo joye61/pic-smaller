@@ -18,6 +18,6 @@ export default defineConfig({
     host: "0.0.0.0",
   },
   test: {
-    include: ["test/**/*.{test,spec}.?(c|m)[jt]s?(x)"],
+    include: ["tests/**/*.{test,spec}.?(c|m)[jt]s?(x)"],
   },
 });

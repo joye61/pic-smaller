@@ -2,16 +2,20 @@ import { filesize } from "filesize";
 import { Mimes } from "./mimes";
 
 /**
- * 格式化路径
+ * Normalize pathname
  * @param pathname
+ * @param base
  * @returns
  */
-export function normalize(pathname: string) {
-  const base = import.meta.env.BASE_URL;
+export function normalize(pathname: string, base = import.meta.env.BASE_URL) {
+  // Ensure starts with '/'
+  pathname = "/" + pathname.replace(/^\/*/, "");
+  base = "/" + base.replace(/^\/*/, "");
   if (pathname.startsWith(base)) {
     pathname = pathname.substring(base.length);
+    return pathname.replace(/^\/*|\/*$/g, "");
   }
-  return pathname.replace(/^\/*|\/*$/g, "");
+  return "error404";
 }
 
 // 通过自增生成全局唯一的数字ID
