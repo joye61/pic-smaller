@@ -4,11 +4,11 @@ import { useEffect } from "react";
 import { uniqId } from "@/functions";
 import { toJS } from "mobx";
 import { ImageItem, homeState } from "@/states/home";
-import { CompressOption } from "./ImageBase";
+import { CompressOption, ImageInfo } from "./ImageBase";
 import { OutputMessageData } from "./handler";
 
 export interface MessageData {
-  info: ImageItem;
+  info: ImageInfo;
   option: CompressOption;
 }
 
@@ -45,13 +45,14 @@ export function useWorkerHandler() {
   }, []);
 }
 
-export function createMessageData(item: ImageItem): MessageData {
+export function createMessageData(item: ImageInfo): MessageData {
   return {
     info: {
       key: item.key,
       name: item.name,
       blob: item.blob,
-      src: item.src,
+      width: 0,
+      height: 0,
     },
     option: toJS(homeState.option),
   };
@@ -76,6 +77,8 @@ export async function createImageList(files: Array<File>) {
       key: uniqId(),
       name: file.name,
       blob: file,
+      width: 0,
+      height: 0,
       src: URL.createObjectURL(file),
     };
 

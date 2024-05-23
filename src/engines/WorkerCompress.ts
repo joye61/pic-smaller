@@ -1,5 +1,5 @@
 import { Queue } from "./Queue";
-import { MessageData, OutputMessageData, createHandler } from "./handler";
+import { MessageData, OutputMessageData, convert } from "./handler";
 import { avifCheck } from "./support";
 
 (async () => {
@@ -11,7 +11,7 @@ import { avifCheck } from "./support";
     "message",
     async (event: MessageEvent<MessageData>) => {
       queue.push(async () => {
-        const handler = await createHandler(event.data);
+        const handler = await convert(event.data);
         if (handler) {
           const output = await handler.compress();
           const result: OutputMessageData = {

@@ -5,28 +5,9 @@
 
 import { Mimes } from "@/mimes";
 import { avif } from "./AvifWasmModule";
-import {
-  CompressOption,
-  ImageBase,
-  ImageInfo,
-  ProcessOutput,
-} from "./ImageBase";
+import { ImageBase, ProcessOutput } from "./ImageBase";
 
 export class AvifImage extends ImageBase {
-  /**
-   * Create PngImage instance
-   * @param info
-   * @param option
-   * @returns
-   */
-  public static async create(
-    info: Omit<ImageInfo, "width" | "height">,
-    option: CompressOption,
-  ) {
-    const dimension = await ImageBase.getDimension(info.blob);
-    return new AvifImage({ ...info, ...dimension }, option);
-  }
-
   async compress(): Promise<ProcessOutput> {
     const { width, height } = this.getOutputDimension();
     try {
@@ -43,7 +24,6 @@ export class AvifImage extends ImageBase {
       );
 
       const blob = new Blob([result], { type: Mimes.avif });
-      console.log(blob);
       return {
         width,
         height,

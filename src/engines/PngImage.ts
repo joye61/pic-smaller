@@ -3,29 +3,10 @@
  * https://github.com/antelle/wasm-image-compressor
  */
 
-import {
-  CompressOption,
-  ImageBase,
-  ImageInfo,
-  ProcessOutput,
-} from "./ImageBase";
+import { ImageBase, ProcessOutput } from "./ImageBase";
 import { Module } from "./PngWasmModule";
 
 export class PngImage extends ImageBase {
-  /**
-   * Create PngImage instance
-   * @param info
-   * @param option
-   * @returns
-   */
-  public static async create(
-    info: Omit<ImageInfo, "width" | "height">,
-    option: CompressOption,
-  ) {
-    const dimension = await ImageBase.getDimension(info.blob);
-    return new PngImage({ ...info, ...dimension }, option);
-  }
-
   async compress(): Promise<ProcessOutput> {
     const { width, height } = this.getOutputDimension();
     const { context } = await this.createCanvas(width, height);

@@ -4,7 +4,6 @@ export interface ImageInfo {
   width: number;
   height: number;
   blob: Blob;
-  src: string;
 }
 
 export interface CompressOption {
@@ -54,21 +53,6 @@ export class ImageBase {
     public info: ImageInfo,
     public option: CompressOption,
   ) {}
-
-  /**
-   * Get dimension from image blob
-   * @param blob
-   * @returns
-   */
-  static async getDimension(blob: Blob): Promise<Dimension> {
-    const bitmap = await createImageBitmap(blob);
-    const result: Dimension = {
-      width: bitmap.width,
-      height: bitmap.height,
-    };
-    bitmap.close();
-    return result;
-  }
 
   /**
    * Get output image dimension, based on resize param

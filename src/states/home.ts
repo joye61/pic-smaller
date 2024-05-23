@@ -46,8 +46,8 @@ export type ImageItem = {
   name: string;
   blob: Blob;
   src: string;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
   preview?: ProcessOutput;
   compress?: ProcessOutput;
 };

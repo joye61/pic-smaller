@@ -5,28 +5,9 @@
  */
 
 import { gifsicle } from "./GifWasmModule";
-import {
-  CompressOption,
-  ImageBase,
-  ImageInfo,
-  ProcessOutput,
-} from "./ImageBase";
+import { ImageBase, ProcessOutput } from "./ImageBase";
 
 export class GifImage extends ImageBase {
-  /**
-   * Create GifImage instance
-   * @param info
-   * @param option
-   * @returns
-   */
-  public static async create(
-    info: Omit<ImageInfo, "width" | "height">,
-    option: CompressOption,
-  ) {
-    const dimension = await ImageBase.getDimension(info.blob);
-    return new GifImage({ ...info, ...dimension }, option);
-  }
-
   async compress(): Promise<ProcessOutput> {
     try {
       const { width, height } = this.getOutputDimension();

@@ -1,28 +1,9 @@
-import {
-  CompressOption,
-  ImageBase,
-  ImageInfo,
-  ProcessOutput,
-} from "./ImageBase";
+import { ImageBase, ProcessOutput } from "./ImageBase";
 
 /**
  * JPEG/JPG/WEBP is compatible
  */
 export class CanvasImage extends ImageBase {
-  /**
-   * Create JpegImage instance
-   * @param info
-   * @param option
-   * @returns
-   */
-  public static async create(
-    info: Omit<ImageInfo, "width" | "height">,
-    option: CompressOption,
-  ) {
-    const dimension = await ImageBase.getDimension(info.blob);
-    return new CanvasImage({ ...info, ...dimension }, option);
-  }
-
   async compress(): Promise<ProcessOutput> {
     const dimension = this.getOutputDimension();
     const blob = await this.createBlob(
