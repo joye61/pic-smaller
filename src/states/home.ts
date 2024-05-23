@@ -3,10 +3,18 @@ import { createCompressTask } from "@/engines/transform";
 import { makeAutoObservable } from "mobx";
 
 export const DefaultCompressOption: CompressOption = {
-  maxPreviewSize: 256,
-  resizeMethod: "unChanged",
-  resizeWidth: undefined,
-  resizeHeight: undefined,
+  preview: {
+    maxSize: 256,
+  },
+  resize: {
+    method: "unChanged",
+    width: undefined,
+    height: undefined,
+  },
+  format: {
+    target: undefined,
+    transparentFill: "#FFFFFF",
+  },
   jpeg: {
     quality: 0.7,
   },

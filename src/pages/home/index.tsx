@@ -39,6 +39,7 @@ import {
   createDownload,
   formatSize,
   getFilesFromHandle,
+  getOutputFileName,
   getUniqNameOnNames,
   wait,
 } from "@/functions";
@@ -257,7 +258,8 @@ function getColumns(token: GlobalToken, disabled: boolean) {
               disabled={disabled}
               onClick={() => {
                 if (row.compress?.blob) {
-                  createDownload(row.name, row.compress.blob);
+                  const fileName = getOutputFileName(row, homeState.option);
+                  createDownload(fileName, row.compress.blob);
                 }
               }}
             >

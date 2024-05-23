@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { uniqId } from "@/functions";
 import { toJS } from "mobx";
 import { ImageItem, homeState } from "@/states/home";
-import { OutputMessageData } from "./handler";
 import { CompressOption } from "./ImageBase";
+import { OutputMessageData } from "./handler";
 
 export interface MessageData {
   info: ImageItem;

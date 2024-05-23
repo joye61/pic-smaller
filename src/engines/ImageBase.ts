@@ -8,10 +8,18 @@ export interface ImageInfo {
 }
 
 export interface CompressOption {
-  maxPreviewSize: number;
-  resizeMethod: "unChanged" | "toWidth" | "toHeight";
-  resizeWidth?: number;
-  resizeHeight?: number;
+  preview: {
+    maxSize: number;
+  };
+  resize: {
+    method: "unChanged" | "toWidth" | "toHeight";
+    width?: number;
+    height?: number;
+  };
+  format: {
+    target?: "JPG" | "JPEG" | "PNG" | "WEBP" | "AVIF";
+    transparentFill: string;
+  };
   jpeg: {
     quality: number; // 0-1
   };
@@ -67,34 +75,35 @@ export class ImageBase {
    * @returns Dimension
    */
   getOutputDimension(): Dimension {
-    if (!this.option.resizeWidth && !this.option.resizeHeight) {
+    const { width, height } = this.option.resize;
+    if (!width && !height) {
       return {
         width: this.info.width,
         height: this.info.height,
       };
     }
 
-    if (!this.option.resizeWidth && this.option.resizeHeight) {
-      const rate = this.option.resizeHeight / this.info.height;
+    if (!width && height) {
+      const rate = height / this.info.height;
       const width = rate * this.info.width;
       return {
         width: Math.ceil(width),
-        height: Math.ceil(this.option.resizeHeight),
+        height: Math.ceil(height),
       };
     }
 
-    if (this.option.resizeWidth && !this.option.resizeHeight) {
-      const rate = this.option.resizeWidth / this.info.width;
+    if (width && !height) {
+      const rate = width / this.info.width;
       const height = rate * this.info.height;
       return {
-        width: Math.ceil(this.option.resizeWidth),
+        width: Math.ceil(width),
         height: Math.ceil(height),
       };
     }
 
     return {
-      width: Math.ceil(this.option.resizeWidth!),
-      height: Math.ceil(this.option.resizeHeight!),
+      width: Math.ceil(width!),
+      height: Math.ceil(height!),
     };
   }
 
@@ -116,7 +125,7 @@ export class ImageBase {
    * @returns Dimension
    */
   getPreviewDimension(): Dimension {
-    const maxSize = this.option.maxPreviewSize;
+    const maxSize = this.option.preview.maxSize;
     if (Math.max(this.info.width, this.info.height) <= maxSize) {
       return {
         width: this.info.width,

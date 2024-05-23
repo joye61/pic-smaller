@@ -1,5 +1,7 @@
 import { filesize } from "filesize";
 import { Mimes } from "./mimes";
+import type { ImageItem } from "./states/home";
+import type { CompressOption } from "./engines/ImageBase";
 
 /**
  * Normalize pathname
@@ -158,4 +160,42 @@ export async function getFilesFromHandle(
   }
 
   return [];
+}
+
+/**
+ * Get file suffix by lowercase
+ * @param fileName
+ */
+export function splitFileName(fileName: string) {
+  const index = fileName.lastIndexOf(".");
+  const name = fileName.substring(0, index);
+  const suffix = fileName.substring(index + 1).toLowerCase();
+  return { name, suffix };
+}
+
+/**
+ * Get final file name if there exists a type convert
+ * @param item
+ * @param option
+ * @returns
+ */
+export function getOutputFileName(item: ImageItem, option: CompressOption) {
+  if (item.blob.type === item.compress?.blob.type) {
+    return item.name;
+  }
+
+  const { name, suffix } = splitFileName(item.name);
+  let resultSuffix = suffix;
+  for (const key in Mimes) {
+    if (item.compress!.blob.type === Mimes[key]) {
+      resultSuffix = key;
+      break;
+    }
+  }
+
+  if (["jpg", "jpeg"].includes(resultSuffix)) {
+    resultSuffix = option.format.target?.toLowerCase() || resultSuffix;
+  }
+
+  return name + "." + resultSuffix;
 }

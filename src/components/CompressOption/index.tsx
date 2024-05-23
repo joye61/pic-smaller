@@ -8,7 +8,7 @@ import { Mimes } from "@/mimes";
 
 export const CompressOption = observer(() => {
   const disabled = homeState.hasTaskRunning();
-  const resizeMethod = homeState.tempOption.resizeMethod;
+  const resizeMethod = homeState.tempOption.resize.method;
   const resizeOptions = [
     {
       value: "unChanged",
@@ -33,9 +33,9 @@ export const CompressOption = observer(() => {
         step={1}
         disabled={disabled}
         placeholder={gstate.locale?.optionPannel?.widthPlaceholder}
-        value={homeState.tempOption.resizeWidth}
+        value={homeState.tempOption.resize.width}
         onChange={(value) => {
-          homeState.tempOption.resizeWidth = value!;
+          homeState.tempOption.resize.width = value!;
         }}
       />
     );
@@ -46,9 +46,9 @@ export const CompressOption = observer(() => {
         step={1}
         disabled={disabled}
         placeholder={gstate.locale?.optionPannel?.heightPlaceholder}
-        value={homeState.tempOption.resizeHeight}
+        value={homeState.tempOption.resize.height}
         onChange={(value) => {
-          homeState.tempOption.resizeHeight = value!;
+          homeState.tempOption.resize.height = value!;
         }}
       />
     );
@@ -66,9 +66,11 @@ export const CompressOption = observer(() => {
           options={resizeOptions}
           disabled={disabled}
           onChange={(value) => {
-            homeState.tempOption.resizeMethod = value;
-            homeState.tempOption.resizeWidth = undefined;
-            homeState.tempOption.resizeHeight = undefined;
+            homeState.tempOption.resize = {
+              method: value,
+              width: undefined,
+              height: undefined,
+            };
           }}
         />
 
