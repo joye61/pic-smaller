@@ -18,49 +18,56 @@ export interface OutputMessageData extends Omit<ImageInfo, "name" | "blob"> {
 }
 
 export async function convert(data: MessageData) {
-  let blob: Blob = data.info.blob;
-  let width: number = 0;
-  let height: number = 0;
-  const mime = blob.type.toLowerCase();
-
-  // For JPG/JPEG/WEBP/AVIF/PNG/GIF type
-  if (
-    [Mimes.jpg, Mimes.webp, Mimes.avif, Mimes.png, Mimes.gif].includes(mime)
-  ) {
-    const bitmap = await createImageBitmap(blob);
-    width = bitmap.width;
-    height = bitmap.height;
-    let target = data.option.format.target;
-    if (target) {
-      target = target.toLowerCase() as typeof target;
-      const canvas = new OffscreenCanvas(width, height);
-      const context = canvas.getContext("2d")!;
-      if (["jpg", "jpeg"].includes(target)) {
-        context.fillStyle = data.option.format.transparentFill;
-        context.fillRect(0, 0, width, height);
-      }
-      context.drawImage(bitmap, 0, 0, width, height, 0, 0, width, height);
-      blob = await canvas.convertToBlob({ type: Mimes[target] });
-    }
-    bitmap.close();
-  }
+  const mime = data.info.blob.type.toLowerCase();
 
   // For SVG type
   if (Mimes.svg === mime) {
-    const data = await blob.text();
+    // SVG has dimension already
+    if (data.info.width > 0 && data.info.height > 0) {
+      return createHandler(data);
+    }
+
+    // If SVG has no dimension from main thread
+    const svgData = await data.info.blob.text();
     let dimension = { width: 0, height: 0 };
     try {
-      dimension = getSvgDimension(data);
+      dimension = getSvgDimension(svgData);
     } catch (error) {}
-    width = dimension.width;
-    height = dimension.height;
+    data.info.width = dimension.width;
+    data.info.height = dimension.height;
+
+    return createHandler(data);
   }
 
-  data.info.blob = blob;
-  data.info.width = width;
-  data.info.height = height;
+  // For JPG/JPEG/WEBP/AVIF/PNG/GIF type
+  const bitmap = await createImageBitmap(data.info.blob);
+  data.info.width = bitmap.width;
+  data.info.height = bitmap.height;
+  let target = data.option.format.target;
+  if (target) {
+    target = target.toLowerCase() as typeof target;
+    const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+    const context = canvas.getContext("2d")!;
+    console.log(target, data.option);
+    if (["jpg", "jpeg"].includes(target)) {
+      context.fillStyle = data.option.format.transparentFill;
+      context.fillRect(0, 0, bitmap.width, bitmap.height);
+    }
+    context.drawImage(
+      bitmap,
+      0,
+      0,
+      bitmap.width,
+      bitmap.height,
+      0,
+      0,
+      bitmap.width,
+      bitmap.height,
+    );
+    data.info.blob = await canvas.convertToBlob({ type: Mimes[target] });
+  }
+  bitmap.close();
 
-  // Start to handle images
   return createHandler(data);
 }
 

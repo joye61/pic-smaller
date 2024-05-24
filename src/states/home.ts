@@ -7,7 +7,7 @@ export const DefaultCompressOption: CompressOption = {
     maxSize: 256,
   },
   resize: {
-    method: "unChanged",
+    method: undefined,
     width: undefined,
     height: undefined,
   },

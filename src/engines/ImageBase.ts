@@ -11,12 +11,12 @@ export interface CompressOption {
     maxSize: number;
   };
   resize: {
-    method: "unChanged" | "toWidth" | "toHeight";
+    method?: "fitWidth" | "fitHeight";
     width?: number;
     height?: number;
   };
   format: {
-    target?: "JPG" | "JPEG" | "PNG" | "WEBP" | "AVIF";
+    target?: "jpg" | "jpeg" | "png" | "webp" | "avif";
     transparentFill: string;
   };
   jpeg: {

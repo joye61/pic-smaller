@@ -377,7 +377,8 @@ const Home = observer(() => {
                   const names: Set<string> = new Set();
                   /* eslint-disable @typescript-eslint/no-unused-vars */
                   for (const [_, info] of homeState.list) {
-                    const uniqName = getUniqNameOnNames(names, info.name);
+                    const fileName = getOutputFileName(info, homeState.option);
+                    const uniqName = getUniqNameOnNames(names, fileName);
                     names.add(uniqName);
                     if (info.compress?.blob) {
                       zip.file(uniqName, info.compress.blob);
@@ -390,7 +391,7 @@ const Home = observer(() => {
                       level: 6,
                     },
                   });
-                  createDownload("PicSmaller.zip", result);
+                  createDownload("picsmaller.zip", result);
                   gstate.loading = false;
                 }}
               >

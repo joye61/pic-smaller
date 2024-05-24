@@ -1,4 +1,11 @@
-import { Checkbox, Divider, InputNumber, Select, Slider } from "antd";
+import {
+  Checkbox,
+  ColorPicker,
+  Divider,
+  InputNumber,
+  Select,
+  Slider,
+} from "antd";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 import { DefaultCompressOption, homeState } from "@/states/home";
@@ -11,22 +18,31 @@ export const CompressOption = observer(() => {
   const resizeMethod = homeState.tempOption.resize.method;
   const resizeOptions = [
     {
-      value: "unChanged",
-      label: gstate.locale?.optionPannel.unChanged,
+      value: "fitWidth",
+      label: gstate.locale?.optionPannel?.fitWidth,
     },
     {
-      value: "toWidth",
-      label: gstate.locale?.optionPannel?.toWidth,
-    },
-    {
-      value: "toHeight",
-      label: gstate.locale?.optionPannel?.toHeight,
+      value: "fitHeight",
+      label: gstate.locale?.optionPannel?.fitHeight,
     },
   ];
 
-  // 显示输入框逻辑
+  const getFormatOptions = () => {
+    const options: { label: string; value: string }[] = [];
+    Object.keys(Mimes).forEach((mime) => {
+      if (!["svg", "gif"].includes(mime)) {
+        options.push({
+          value: mime,
+          label: mime.toUpperCase(),
+        });
+      }
+    });
+    return options;
+  };
+
+  // You should only allow to resize a side
   let input: React.ReactNode = null;
-  if (resizeMethod === "toWidth") {
+  if (resizeMethod === "fitWidth") {
     input = (
       <InputNumber
         min={0}
@@ -39,7 +55,7 @@ export const CompressOption = observer(() => {
         }}
       />
     );
-  } else if (resizeMethod === "toHeight") {
+  } else if (resizeMethod === "fitHeight") {
     input = (
       <InputNumber
         min={0}
@@ -54,6 +70,26 @@ export const CompressOption = observer(() => {
     );
   }
 
+  // JPEG dont't support transparent, when convert to JPEG,
+  // we should give an option to choose transparent fill color
+  let colorPicker: React.ReactNode = null;
+  const target = homeState.tempOption.format.target;
+  if (target && ["jpg", "jpeg"].includes(target)) {
+    colorPicker = (
+      <OptionItem desc={gstate.locale?.optionPannel.transparentFillDesc}>
+        <ColorPicker
+          showText
+          disabledAlpha
+          value={homeState.tempOption.format.transparentFill}
+          onChangeComplete={(value) => {
+            homeState.tempOption.format.transparentFill =
+              "#" + value.toHex().toUpperCase();
+          }}
+        />
+      </OptionItem>
+    );
+  }
+
   return (
     <>
       <Divider orientation="left" orientationMargin="0">
@@ -65,6 +101,8 @@ export const CompressOption = observer(() => {
           value={resizeMethod}
           options={resizeOptions}
           disabled={disabled}
+          placeholder={gstate.locale?.optionPannel.resizePlaceholder}
+          allowClear
           onChange={(value) => {
             homeState.tempOption.resize = {
               method: value,
@@ -76,6 +114,25 @@ export const CompressOption = observer(() => {
 
         {input && <div className={style.resizeInput}>{input}</div>}
       </OptionItem>
+
+      <Divider orientation="left" orientationMargin="0">
+        {gstate.locale?.optionPannel.outputFormat}
+      </Divider>
+      <OptionItem>
+        <Select
+          style={{ width: "100%" }}
+          value={homeState.tempOption.format.target}
+          options={getFormatOptions()}
+          disabled={disabled}
+          placeholder={gstate.locale?.optionPannel.outputFormatPlaceholder}
+          allowClear
+          onChange={(value) => {
+            homeState.tempOption.format.target = value;
+          }}
+        />
+      </OptionItem>
+      {/* Colorpicker option */}
+      {colorPicker}
 
       <Divider orientation="left" orientationMargin="0">
         {gstate.locale?.optionPannel.jpegLable}
