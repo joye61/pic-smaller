@@ -48,11 +48,13 @@ export interface Dimension {
   height: number;
 }
 
-export class ImageBase {
+export abstract class ImageBase {
   constructor(
     public info: ImageInfo,
     public option: CompressOption,
   ) {}
+
+  abstract compress(): Promise<ProcessOutput>;
 
   /**
    * Get output image dimension, based on resize param

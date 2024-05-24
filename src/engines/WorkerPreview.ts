@@ -1,5 +1,5 @@
 import { Queue } from "./Queue";
-import { MessageData, OutputMessageData, convert } from "./handler";
+import { MessageData, convert } from "./handler";
 import { avifCheck } from "./support";
 
 (async () => {
@@ -11,16 +11,9 @@ import { avifCheck } from "./support";
     "message",
     async (event: MessageEvent<MessageData>) => {
       queue.push(async () => {
-        const handler = await convert(event.data);
-        if (handler) {
-          const output = await handler.preview();
-          const result: OutputMessageData = {
-            key: handler.info.key,
-            width: handler.info.width,
-            height: handler.info.height,
-            preview: output,
-          };
-          globalThis.postMessage(result);
+        const output = await convert(event.data, "preview");
+        if (output) {
+          globalThis.postMessage(output);
         }
       });
     },

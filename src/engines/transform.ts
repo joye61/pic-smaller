@@ -7,6 +7,7 @@ import { ImageItem, homeState } from "@/states/home";
 import { CompressOption, Dimension, ImageInfo } from "./ImageBase";
 import { OutputMessageData } from "./handler";
 import { Mimes } from "@/mimes";
+import { AvifImage } from "./AvifImage";
 
 export interface MessageData {
   info: ImageInfo;
@@ -58,11 +59,22 @@ async function message(event: MessageEvent<OutputMessageData>) {
       );
 
       // Convert svg to target type
-      const blob = await new Promise<Blob>((resolve) => {
-        canvas.toBlob((result) => {
-          resolve(result!);
-        }, Mimes[target]);
-      });
+      let blob: Blob;
+      if (target === "avif") {
+        blob = await AvifImage.encode(
+          context,
+          item.width,
+          item.height,
+          homeState.option.avif.quality,
+          homeState.option.avif.speed,
+        );
+      } else {
+        blob = await new Promise<Blob>((resolve) => {
+          canvas.toBlob((result) => {
+            resolve(result!);
+          }, Mimes[target]);
+        });
+      }
       item.compress!.blob = blob;
       item.compress!.src = URL.createObjectURL(blob);
     }

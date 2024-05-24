@@ -1,4 +1,9 @@
-import { CompressOption, ImageInfo, ProcessOutput } from "./ImageBase";
+import {
+  CompressOption,
+  ImageBase,
+  ImageInfo,
+  ProcessOutput,
+} from "./ImageBase";
 import { GifImage } from "./GifImage";
 import { CanvasImage } from "./CanvasImage";
 import { PngImage } from "./PngImage";
@@ -17,14 +22,19 @@ export interface OutputMessageData extends Omit<ImageInfo, "name" | "blob"> {
   preview?: ProcessOutput;
 }
 
-export async function convert(data: MessageData) {
+export type HandleMethod = "compress" | "preview";
+
+export async function convert(
+  data: MessageData,
+  method: HandleMethod = "compress",
+): Promise<OutputMessageData | null> {
   const mime = data.info.blob.type.toLowerCase();
 
-  // For SVG type
+  // For SVG type, do not support type convert
   if (Mimes.svg === mime) {
     // SVG has dimension already
     if (data.info.width > 0 && data.info.height > 0) {
-      return createHandler(data);
+      return createHandler(data, method);
     }
 
     // If SVG has no dimension from main thread
@@ -36,19 +46,19 @@ export async function convert(data: MessageData) {
     data.info.width = dimension.width;
     data.info.height = dimension.height;
 
-    return createHandler(data);
+    return createHandler(data, method);
   }
 
   // For JPG/JPEG/WEBP/AVIF/PNG/GIF type
   const bitmap = await createImageBitmap(data.info.blob);
   data.info.width = bitmap.width;
   data.info.height = bitmap.height;
-  let target = data.option.format.target;
-  if (target) {
-    target = target.toLowerCase() as typeof target;
+  if (method === "compress" && data.option.format.target) {
+    const target = data.option.format.target.toLowerCase();
     const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
     const context = canvas.getContext("2d")!;
-    console.log(target, data.option);
+
+    // JPEG format don't support transparent, we should set a background
     if (["jpg", "jpeg"].includes(target)) {
       context.fillStyle = data.option.format.transparentFill;
       context.fillRect(0, 0, bitmap.width, bitmap.height);
@@ -64,32 +74,66 @@ export async function convert(data: MessageData) {
       bitmap.width,
       bitmap.height,
     );
+
+    // Currently no browsers support creation of an AVIF from a canvas
+    // So we should encode AVIF image type using webassembly, and the
+    // result blob don't need compress agin, return it directly
+    if (target === "avif") {
+      return createHandler(data, method, Mimes.avif);
+    }
+
     data.info.blob = await canvas.convertToBlob({ type: Mimes[target] });
   }
+
   bitmap.close();
 
-  return createHandler(data);
+  return createHandler(data, method);
 }
 
-export async function createHandler(data: MessageData) {
-  const mime = data.info.blob.type.toLowerCase();
+export async function createHandler(
+  data: MessageData,
+  method: HandleMethod,
+  specify?: string,
+): Promise<OutputMessageData | null> {
+  // console.log(data);
+  let mime = data.info.blob.type.toLowerCase();
+  if (specify) {
+    mime = specify;
+  }
+  let image: ImageBase | null = null;
   if ([Mimes.jpg, Mimes.webp].includes(mime)) {
-    return new CanvasImage(data.info, data.option);
+    image = new CanvasImage(data.info, data.option);
   }
-
   if (mime === Mimes.avif) {
-    return new AvifImage(data.info, data.option);
+    image = new AvifImage(data.info, data.option);
   }
-
   if (mime === Mimes.png) {
-    return new PngImage(data.info, data.option);
+    image = new PngImage(data.info, data.option);
   }
-
   if (mime === Mimes.gif) {
-    return new GifImage(data.info, data.option);
+    image = new GifImage(data.info, data.option);
+  }
+  if (mime === Mimes.svg) {
+    image = new SvgImage(data.info, data.option);
   }
 
-  if (mime === Mimes.svg) {
-    return new SvgImage(data.info, data.option);
+  if (!image) return null;
+
+  const result: OutputMessageData = {
+    key: image.info.key,
+    width: image.info.width,
+    height: image.info.height,
+  };
+
+  if (image && method === "preview") {
+    result.preview = await image.preview();
+    return result;
   }
+
+  if (image && method === "compress") {
+    result.compress = await image.compress();
+    return result;
+  }
+
+  return null;
 }
