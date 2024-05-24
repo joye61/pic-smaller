@@ -12,6 +12,7 @@ export class GifImage extends ImageBase {
     try {
       const { width, height } = this.getOutputDimension();
       const commands: string[] = [
+        `--optimize=3`,
         `--resize=${width}x${height}`,
         `--colors=${this.option.gif.colors}`,
       ];

@@ -80,6 +80,7 @@ export const CompressOption = observer(() => {
         <ColorPicker
           showText
           disabledAlpha
+          disabled={disabled}
           value={homeState.tempOption.format.transparentFill}
           onChangeComplete={(value) => {
             homeState.tempOption.format.transparentFill =

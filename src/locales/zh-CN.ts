@@ -32,7 +32,7 @@ const localeData: LocaleData = {
   },
   optionPannel: {
     failTip: "无法更小，请调整参数后重试",
-    help: "Pic Smaller是一款批量图片压缩应用，对选项的修改将应用到所有图片上",
+    help: "图小小是一款批量图片压缩应用，对选项的修改将应用到所有图片上",
     resizeLable: "调整图片尺寸",
     formatLable: "设置输出格式",
     jpegLable: "JPEG/WEBP参数",

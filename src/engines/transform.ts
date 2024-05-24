@@ -70,9 +70,13 @@ async function message(event: MessageEvent<OutputMessageData>) {
         );
       } else {
         blob = await new Promise<Blob>((resolve) => {
-          canvas.toBlob((result) => {
-            resolve(result!);
-          }, Mimes[target]);
+          canvas.toBlob(
+            (result) => {
+              resolve(result!);
+            },
+            Mimes[target],
+            1,
+          );
         });
       }
       item.compress!.blob = blob;

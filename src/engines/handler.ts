@@ -82,7 +82,10 @@ export async function convert(
       return createHandler(data, method, Mimes.avif);
     }
 
-    data.info.blob = await canvas.convertToBlob({ type: Mimes[target] });
+    data.info.blob = await canvas.convertToBlob({
+      type: Mimes[target],
+      quality: 1,
+    });
   }
 
   bitmap.close();
@@ -95,7 +98,6 @@ export async function createHandler(
   method: HandleMethod,
   specify?: string,
 ): Promise<OutputMessageData | null> {
-  // console.log(data);
   let mime = data.info.blob.type.toLowerCase();
   if (specify) {
     mime = specify;

@@ -18,6 +18,7 @@ import { TableProps } from "antd/es/table";
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
+  CaretRightOutlined,
   CheckCircleFilled,
   ClearOutlined,
   DeleteOutlined,
@@ -432,6 +433,7 @@ const Home = observer(() => {
             <Space>
               <Button
                 disabled={disabled}
+                icon={<ReloadOutlined />}
                 onClick={async () => {
                   homeState.tempOption = { ...DefaultCompressOption };
                   homeState.option = { ...DefaultCompressOption };
@@ -442,6 +444,7 @@ const Home = observer(() => {
               </Button>
               <Button
                 disabled={disabled}
+                icon={<CaretRightOutlined />}
                 type="primary"
                 onClick={() => {
                   homeState.option = toJS(homeState.tempOption);
