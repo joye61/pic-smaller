@@ -18,7 +18,7 @@ export const App = observer(() => {
       }}
     >
       <ContextAction />
-      <Analytics />
+      {import.meta.env.MODE === "production" && <Analytics />}
       {gstate.page}
       {gstate.loading && <Loading />}
     </ConfigProvider>

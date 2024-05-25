@@ -1,7 +1,8 @@
-FROM node:22-slim
-COPY . /src
-WORKDIR /src
-RUN set -eux; \
-    && npm install;
-EXPOSE 3000
-CMD ["npm", "run", "dev"]
+FROM node:20-alpine
+WORKDIR /app
+COPY . /app
+RUN set -eux \
+  && npm install --ignore-scripts \
+  && npm run build:preview
+CMD [ "npm", "run", "preview" ]
+EXPOSE 3001
