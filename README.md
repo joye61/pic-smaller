@@ -38,9 +38,7 @@ npm run dev
 
 ## Deployment
 
-If you want to independently deploy this project on your own server, the following is deployment document based on Docker
-
-The [Dockerfile](./Dockerfile) script has been tested. Within the project root directory, follow the instructions to start the docker application. The default listening port is `3001`
+If you want to independently deploy this project on your own server, the following document based on Docker, and [Dockerfile](./Dockerfile) script has been tested. Within the project root directory, follow the instructions to start docker application
 
 ```bash
 # Build docker image from Dockerfile
