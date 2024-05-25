@@ -20,7 +20,9 @@ export function normalize(pathname: string, base = import.meta.env.BASE_URL) {
   return "error404";
 }
 
-// 通过自增生成全局唯一的数字ID
+/**
+ * Globaly uniqid in browser session lifecycle
+ */
 let __UniqIdIndex = 0;
 export function uniqId() {
   __UniqIdIndex += 1;
@@ -28,8 +30,8 @@ export function uniqId() {
 }
 
 /**
- * 格式化字节数据
- * @param num
+ * Beautify byte size
+ * @param num byte size
  * @returns
  */
 export function formatSize(num: number) {
@@ -38,7 +40,7 @@ export function formatSize(num: number) {
 }
 
 /**
- * 弹出一个下载框
+ * Create a download dialog from browser
  * @param name
  * @param blob
  */
@@ -51,9 +53,11 @@ export function createDownload(name: string, blob: Blob) {
 }
 
 /**
- * 判断names中是否已经存在name，如果存在，则创建一个新的name
- * @param names 用来检测的names
- * @param name 待判断的name
+ * If names Set already has name, add suffix '(1)' for the name
+ * which will newly pushed to names set
+ *
+ * @param names will checked names Set
+ * @param name will pushed to names
  */
 export function getUniqNameOnNames(names: Set<string>, name: string): string {
   const getName = (checkName: string): string => {
