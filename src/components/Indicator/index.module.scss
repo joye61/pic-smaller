@@ -58,7 +58,7 @@ $barColor: #444;
     }
     @for $index from 1 through $barNum {
       $rotate: math.div(360deg, $barNum) * ($index - 1);
-      $opacity: math.div($barNum - $index + 1, $barNum);
+      $opacity: math.div($index, $barNum);
       &:nth-child(#{$index}) {
         transform: rotate($rotate);
         &::after,
