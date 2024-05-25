@@ -35,7 +35,6 @@ export interface LocaleData {
   };
   optionPannel: {
     resizeLable: string;
-    formatLable: string;
     jpegLable: string;
     pngLable: string;
     gifLable: string;
