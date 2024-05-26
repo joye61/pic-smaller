@@ -43,7 +43,7 @@ const localeData: LocaleData = {
     pngLable: "PNG パラメータ",
     gifLable: "GIF パラメータ",
     avifLable: "AVIF パラメータ",
-    resizePlaceholder: "出力サイズを比例的に調整する",
+    resizePlaceholder: "調整モードの選択",
     fitWidth: "幅を設定し、高さは自動的に拡大縮小します",
     fitHeight: "高さを設定すると、幅は自動的に拡大縮小されます",
     widthPlaceholder: "出力画像の幅を設定します",

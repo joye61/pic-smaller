@@ -39,7 +39,7 @@ const localeData: LocaleData = {
     pngLable: "PNG parameters",
     gifLable: "GIF parameters",
     avifLable: "AVIF parameters",
-    resizePlaceholder: "Adjust output size proportionally",
+    resizePlaceholder: "Select adjustment mode",
     fitWidth: "Set width, height automatically scales",
     fitHeight: "Set height, width automatically scales",
     widthPlaceholder: "Set the width of the output image",

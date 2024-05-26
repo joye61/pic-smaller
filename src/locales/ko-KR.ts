@@ -42,7 +42,7 @@ const localeData: LocaleData = {
     pngLable: "PNG 매개변수",
     gifLable: "GIF 매개변수",
     avifLable: "AVIF 매개변수",
-    resizePlaceholder: "출력 크기를 비례적으로 조정",
+    resizePlaceholder: "조정 모드 선택",
     fitWidth: "너비, 높이는 자동으로 조정됩니다.",
     fitHeight: "높이를 설정하면 너비가 자동으로 조정됩니다",
     widthPlaceholder: "출력 이미지의 너비를 설정합니다",

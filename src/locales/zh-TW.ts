@@ -40,7 +40,7 @@ const localeData: LocaleData = {
     pngLable: "PNG參數",
     gifLable: "GIF參數",
     avifLable: "AVIF參數",
-    resizePlaceholder: "等比例調整輸出尺寸",
+    resizePlaceholder: "選擇調整模式",
     fitWidth: "設定寬度，高度自動縮放",
     fitHeight: "設定高度，寬度自動縮放",
     widthPlaceholder: "設定輸出圖片寬度",
