@@ -12,9 +12,11 @@ import { gstate } from "@/global";
 import { ImageItem, homeState } from "@/states/home";
 import { Indicator } from "@/components/Indicator";
 import { createDownload, formatSize, getOutputFileName } from "@/functions";
+import { useResponse } from "@/media";
 
 export function useColumn(disabled: boolean) {
   const { token } = theme.useToken();
+  const { isPC, isPad } = useResponse();
 
   const columns: TableProps<ImageItem>["columns"] = [
     {
@@ -67,7 +69,9 @@ export function useColumn(disabled: boolean) {
         );
       },
     },
-    {
+  ];
+  if (isPC) {
+    columns.push({
       dataIndex: "name",
       title: gstate.locale?.columnTitle.name,
       render(_, row) {
@@ -77,73 +81,81 @@ export function useColumn(disabled: boolean) {
           </Typography.Text>
         );
       },
-    },
-    {
-      dataIndex: "dimension",
-      align: "right",
-      className: style.nowrap,
-      title: gstate.locale?.columnTitle.dimension,
-      render(_, row) {
-        if (!row.width && !row.height) return "-";
-        return (
-          <Typography.Text type="secondary">
-            {row.width}*{row.height}
-          </Typography.Text>
-        );
+    });
+  }
+  if (isPC || isPad) {
+    columns.push(
+      {
+        dataIndex: "dimension",
+        align: "right",
+        className: style.nowrap,
+        title: gstate.locale?.columnTitle.dimension,
+        render(_, row) {
+          if (!row.width && !row.height) return "-";
+          return (
+            <Typography.Text type="secondary">
+              {row.width}*{row.height}
+            </Typography.Text>
+          );
+        },
       },
-    },
-    {
-      dataIndex: "newDimension",
-      align: "right",
-      className: style.nowrap,
-      title: gstate.locale?.columnTitle.newDimension,
-      render(_, row) {
-        if (!row.compress?.width && !row.compress?.height) return "-";
-        return (
-          <Typography.Text>
-            {row.compress.width}*{row.compress.height}
-          </Typography.Text>
-        );
+      {
+        dataIndex: "newDimension",
+        align: "right",
+        className: style.nowrap,
+        title: gstate.locale?.columnTitle.newDimension,
+        render(_, row) {
+          if (!row.compress?.width && !row.compress?.height) return "-";
+          return (
+            <Typography.Text>
+              {row.compress.width}*{row.compress.height}
+            </Typography.Text>
+          );
+        },
       },
-    },
-    {
-      dataIndex: "size",
-      align: "right",
-      className: style.nowrap,
-      title: gstate.locale?.columnTitle.size,
-      sorter(first, second) {
-        return first.blob.size - second.blob.size;
+      {
+        dataIndex: "size",
+        align: "right",
+        className: style.nowrap,
+        title: gstate.locale?.columnTitle.size,
+        sorter(first, second) {
+          return first.blob.size - second.blob.size;
+        },
+        render(_, row) {
+          return (
+            <Typography.Text type="secondary">
+              {formatSize(row.blob.size)}
+            </Typography.Text>
+          );
+        },
       },
-      render(_, row) {
-        return (
-          <Typography.Text type="secondary">
-            {formatSize(row.blob.size)}
-          </Typography.Text>
-        );
-      },
-    },
-    {
-      dataIndex: "newSize",
-      align: "right",
-      className: style.nowrap,
-      title: gstate.locale?.columnTitle.newSize,
-      sorter(first, second) {
-        if (!first.compress || !second.compress) {
-          return 0;
-        }
-        return first.compress.blob.size - second.compress.blob.size;
-      },
-      render(_, row) {
-        if (!row.compress) return "-";
-        const lower = row.blob.size > row.compress.blob.size;
-        const format = formatSize(row.compress.blob.size);
-        if (lower) {
-          return <Typography.Text type="success">{format}</Typography.Text>;
-        }
+      {
+        dataIndex: "newSize",
+        align: "right",
+        className: style.nowrap,
+        title: gstate.locale?.columnTitle.newSize,
+        sorter(first, second) {
+          if (!first.compress || !second.compress) {
+            return 0;
+          }
+          return first.compress.blob.size - second.compress.blob.size;
+        },
+        render(_, row) {
+          if (!row.compress) return "-";
+          const lower = row.blob.size > row.compress.blob.size;
+          const format = formatSize(row.compress.blob.size);
+          if (lower) {
+            return <Typography.Text type="success">{format}</Typography.Text>;
+          }
 
-        return <Typography.Text type="danger">{format}</Typography.Text>;
+          return <Typography.Text type="danger">{format}</Typography.Text>;
+        },
       },
-    },
+    );
+  }
+
+  // All media supported fields
+  columns.push(
     {
       dataIndex: "decrease",
       className: style.nowrap,
@@ -226,7 +238,7 @@ export function useColumn(disabled: boolean) {
         );
       },
     },
-  ];
+  );
 
   return columns;
 }

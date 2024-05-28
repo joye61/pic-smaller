@@ -39,6 +39,7 @@ export const RightOption = observer(() => {
             disabled={disabled}
             icon={<ReloadOutlined />}
             onClick={async () => {
+              homeState.showOption = false;
               homeState.tempOption = { ...DefaultCompressOption };
               homeState.option = { ...DefaultCompressOption };
               homeState.reCompress();
@@ -51,6 +52,7 @@ export const RightOption = observer(() => {
             icon={<CaretRightOutlined />}
             type="primary"
             onClick={() => {
+              homeState.showOption = false;
               homeState.option = toJS(homeState.tempOption);
               homeState.reCompress();
             }}

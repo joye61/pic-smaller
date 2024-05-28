@@ -36,7 +36,7 @@ import { ProgressHint } from "@/components/ProgressHint";
 import { UploadCard } from "@/components/UploadCard";
 import { createImageList, useWorkerHandler } from "@/engines/transform";
 import { Compare } from "@/components/Compare";
-import { useColumn } from "./column";
+import { useColumn } from "./useColumn";
 import { useResponse } from "@/media";
 import { RightOption } from "./RightOption";
 
@@ -230,7 +230,7 @@ const Home = observer(() => {
               <Button
                 icon={<MenuOutlined />}
                 onClick={() => {
-                  homeState.showOption = true;
+                  homeState.showOption = !homeState.showOption;
                 }}
               />
             </>
