@@ -139,6 +139,12 @@ $border: 1px solid #dfdfdf;
   }
 }
 
+@media (max-width: 768px) {
+  .side {
+    display: none;
+  }
+}
+
 a.github {
   cursor: pointer;
   color: #000;
