@@ -5,9 +5,11 @@ import { gstate } from "@/global";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { homeState } from "@/states/home";
 import { formatSize } from "@/functions";
+import { useResponse } from "@/media";
 
 export const ProgressHint = observer(() => {
   const info = homeState.getProgressHintInfo();
+  const { isMobile } = useResponse();
 
   let rate: React.ReactNode = null;
   if (info.originSize > info.outputSize) {
@@ -42,16 +44,20 @@ export const ProgressHint = observer(() => {
         <Typography.Text type="secondary">
           &nbsp;/&nbsp;{info.totalNum}&nbsp;&nbsp;&nbsp;&nbsp;
         </Typography.Text>
-        <Typography.Text type="secondary">
-          {gstate.locale?.progress.before}：
-          <Typography.Text>{formatSize(info.originSize)}</Typography.Text>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-        </Typography.Text>
-        <Typography.Text type="secondary">
-          {gstate.locale?.progress.after}：
-          <Typography.Text>{formatSize(info.outputSize)}</Typography.Text>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-        </Typography.Text>
+        {!isMobile && (
+          <>
+            <Typography.Text type="secondary">
+              {gstate.locale?.progress.before}：
+              <Typography.Text>{formatSize(info.originSize)}</Typography.Text>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </Typography.Text>
+            <Typography.Text type="secondary">
+              {gstate.locale?.progress.after}：
+              <Typography.Text>{formatSize(info.outputSize)}</Typography.Text>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </Typography.Text>
+          </>
+        )}
         <Typography.Text type="secondary">
           {gstate.locale?.progress.rate}：{rate}
           &nbsp;&nbsp;&nbsp;&nbsp;
