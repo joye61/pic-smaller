@@ -16,7 +16,7 @@ import { useResponse } from "@/media";
 
 export function useColumn(disabled: boolean) {
   const { token } = theme.useToken();
-  const { isPC, isPad } = useResponse();
+  const { isPC, isPad, isMobile } = useResponse();
 
   const columns: TableProps<ImageItem>["columns"] = [
     {
@@ -180,7 +180,7 @@ export function useColumn(disabled: boolean) {
         if (lower) {
           return (
             <Flex align="center" justify="flex-end">
-              <Typography.Text type="success">
+              <Typography.Text type="success" style={{ whiteSpace: "nowrap" }}>
                 {formatRate}&nbsp;
               </Typography.Text>
               <ArrowDownOutlined style={{ color: token.colorSuccess }} />
@@ -208,7 +208,7 @@ export function useColumn(disabled: boolean) {
       className: style.action,
       render(_, row) {
         return (
-          <Space>
+          <Space size={isMobile ? "large" : undefined}>
             <Typography.Link
               type="secondary"
               disabled={disabled}
