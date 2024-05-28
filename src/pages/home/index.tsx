@@ -3,7 +3,6 @@ import {
   Divider,
   Dropdown,
   Flex,
-  Popover,
   Space,
   Table,
   Tooltip,
@@ -13,10 +12,8 @@ import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 import { Logo } from "@/components/Logo";
 import {
-  CaretRightOutlined,
   ClearOutlined,
   DownloadOutlined,
-  ExclamationCircleOutlined,
   FolderAddOutlined,
   GithubOutlined,
   MenuOutlined,
@@ -26,9 +23,8 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ImageInput } from "@/components/ImageInput";
 import { gstate } from "@/global";
-import { CompressOption } from "@/components/CompressOption";
 import { changeLang, langList } from "@/locale";
-import { DefaultCompressOption, homeState } from "@/states/home";
+import { homeState } from "@/states/home";
 import {
   createDownload,
   getFilesFromHandle,
@@ -39,10 +35,10 @@ import {
 import { ProgressHint } from "@/components/ProgressHint";
 import { UploadCard } from "@/components/UploadCard";
 import { createImageList, useWorkerHandler } from "@/engines/transform";
-import { toJS } from "mobx";
 import { Compare } from "@/components/Compare";
 import { useColumn } from "./column";
-import { useMediaQuery } from "react-responsive";
+import { useResponse } from "@/media";
+import { RightOption } from "./RightOption";
 
 /**
  * 获取当前语言字符串
@@ -54,9 +50,7 @@ function getLangStr() {
 }
 
 const Home = observer(() => {
-  // const isMobile = useMediaQuery({ maxWidth: 719 });
-  // const isPad = useMediaQuery({ minWidth: 720, maxWidth: 1079 });
-  const isPC = useMediaQuery({ minWidth: 1080 });
+  const { isPC } = useResponse();
   const fileRef = useRef<HTMLInputElement>(null);
   const disabled = homeState.hasTaskRunning();
   const columns = useColumn(disabled);
@@ -191,51 +185,7 @@ const Home = observer(() => {
             <ProgressHint />
           </Flex>
         </Flex>
-        <div className={style.side}>
-          <Flex justify="space-between" align="center">
-            <Popover
-              placement="bottom"
-              content={
-                <div className={style.optionHelpBox}>
-                  <Typography.Text>
-                    {gstate.locale?.optionPannel.help}
-                  </Typography.Text>
-                </div>
-              }
-            >
-              <Typography.Text type="secondary" className={style.optionHelp}>
-                <ExclamationCircleOutlined />
-              </Typography.Text>
-            </Popover>
-            <Space>
-              <Button
-                disabled={disabled}
-                icon={<ReloadOutlined />}
-                onClick={async () => {
-                  homeState.tempOption = { ...DefaultCompressOption };
-                  homeState.option = { ...DefaultCompressOption };
-                  homeState.reCompress();
-                }}
-              >
-                {gstate.locale?.optionPannel?.resetBtn}
-              </Button>
-              <Button
-                disabled={disabled}
-                icon={<CaretRightOutlined />}
-                type="primary"
-                onClick={() => {
-                  homeState.option = toJS(homeState.tempOption);
-                  homeState.reCompress();
-                }}
-              >
-                {gstate.locale?.optionPannel?.confirmBtn}
-              </Button>
-            </Space>
-          </Flex>
-          <div>
-            <CompressOption />
-          </div>
-        </div>
+        <RightOption />
       </>
     );
   }
@@ -274,10 +224,15 @@ const Home = observer(() => {
           </Typography.Link>
 
           {/* If non-PC is determined, the menu button will be displayed */}
-          {!isPC && (
+          {!isPC && homeState.list.size > 0 && (
             <>
               <Divider type="vertical" style={{ background: "#dfdfdf" }} />
-              <Button icon={<MenuOutlined />} />
+              <Button
+                icon={<MenuOutlined />}
+                onClick={() => {
+                  homeState.showOption = true;
+                }}
+              />
             </>
           )}
         </Space>

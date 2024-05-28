@@ -1,0 +1,40 @@
+$border: 1px solid #dfdfdf;
+
+.sidePc {
+  width: 380px;
+  border-left: $border;
+  flex-shrink: 0;
+}
+
+.sidePad {
+  width: 380px;
+}
+.sideMobile {
+  width: 100%;
+}
+
+.side {
+  $h1: 60px;
+  height: 100%;
+  overflow: hidden;
+  background-color: #fff;
+  > div:nth-child(1) {
+    height: $h1;
+    border-bottom: $border;
+    background-color: #fafafa;
+    padding: 0 16px;
+  }
+  > div:nth-child(2) {
+    padding: 0 16px;
+    overflow-y: auto;
+    flex: 1;
+    height: calc(100% - $h1);
+  }
+}
+
+.optionHelp {
+  cursor: pointer;
+}
+.optionHelpBox {
+  width: 320px;
+}

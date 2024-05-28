@@ -57,6 +57,7 @@ export class HomeState {
   public option: CompressOption = DefaultCompressOption;
   public tempOption: CompressOption = DefaultCompressOption;
   public compareId: number | null = null;
+  public showOption: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
