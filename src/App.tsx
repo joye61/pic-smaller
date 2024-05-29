@@ -11,7 +11,7 @@ export const App = observer(() => {
   const { isMobile } = useResponse();
 
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile && import.meta.env.DEV) {
       let vConsole: any = null;
       import("vconsole").then((result) => {
         vConsole = new result.default({ theme: "dark" });

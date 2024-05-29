@@ -29,23 +29,32 @@ export const UploadCard = observer(() => {
       state.dragActive = false;
       const files: Array<File> = [];
       if (event.dataTransfer?.items) {
-        for (let i = 0; i < event.dataTransfer.items.length; i++) {
-          const item = event.dataTransfer.items[i];
+        // https://stackoverflow.com/questions/55658851/javascript-datatransfer-items-not-persisting-through-async-calls
+        const list: Array<Promise<void>> = [];
+        for (const item of event.dataTransfer.items) {
           if (typeof item.getAsFileSystemHandle === "function") {
-            const handle = await item.getAsFileSystemHandle();
-            const result = await getFilesFromHandle(handle);
-            files.push(...result);
+            list.push(
+              (async () => {
+                const handle = await item.getAsFileSystemHandle!();
+                const result = await getFilesFromHandle(handle);
+                files.push(...result);
+              })(),
+            );
             continue;
           }
           if (typeof item.webkitGetAsEntry === "function") {
-            const entry = await item.webkitGetAsEntry();
-            if (entry) {
-              const result = await getFilesFromEntry(entry);
-              files.push(...result);
-              continue;
-            }
+            list.push(
+              (async () => {
+                const entry = await item.webkitGetAsEntry();
+                if (entry) {
+                  const result = await getFilesFromEntry(entry);
+                  files.push(...result);
+                }
+              })(),
+            );
           }
         }
+        await Promise.all(list);
       } else if (event.dataTransfer?.files) {
         const list = event.dataTransfer?.files;
         for (let index = 0; index < list.length; index++) {
