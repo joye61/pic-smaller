@@ -46,6 +46,7 @@
     "prettier": "^3.2.5",
     "sass": "^1.75.0",
     "typescript": "^5.2.2",
+    "vconsole": "^3.15.1",
     "vite": "^5.2.0",
     "vitest": "^1.6.0"
   }
