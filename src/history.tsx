@@ -45,9 +45,8 @@ export async function showPageByPath(pathname: string) {
   }
   gstate.pathname = pathname;
   try {
-    type ModuleResult = { default: React.FunctionComponentFactory<object> };
     const importer = modules[`/src/pages/${pathname}/index.tsx`]();
-    const result: ModuleResult = (await importer) as ModuleResult;
+    const result = await importer;
     gstate.page = <result.default />;
   } catch (error) {
     const error404 = await import(`@/pages/error404/index.tsx`);
