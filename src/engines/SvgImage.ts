@@ -1,6 +1,6 @@
 import { Mimes } from "@/mimes";
 import { ImageBase, ProcessOutput } from "./ImageBase";
-import { optimize } from "svgo";
+import { optimize } from "svgo/lib/svgo";
 
 /**
  * JPEG/JPG/WEBP is compatible
