@@ -38,7 +38,7 @@ export function initRouter() {
   showPageByPath(history.location.pathname);
 }
 
-export async function showPageByPath(pathname: string) {
+async function showPageByPath(pathname: string) {
   pathname = normalize(pathname);
   if (!pathname) {
     pathname = "home";
