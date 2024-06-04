@@ -31,7 +31,7 @@ export function goto(
   }
 }
 
-export function initHistoryLogic() {
+export function initRouter() {
   history.listen(({ location }) => {
     showPageByPath(location.pathname);
   });
