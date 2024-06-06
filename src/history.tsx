@@ -5,23 +5,28 @@ import { modules } from "./modules";
 
 export const history = createBrowserHistory();
 
+type Params = Record<string, string | number> | null;
+
 export function goto(
   pathname: string = "/",
-  params?: Record<string, string | number> | null,
+  params?: Params,
   type: string = "push",
 ) {
-  let query = "";
-  if (params) {
-    const search = new URLSearchParams();
-    for (const key in params) {
-      search.append(key, String(params[key]));
-    }
-    query = search.toString();
-  }
-  if (query) {
-    pathname += "?" + query;
-  }
+  pathname += buildQueryString(params);
+  navigate(pathname, type);
+}
 
+function buildQueryString(params?: Params) {
+  if (!params) return "";
+  const search = new URLSearchParams();
+  for (const key in params) {
+    search.append(key, String(params[key]));
+  }
+  const query = search.toString();
+  return query ? `?${query}` : "";
+}
+
+function navigate(pathname: string, type: string): void {
   if (type === "push") {
     history.push(pathname);
   } else if (type === "replace") {
