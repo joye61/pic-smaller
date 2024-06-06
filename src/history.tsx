@@ -33,23 +33,23 @@ export function goto(
 
 export function initRouter() {
   history.listen(({ location }) => {
-    showPageByPath(location.pathname);
+    handleRouteChange(location.pathname);
   });
-  showPageByPath(history.location.pathname);
+  handleRouteChange(history.location.pathname);
 }
 
-async function showPageByPath(pathname: string) {
-  pathname = normalize(pathname);
-  if (!pathname) {
-    pathname = "home";
-  }
-  gstate.pathname = pathname;
+async function handleRouteChange(pathname: string) {
+  gstate.pathname = normalize(pathname) || "home";
+  gstate.page = await loadPageComponent(gstate.pathname);
+}
+
+async function loadPageComponent(pathname: string) {
   try {
     const importer = modules[`/src/pages/${pathname}/index.tsx`]();
     const result = await importer;
-    gstate.page = <result.default />;
+    return <result.default />;
   } catch (error) {
     const error404 = await import(`@/pages/error404/index.tsx`);
-    gstate.page = <error404.default />;
+    return <error404.default />;
   }
 }
