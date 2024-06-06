@@ -19,9 +19,11 @@ export function goto(
 function buildQueryString(params?: Params) {
   if (!params) return "";
   const search = new URLSearchParams();
-  for (const key in params) {
-    search.append(key, String(params[key]));
-  }
+
+  Object.entries(params).forEach(([key, value]) => {
+    search.append(key, String(value));
+  });
+
   const query = search.toString();
   return query ? `?${query}` : "";
 }
