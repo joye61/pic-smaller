@@ -19,22 +19,20 @@ function useMobileVConsole() {
   }, [isMobile]);
 }
 
-const configProviderProps = {
-  locale: gstate.locale?.antLocale,
-  theme: {
-    token: {
-      colorPrimary: "#1da565",
-      colorLink: "#1da565",
-      colorSuccess: "#1da565",
-    },
-  },
-};
-
 export const App = observer(() => {
   useMobileVConsole();
 
   return (
-    <ConfigProvider {...configProviderProps}>
+    <ConfigProvider
+      locale={gstate.locale?.antLocale}
+      theme={{
+        token: {
+          colorPrimary: "#1da565",
+          colorLink: "#1da565",
+          colorSuccess: "#1da565",
+        },
+      }}
+    >
       <AntApp>
         <ContextAction />
       </AntApp>
