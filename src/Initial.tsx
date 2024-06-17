@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Flex, Typography } from "antd";
 import { useEffect } from "react";
 import { locales, modules } from "./modules";
-import { initHistoryLogic } from "./history";
+import { initRouter } from "./history";
 import { gstate } from "./global";
 import { Indicator } from "./components/Indicator";
 import { avifCheck } from "./engines/support";
@@ -25,7 +25,7 @@ export const Initial = observer(() => {
       }
       loadList.push(avifCheck());
       await Promise.all(loadList);
-      initHistoryLogic();
+      initRouter();
     })();
   }, []);
 

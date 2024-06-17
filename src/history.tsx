@@ -5,23 +5,30 @@ import { modules } from "./modules";
 
 export const history = createBrowserHistory();
 
+type Params = Record<string, string | number> | null;
+
 export function goto(
   pathname: string = "/",
-  params?: Record<string, string | number> | null,
+  params?: Params,
   type: string = "push",
 ) {
-  let query = "";
-  if (params) {
-    const search = new URLSearchParams();
-    for (const key in params) {
-      search.append(key, String(params[key]));
-    }
-    query = search.toString();
-  }
-  if (query) {
-    pathname += "?" + query;
-  }
+  pathname += buildQueryString(params);
+  navigate(pathname, type);
+}
 
+function buildQueryString(params?: Params) {
+  if (!params) return "";
+  const search = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    search.append(key, String(value));
+  });
+
+  const query = search.toString();
+  return query ? `?${query}` : "";
+}
+
+function navigate(pathname: string, type: string): void {
   if (type === "push") {
     history.push(pathname);
   } else if (type === "replace") {
@@ -31,25 +38,25 @@ export function goto(
   }
 }
 
-export function initHistoryLogic() {
+export function initRouter() {
   history.listen(({ location }) => {
-    showPageByPath(location.pathname);
+    handleRouteChange(location.pathname);
   });
-  showPageByPath(history.location.pathname);
+  handleRouteChange(history.location.pathname);
 }
 
-export async function showPageByPath(pathname: string) {
-  pathname = normalize(pathname);
-  if (!pathname) {
-    pathname = "home";
-  }
-  gstate.pathname = pathname;
+async function handleRouteChange(pathname: string) {
+  gstate.pathname = normalize(pathname) || "home";
+  gstate.page = await loadPageComponent(gstate.pathname);
+}
+
+async function loadPageComponent(pathname: string) {
   try {
     const importer = modules[`/src/pages/${pathname}/index.tsx`]();
     const result = await importer;
-    gstate.page = <result.default />;
+    return <result.default />;
   } catch (error) {
     const error404 = await import(`@/pages/error404/index.tsx`);
-    gstate.page = <error404.default />;
+    return <error404.default />;
   }
 }
