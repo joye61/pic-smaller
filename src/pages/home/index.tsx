@@ -23,21 +23,21 @@ function getLangStr() {
   return (findLang as any)?.label;
 }
 
+const MainContent = observer(() => {
+  return homeState.list.size === 0 ? (
+    <UploadCard />
+  ) : (
+    <>
+      <LeftContent />
+      <RightOption />
+    </>
+  );
+});
+
 const Home = observer(() => {
   const { isPC } = useResponse();
 
   useWorkerHandler();
-
-  // Main content switch
-  let mainContent = <UploadCard />;
-  if (homeState.list.size > 0) {
-    mainContent = (
-      <>
-        <LeftContent />
-        <RightOption />
-      </>
-    );
-  }
 
   return (
     <div className={style.container}>
@@ -89,7 +89,7 @@ const Home = observer(() => {
 
       {/* body */}
       <Flex align="stretch" className={style.main}>
-        {mainContent}
+        <MainContent />
       </Flex>
 
       {/* Compare */}
