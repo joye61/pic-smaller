@@ -20,7 +20,7 @@ Pic smaller has been deployed to [`vercel`](https://vercel.com/), you can use it
 
 ## Develop
 
-Pic smaller a [Vite](https://vitejs.dev/) + [React](https://react.dev/) project, you have to get familiar with them first. It uses modern browser technologies such as `OffscreenCanvas`, `WebAssembly`, and `Web Worker`. You should also be familiar with them before developing.
+Pic smaller is a [Vite](https://vitejs.dev/) + [React](https://react.dev/) project, you have to get familiar with them first. It uses modern browser technologies such as `OffscreenCanvas`, `WebAssembly`, and `Web Worker`. You should also be familiar with them before developing.
 
 ```bash
 # Clone the repo
