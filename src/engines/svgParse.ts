@@ -113,7 +113,7 @@ export function getSvgDimension(input: string): Dimension {
 /**
  * Convert SVG type to other, SVG convert can't do in worker
  * @param input SVG compress result in worker
- * @returns 
+ * @returns
  */
 export async function svgConvert(input: ProcessOutput): Promise<ProcessOutput> {
   if (!homeState.option.format.target) {

@@ -11,7 +11,7 @@ export const DefaultCompressOption: CompressOption = {
     width: undefined,
     height: undefined,
     short: undefined,
-    long: undefined
+    long: undefined,
   },
   format: {
     target: undefined,
