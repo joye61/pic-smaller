@@ -25,6 +25,14 @@ export const CompressOption = observer(() => {
       value: "fitHeight",
       label: gstate.locale?.optionPannel?.fitHeight,
     },
+    {
+      value: "setShort",
+      label: gstate.locale?.optionPannel?.setShort,
+    },
+    {
+      value: "setLong",
+      label: gstate.locale?.optionPannel?.setLong,
+    },
   ];
 
   const getFormatOptions = () => {
@@ -65,6 +73,32 @@ export const CompressOption = observer(() => {
         value={homeState.tempOption.resize.height}
         onChange={(value) => {
           homeState.tempOption.resize.height = value!;
+        }}
+      />
+    );
+  } else if (resizeMethod === "setShort") {
+    input = (
+      <InputNumber
+        min={0}
+        step={1}
+        disabled={disabled}
+        placeholder={gstate.locale?.optionPannel?.shortPlaceholder}
+        value={homeState.tempOption.resize.short}
+        onChange={(value) => {
+          homeState.tempOption.resize.short = value!;
+        }}
+      />
+    );
+  } else if (resizeMethod === "setLong") {
+    input = (
+      <InputNumber
+        min={0}
+        step={1}
+        disabled={disabled}
+        placeholder={gstate.locale?.optionPannel?.longPlaceholder}
+        value={homeState.tempOption.resize.long}
+        onChange={(value) => {
+          homeState.tempOption.resize.long = value!;
         }}
       />
     );
@@ -109,6 +143,8 @@ export const CompressOption = observer(() => {
               method: value,
               width: undefined,
               height: undefined,
+              short: undefined,
+              long: undefined,
             };
           }}
         />

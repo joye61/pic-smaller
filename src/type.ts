@@ -46,8 +46,12 @@ export interface LocaleData {
     resizePlaceholder: string;
     fitWidth: string;
     fitHeight: string;
+    setShort: string;
+    setLong: string;
     widthPlaceholder: string;
     heightPlaceholder: string;
+    shortPlaceholder: string;
+    longPlaceholder: string;
     qualityTitle: string;
     resetBtn: string;
     confirmBtn: string;
