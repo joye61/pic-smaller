@@ -7,18 +7,20 @@ import { Loading } from "./components/Loading";
 import { useResponse } from "./media";
 import { useEffect } from "react";
 
-export const App = observer(() => {
+function useMobileVConsole() {
   const { isMobile } = useResponse();
-
   useEffect(() => {
-    if (isMobile && import.meta.env.DEV) {
-      let vConsole: any = null;
-      import("vconsole").then((result) => {
-        vConsole = new result.default({ theme: "dark" });
-      });
-      return () => vConsole?.destroy();
-    }
+    if (!isMobile || !import.meta.env.DEV) return;
+    let vConsole: any = null;
+    import("vconsole").then((result) => {
+      vConsole = new result.default({ theme: "dark" });
+    });
+    return () => vConsole?.destroy();
   }, [isMobile]);
+}
+
+export const App = observer(() => {
+  useMobileVConsole();
 
   return (
     <ConfigProvider
