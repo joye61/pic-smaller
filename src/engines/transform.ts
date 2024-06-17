@@ -7,7 +7,7 @@ import { ImageItem, homeState } from "@/states/home";
 import { CompressOption, Dimension, ImageInfo } from "./ImageBase";
 import { OutputMessageData } from "./handler";
 import { Mimes } from "@/mimes";
-import { AvifImage } from "./AvifImage";
+import { svgConvert } from "./svgParse";
 
 export interface MessageData {
   info: ImageInfo;
@@ -27,60 +27,8 @@ async function message(event: MessageEvent<OutputMessageData>) {
     item.preview = event.data.preview ?? item.preview;
 
     // SVG can't convert in worker，so we do converting here
-    if (
-      item.blob.type === Mimes.svg &&
-      event.data.compress &&
-      homeState.option.format.target
-    ) {
-      const target = homeState.option.format.target.toLowerCase();
-      const canvas = document.createElement("canvas");
-      canvas.width = item.width;
-      canvas.height = item.height;
-      const context = canvas.getContext("2d")!;
-      if (["jpg", "jpeg"].includes(target)) {
-        context.fillStyle = homeState.option.format.transparentFill;
-        context.fillRect(0, 0, item.width, item.height);
-      }
-      const svg = await new Promise<HTMLImageElement>((resolve) => {
-        const img = new Image();
-        img.src = item.compress!.src;
-        img.onload = () => resolve(img);
-      });
-      context.drawImage(
-        svg,
-        0,
-        0,
-        item.width,
-        item.height,
-        0,
-        0,
-        item.width,
-        item.height,
-      );
-
-      // Convert svg to target type
-      let blob: Blob;
-      if (target === "avif") {
-        blob = await AvifImage.encode(
-          context,
-          item.width,
-          item.height,
-          homeState.option.avif.quality,
-          homeState.option.avif.speed,
-        );
-      } else {
-        blob = await new Promise<Blob>((resolve) => {
-          canvas.toBlob(
-            (result) => {
-              resolve(result!);
-            },
-            Mimes[target],
-            1,
-          );
-        });
-      }
-      item.compress!.blob = blob;
-      item.compress!.src = URL.createObjectURL(blob);
+    if (item.blob.type === Mimes.svg && event.data.compress) {
+      await svgConvert(item.compress!);
     }
 
     homeState.list.set(item.key, item);

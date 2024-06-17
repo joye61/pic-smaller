@@ -11,9 +11,11 @@ export interface CompressOption {
     maxSize: number;
   };
   resize: {
-    method?: "fitWidth" | "fitHeight";
+    method?: "fitWidth" | "fitHeight" | "setShort" | "setLong";
     width?: number;
     height?: number;
+    short?: number;
+    long?: number;
   };
   format: {
     target?: "jpg" | "jpeg" | "png" | "webp" | "avif";
@@ -61,36 +63,81 @@ export abstract class ImageBase {
    * @returns Dimension
    */
   getOutputDimension(): Dimension {
-    const { width, height } = this.option.resize;
-    if (!width && !height) {
-      return {
-        width: this.info.width,
-        height: this.info.height,
-      };
-    }
-
-    if (!width && height) {
-      const rate = height / this.info.height;
-      const width = rate * this.info.width;
-      return {
-        width: Math.ceil(width),
-        height: Math.ceil(height),
-      };
-    }
-
-    if (width && !height) {
-      const rate = width / this.info.width;
-      const height = rate * this.info.height;
-      return {
-        width: Math.ceil(width),
-        height: Math.ceil(height),
-      };
-    }
-
-    return {
-      width: Math.ceil(width!),
-      height: Math.ceil(height!),
+    const { method, width, height, short, long } = this.option.resize;
+    const originDimension = {
+      width: this.info.width,
+      height: this.info.height,
     };
+
+    if (method === "fitWidth") {
+      if (!width) {
+        return originDimension;
+      }
+      const rate = width / this.info.width;
+      const newHeight = rate * this.info.height;
+      return {
+        width: Math.ceil(width),
+        height: Math.ceil(newHeight),
+      };
+    }
+
+    if (method === "fitHeight") {
+      if (!height) {
+        return originDimension;
+      }
+      const rate = height / this.info.height;
+      const newWidth = rate * this.info.width;
+      return {
+        width: Math.ceil(newWidth),
+        height: Math.ceil(height),
+      };
+    }
+
+    if (method === "setShort") {
+      if (!short) {
+        return originDimension;
+      }
+
+      let newWidth: number;
+      let newHeight: number;
+      if (this.info.width <= this.info.height) {
+        newWidth = short;
+        const rate = newWidth / this.info.width;
+        newHeight = rate * this.info.height;
+      } else {
+        newHeight = short;
+        const rate = newHeight / this.info.height;
+        newWidth = rate * this.info.width;
+      }
+      return {
+        width: Math.ceil(newWidth),
+        height: Math.ceil(newHeight),
+      };
+    }
+
+    if (method === "setLong") {
+      if (!long) {
+        return originDimension;
+      }
+
+      let newWidth: number;
+      let newHeight: number;
+      if (this.info.width >= this.info.height) {
+        newWidth = long;
+        const rate = newWidth / this.info.width;
+        newHeight = rate * this.info.height;
+      } else {
+        newHeight = long;
+        const rate = newHeight / this.info.height;
+        newWidth = rate * this.info.width;
+      }
+      return {
+        width: Math.ceil(newWidth),
+        height: Math.ceil(newHeight),
+      };
+    }
+
+    return originDimension;
   }
 
   /**

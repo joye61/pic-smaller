@@ -1,4 +1,4 @@
-import { ConfigProvider } from "antd";
+import { ConfigProvider, App as AntApp } from "antd";
 import { observer } from "mobx-react-lite";
 import { gstate } from "./global";
 import { ContextAction } from "./ContextAction";
@@ -31,7 +31,9 @@ export const App = observer(() => {
         },
       }}
     >
-      <ContextAction />
+      <AntApp>
+        <ContextAction />
+      </AntApp>
       {import.meta.env.MODE === "production" && <Analytics />}
       {gstate.page}
       {gstate.loading && <Loading />}
