@@ -7,7 +7,7 @@ import { ImageItem, homeState } from "@/states/home";
 import { CompressOption, Dimension, ImageInfo } from "./ImageBase";
 import { OutputMessageData } from "./handler";
 import { Mimes } from "@/mimes";
-import { svgConvert } from "./svgParse";
+import { svgConvert } from "./svgConvert";
 
 export interface MessageData {
   info: ImageInfo;
