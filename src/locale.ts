@@ -9,6 +9,7 @@ const defaultLang = "en-US";
 
 export const langList: MenuProps["items"] = [
   { key: "en-US", label: "English" },
+  { key: "tr-TR", label: "Türkçe" },
   { key: "fr-FR", label: "Français" },
   { key: "ko-KR", label: "한국인" },
   { key: "ja-JP", label: "日本語" },
