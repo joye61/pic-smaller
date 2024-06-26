@@ -5,10 +5,12 @@ const localeData: LocaleData = {
   antLocale: trTR,
   logo: "Pic Smaller",
   initial: "Başlatılıyor",
-  previewHelp: "Sıkıştırma etkisini karşılaştırmak için bölme çizgisini sürükleyin: soldaki orijinal görüntü, sağdaki sıkıştırılmış görüntü",
+  previewHelp:
+    "Sıkıştırma etkisini karşılaştırmak için bölme çizgisini sürükleyin: soldaki orijinal görüntü, sağdaki sıkıştırılmış görüntü",
   uploadCard: {
     title: "Dosyaları buradan seçin, dosya ve klasör sürüklemeyi destekler",
-    subTitle: "Açık kaynaklı toplu resim sıkıştırma aracı, %s formatını destekler",
+    subTitle:
+      "Açık kaynaklı toplu resim sıkıştırma aracı, %s formatını destekler",
   },
   listAction: {
     batchAppend: "Toplu ekle",
@@ -17,7 +19,7 @@ const localeData: LocaleData = {
     downloadAll: "Hepsini İndir",
     downloadOne: "İndir",
     removeOne: "Sil",
-    reCompress: "Yeniden sıkıştır"
+    reCompress: "Yeniden sıkıştır",
   },
   columnTitle: {
     status: "Durum",
@@ -28,10 +30,11 @@ const localeData: LocaleData = {
     decrease: "Sıkıştır",
     action: "Eylem",
     newSize: "Yeni boyut",
-    newDimension: "Yeni boyutlar"
+    newDimension: "Yeni boyutlar",
   },
   optionPannel: {
-    failTip: "Daha küçük olamaz, lütfen parametreleri ayarlayın ve tekrar deneyin.",
+    failTip:
+      "Daha küçük olamaz, lütfen parametreleri ayarlayın ve tekrar deneyin.",
     help: "Pic Smaller, toplu resim sıkıştırma uygulamasıdır. Seçeneklerde yapılan değişiklikler tüm resimlere uygulanacaktır.",
     resizeLable: "Görüntüyü yeniden boyutlandır",
     jpegLable: "JPEG/WEBP parametreleri",
@@ -57,17 +60,17 @@ const localeData: LocaleData = {
     avifSpeed: "Sıkıştırma hızını ayarla (1-10)",
     outputFormat: "Çıktı formatını ayarla",
     outputFormatPlaceholder: "Çıktı formatını seçin",
-    transparentFillDesc: "Şeffaflık rengini seçin"
+    transparentFillDesc: "Şeffaflık rengini seçin",
   },
   error404: {
     backHome: "Ana sayfaya dön",
-    description: "Üzgünüz, ziyaret ettiğiniz sayfa mevcut değil~"
+    description: "Üzgünüz, ziyaret ettiğiniz sayfa mevcut değil~",
   },
   progress: {
     before: "Sıkıştırmadan önce",
     after: "Sıkıştırmadan sonra",
-    rate: "Sıkıştırma oranı"
-  }
+    rate: "Sıkıştırma oranı",
+  },
 };
 
 export default localeData;
