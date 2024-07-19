@@ -7,7 +7,7 @@ interface LogoProps {
   title?: string;
 }
 
-export const Logo = observer(({ title = "PicSmaller" }: LogoProps) => {
+export const Logo = observer(({ title = "Pic Smaller" }: LogoProps) => {
   return (
     <div className={style.container}>
       <Typography.Text>{title}</Typography.Text>
