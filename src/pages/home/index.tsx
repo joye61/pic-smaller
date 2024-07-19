@@ -39,9 +39,7 @@ const Header = observer(() => {
 
   return (
     <Flex align="center" justify="space-between" className={style.header}>
-      <div>
-        <Logo title={gstate.locale?.logo} />
-      </div>
+      <Logo title={gstate.locale?.logo} />
       <Space>
         <Dropdown
           menu={{
