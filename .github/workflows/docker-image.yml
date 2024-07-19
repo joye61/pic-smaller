@@ -19,7 +19,7 @@ jobs:
           node-version: '20'
           cache: npm
       - name: Build
-         run: |
+        run: |
            npm install
            npm run build
       - name: Log in to the Container registry
