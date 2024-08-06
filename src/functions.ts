@@ -13,11 +13,8 @@ export function normalize(pathname: string, base = import.meta.env.BASE_URL) {
   // Ensure starts with '/'
   pathname = "/" + pathname.replace(/^\/*/, "");
   base = "/" + base.replace(/^\/*/, "");
-  if (pathname.startsWith(base)) {
-    pathname = pathname.substring(base.length);
-    return pathname.replace(/^\/*|\/*$/g, "");
-  }
-  return "error404";
+  if (!pathname.startsWith(base)) return "error404";
+  return pathname.substring(base.length).replace(/^\/*|\/*$/g, "");
 }
 
 /**

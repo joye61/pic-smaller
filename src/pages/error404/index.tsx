@@ -1,4 +1,4 @@
-import { goto } from "@/history";
+import { goto } from "@/router";
 import style from "./index.module.scss";
 import { Button, Flex, Result } from "antd";
 import { observer } from "mobx-react-lite";

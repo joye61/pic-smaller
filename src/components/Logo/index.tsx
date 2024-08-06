@@ -1,4 +1,4 @@
-import { Flex, Typography } from "antd";
+import { Typography } from "antd";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 
@@ -7,10 +7,10 @@ interface LogoProps {
   title?: string;
 }
 
-export const Logo = observer(({ title = "PicSmaller" }: LogoProps) => {
+export const Logo = observer(({ title = "Pic Smaller" }: LogoProps) => {
   return (
-    <Flex justify="flex-start" className={style.container}>
+    <div className={style.container}>
       <Typography.Text>{title}</Typography.Text>
-    </Flex>
+    </div>
   );
 });

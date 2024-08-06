@@ -7,11 +7,11 @@ import { locales } from "./modules";
 const localeCacheKey = "Pic-Smaller-Locale";
 const defaultLang = "en-US";
 
-export const langList: MenuProps["items"] = [
+export const langList: NonNullable<MenuProps["items"]> = [
   { key: "en-US", label: "English" },
   { key: "tr-TR", label: "Türkçe" },
   { key: "fr-FR", label: "Français" },
-  { key: "es-ES", label: "Español" },  
+  { key: "es-ES", label: "Español" },
   { key: "ko-KR", label: "한국인" },
   { key: "ja-JP", label: "日本語" },
   { key: "zh-TW", label: "繁體中文" },
