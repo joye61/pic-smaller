@@ -14,7 +14,7 @@ import { useResponse } from "@/media";
 import { RightOption } from "./RightOption";
 import { LeftContent } from "./LeftContent";
 
-function getCurentLangStr() {
+function getCurentLangStr(): string | undefined {
   const findLang = langList.find((item) => item?.key == gstate.lang);
   return (findLang as any)?.label;
 }
