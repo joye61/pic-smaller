@@ -15,7 +15,7 @@ import { RightOption } from "./RightOption";
 import { LeftContent } from "./LeftContent";
 
 function getCurentLangStr() {
-  const findLang = langList?.find((item) => item?.key == gstate.lang);
+  const findLang = langList.find((item) => item?.key == gstate.lang);
   return (findLang as any)?.label;
 }
 
