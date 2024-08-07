@@ -19,17 +19,6 @@ function getCurentLangStr(): string | undefined {
   return (findLang as any)?.label;
 }
 
-const MainContent = observer(() => {
-  return homeState.list.size === 0 ? (
-    <UploadCard />
-  ) : (
-    <>
-      <LeftContent />
-      <RightOption />
-    </>
-  );
-});
-
 const Header = observer(() => {
   const { isPC } = useResponse();
 
@@ -82,7 +71,14 @@ const Header = observer(() => {
 const Body = observer(() => {
   return (
     <Flex align="stretch" className={style.main}>
-      <MainContent />
+      {homeState.list.size === 0 ? (
+        <UploadCard />
+      ) : (
+        <>
+          <LeftContent />
+          <RightOption />
+        </>
+      )}
     </Flex>
   );
 });
