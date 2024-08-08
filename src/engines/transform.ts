@@ -53,7 +53,7 @@ export function useWorkerHandler() {
   }, []);
 }
 
-export function createMessageData(item: ImageInfo): MessageData {
+function createMessageData(item: ImageInfo): MessageData {
   return {
     info: {
       key: item.key,
@@ -70,7 +70,7 @@ export function createCompressTask(item: ImageItem) {
   workerC?.postMessage(createMessageData(item));
 }
 
-export function createPreviewTask(item: ImageItem) {
+function createPreviewTask(item: ImageItem) {
   workerP?.postMessage(createMessageData(item));
 }
 
