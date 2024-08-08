@@ -79,8 +79,7 @@ export function createPreviewTask(item: ImageItem) {
  * @param files
  */
 export async function createImageList(files: Array<File>) {
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
+  const infoListPromise = files.map(async (file) => {
     const info: ImageItem = {
       key: uniqId(),
       name: file.name,
@@ -107,8 +106,12 @@ export async function createImageList(files: Array<File>) {
       info.height = height;
     }
 
-    homeState.list.set(info.key, info);
-  }
+    return info;
+  });
+
+  (await Promise.all(infoListPromise)).forEach((item: ImageItem) => {
+    homeState.list.set(item.key, item);
+  });
 
   homeState.list.forEach((item) => {
     createPreviewTask(item);
