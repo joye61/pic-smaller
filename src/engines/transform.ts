@@ -19,20 +19,20 @@ let workerP: Worker | null = null;
 
 async function message(event: MessageEvent<OutputMessageData>) {
   const value = homeState.list.get(event.data.key);
-  if (value) {
-    const item = toJS(value);
-    item.width = event.data.width;
-    item.height = event.data.height;
-    item.compress = event.data.compress ?? item.compress;
-    item.preview = event.data.preview ?? item.preview;
+  if (!value) return;
 
-    // SVG can't convert in worker，so we do converting here
-    if (item.blob.type === Mimes.svg && event.data.compress) {
-      await svgConvert(item.compress!);
-    }
+  const item = toJS(value);
+  item.width = event.data.width;
+  item.height = event.data.height;
+  item.compress = event.data.compress ?? item.compress;
+  item.preview = event.data.preview ?? item.preview;
 
-    homeState.list.set(item.key, item);
+  // SVG can't convert in worker，so we do converting here
+  if (item.blob.type === Mimes.svg && event.data.compress) {
+    await svgConvert(item.compress!);
   }
+
+  homeState.list.set(item.key, item);
 }
 
 export function useWorkerHandler() {
