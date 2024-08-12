@@ -98,6 +98,8 @@ export async function createImageList(files: Array<File>) {
         img.src = info.src;
         img.onload = () => {
           resolve({
+            x: 0,
+            y: 0,
             width: img.width,
             height: img.height,
           });

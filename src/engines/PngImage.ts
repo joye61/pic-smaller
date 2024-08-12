@@ -8,8 +8,8 @@ import { Module } from "./PngWasmModule";
 
 export class PngImage extends ImageBase {
   async compress(): Promise<ProcessOutput> {
-    const { width, height } = this.getOutputDimension();
-    const { context } = await this.createCanvas(width, height);
+    const { width, height, x, y } = this.getOutputDimension();
+    const { context } = await this.createCanvas(width, height, x, y);
     const imageData = context.getImageData(0, 0, width, height).data;
 
     try {

@@ -101,7 +101,7 @@ export const LeftContent = observer(() => {
             disabled={disabled}
             icon={<ClearOutlined />}
             onClick={() => {
-              homeState.list.clear();
+              homeState.clear();
             }}
           >
             {!isMobile && gstate.locale?.listAction.clear}

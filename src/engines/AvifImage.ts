@@ -31,9 +31,9 @@ export class AvifImage extends ImageBase {
   }
 
   async compress(): Promise<ProcessOutput> {
-    const { width, height } = this.getOutputDimension();
+    const { width, height, x, y } = this.getOutputDimension();
     try {
-      const { context } = await this.createCanvas(width, height);
+      const { context } = await this.createCanvas(width, height, x, y);
       const blob = await AvifImage.encode(
         context,
         width,

@@ -48,10 +48,17 @@ export interface LocaleData {
     fitHeight: string;
     setShort: string;
     setLong: string;
+    setCropRatio: string;
+    setCropSize: string;
     widthPlaceholder: string;
     heightPlaceholder: string;
     shortPlaceholder: string;
     longPlaceholder: string;
+    cwRatioPlaceholder: string;
+    chRatioPlaceholder: string;
+    cwSizePlaceholder: string;
+    chSizePlaceholder: string;
+    cropCompareWarning: string;
     qualityTitle: string;
     resetBtn: string;
     confirmBtn: string;

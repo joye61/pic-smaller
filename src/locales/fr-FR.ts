@@ -46,6 +46,12 @@ const localeData: LocaleData = {
     fitHeight: "Régler la hauteur, la largeur s'ajuste automatiquement",
     setShort: "Régler le petit côté, le long côté s'ajuste automatiquement",
     setLong: "Régler le long côté, le petit côté s'ajuste automatiquement",
+    setCropRatio: "Mode de recadrage, définir le rapport de recadrage",
+    setCropSize: "Mode recadrage, définir la taille du recadrage",
+    cwRatioPlaceholder: "Définir le rapport de largeur",
+    chRatioPlaceholder: "Définir le rapport de hauteur",
+    cwSizePlaceholder: "Définir la largeur du recadrage",
+    chSizePlaceholder: "Définir la hauteur de recadrage",
     widthPlaceholder: "Largeur de l'image de sortie",
     heightPlaceholder: "Hauteur de l'image de sortie",
     shortPlaceholder: "Longueur du petit côté de l'image de sortie",
@@ -61,6 +67,8 @@ const localeData: LocaleData = {
     outputFormat: "Format de sortie",
     outputFormatPlaceholder: "Format de l'image de sortie",
     transparentFillDesc: "Couleur de remplissage transparente",
+    cropCompareWarning:
+      "Le mode Recadrage ne prend pas en charge l'aperçu de comparaison",
   },
   error404: {
     backHome: "Retour à l'accueil",

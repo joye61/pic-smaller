@@ -1,4 +1,4 @@
-import { Flex, Space, Tooltip, Typography, theme } from "antd";
+import { Flex, Space, Tooltip, Typography, message, theme } from "antd";
 import style from "./index.module.scss";
 import { TableProps } from "antd/es/table";
 import {
@@ -57,6 +57,10 @@ export function useColumn(disabled: boolean) {
                 align="center"
                 justify="center"
                 onClick={async () => {
+                  if (homeState.isCropMode()) {
+                    message.warning("裁剪模式不支持预览对比");
+                    return;
+                  }
                   homeState.compareId = row.key;
                 }}
               >
