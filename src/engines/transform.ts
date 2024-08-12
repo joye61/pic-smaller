@@ -55,7 +55,13 @@ export function useWorkerHandler() {
 
 function createMessageData(item: ImageInfo): MessageData {
   return {
-    info: { ...item },
+    info: {
+      key: item.key,
+      name: item.name,
+      blob: item.blob,
+      width: item.width,
+      height: item.height,
+    },
     option: toJS(homeState.option),
   };
 }
