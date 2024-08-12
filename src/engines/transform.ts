@@ -55,6 +55,14 @@ export function useWorkerHandler() {
 
 function createMessageData(item: ImageInfo): MessageData {
   return {
+    /**
+     * Why not use the spread operator here?
+     * Because it causes an error when used this way,
+     * and the exact reason is unknown at the moment.
+     *
+     * error: `Uncaught (in promise) DOMException: Failed to execute 'postMessage' on 'Worker': #<Object> could not be cloned.`
+     * Reproduction method: In the second upload, include the same images as in the first.
+     */
     info: {
       key: item.key,
       name: item.name,
