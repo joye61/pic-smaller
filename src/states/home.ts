@@ -26,7 +26,7 @@ export const DefaultCompressOption: CompressOption = {
   },
   png: {
     colors: 128,
-    dithering: 0,
+    dithering: 0.5,
   },
   gif: {
     colors: 128,
