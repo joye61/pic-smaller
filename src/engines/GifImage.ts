@@ -10,12 +10,21 @@ import { ImageBase, ProcessOutput } from "./ImageBase";
 export class GifImage extends ImageBase {
   async compress(): Promise<ProcessOutput> {
     try {
-      const { width, height } = this.getOutputDimension();
+      const { width, height, x, y } = this.getOutputDimension();
+
       const commands: string[] = [
         `--optimize=3`,
-        `--resize=${width}x${height}`,
+        // `--resize=${width}x${height}`,
         `--colors=${this.option.gif.colors}`,
       ];
+
+      // Crop mode
+      if (width !== this.info.width || height !== this.info.height) {
+        commands.push(`--crop=${x},${y}+${width}x${height}`);
+      } else {
+        commands.push(`--resize=${width}x${height}`);
+      }
+
       if (this.option.gif.dithering) {
         commands.push(`--dither=floyd-steinberg`);
       }
@@ -51,14 +60,23 @@ export class GifImage extends ImageBase {
   }
 
   async preview(): Promise<ProcessOutput> {
-    const { width, height } = this.getPreviewDimension();
+    const { width, height, x, y } = this.getPreviewDimension();
 
     const commands: string[] = [
-      `--resize=${width}x${height}`,
       `--colors=${this.option.gif.colors}`,
+      // `--resize=${width}x${height}`,
       `--output=/out/${this.info.name}`,
-      this.info.name,
     ];
+
+    // Crop mode
+    if (width !== this.info.width || height !== this.info.height) {
+      commands.push(`--crop=${x},${y}+${width}x${height}`);
+    } else {
+      commands.push(`--resize=${width}x${height}`);
+    }
+
+    commands.push(this.info.name);
+
     const buffer = await this.info.blob.arrayBuffer();
     const result = await gifsicle({
       data: [

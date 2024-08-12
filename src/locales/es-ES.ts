@@ -49,6 +49,12 @@ const localeData: LocaleData = {
       "Ajusta el lado más corto, el lado más largo se adaptará automáticamente",
     setLong:
       "Ajusta el lado más largo, el lado más corto se adaptará automáticamente",
+    setCropRatio: "Modo de recorte, establecer proporción de recorte",
+    setCropSize: "Modo de recorte, establecer tamaño de recorte",
+    cwRatioPlaceholder: "Establecer relación de ancho",
+    chRatioPlaceholder: "Establecer relación de altura",
+    cwSizePlaceholder: "Establecer ancho de recorte",
+    chSizePlaceholder: "Establecer altura de recorte",
     widthPlaceholder: "Ajusta la anchura de la imagen",
     heightPlaceholder: "Ajusta la altura de la imagen",
     shortPlaceholder: "Ajusta el lado mas corto de la imagen",
@@ -64,6 +70,8 @@ const localeData: LocaleData = {
     outputFormat: "Formato de fichero",
     outputFormatPlaceholder: "Selecciona el formato de imagen",
     transparentFillDesc: "Elige un color de relleno transparente",
+    cropCompareWarning:
+      "El modo de recorte no admite la vista previa de comparación",
   },
   error404: {
     backHome: "Volver al inicio",

@@ -65,6 +65,8 @@ function parseAttributes(root: string): IAttributes {
 
 function calculateByDimensions(attrs: IAttributes): Dimension {
   return {
+    x: 0,
+    y: 0,
     height: attrs.height as number,
     width: attrs.width as number,
   };
@@ -77,17 +79,23 @@ function calculateByViewbox(
   const ratio = (viewbox.width as number) / (viewbox.height as number);
   if (attrs.width) {
     return {
+      x: 0,
+      y: 0,
       height: Math.floor(attrs.width / ratio),
       width: attrs.width,
     };
   }
   if (attrs.height) {
     return {
+      x: 0,
+      y: 0,
       height: attrs.height,
       width: Math.floor(attrs.height * ratio),
     };
   }
   return {
+    x: 0,
+    y: 0,
     height: viewbox.height as number,
     width: viewbox.width as number,
   };

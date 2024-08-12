@@ -12,17 +12,21 @@ export const DefaultCompressOption: CompressOption = {
     height: undefined,
     short: undefined,
     long: undefined,
+    cropWidthRatio: undefined,
+    cropHeightRatio: undefined,
+    cropWidthSize: undefined,
+    cropHeightSize: undefined,
   },
   format: {
     target: undefined,
     transparentFill: "#FFFFFF",
   },
   jpeg: {
-    quality: 0.7,
+    quality: 0.75,
   },
   png: {
-    colors: 32,
-    dithering: 0,
+    colors: 128,
+    dithering: 0.5,
   },
   gif: {
     colors: 128,
@@ -63,6 +67,32 @@ export class HomeState {
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  /**
+   * Check whether crop mode
+   * @returns
+   */
+  isCropMode() {
+    const resize = this.option.resize;
+    return (
+      (resize.method === "setCropRatio" &&
+        resize.cropWidthRatio &&
+        resize.cropHeightRatio &&
+        resize.cropWidthRatio > 0 &&
+        resize.cropHeightRatio > 0) ||
+      (resize.method === "setCropSize" &&
+        resize.cropWidthSize &&
+        resize.cropHeightSize &&
+        resize.cropWidthSize > 0 &&
+        resize.cropHeightSize > 0)
+    );
+  }
+
+  clear() {
+    this.list.clear();
+    this.tempOption = { ...DefaultCompressOption };
+    this.option = { ...DefaultCompressOption };
   }
 
   reCompress() {

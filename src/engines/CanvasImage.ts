@@ -10,6 +10,8 @@ export class CanvasImage extends ImageBase {
       dimension.width,
       dimension.height,
       this.option.jpeg.quality,
+      dimension.x,
+      dimension.y,
     );
     return {
       ...dimension,
