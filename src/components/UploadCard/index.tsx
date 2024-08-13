@@ -59,7 +59,6 @@ export const UploadCard = observer(() => {
         const list = event.dataTransfer?.files;
         for (let index = 0; index < list.length; index++) {
           const file = list.item(index);
-          file && files.push(file);
           if (file) {
             files.push(file);
           }

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { normalize } from "./functions";
-import { history } from "./history";
+import { history } from "./router";
 import { LocaleData } from "./type";
 import { Initial } from "./Initial";
 
