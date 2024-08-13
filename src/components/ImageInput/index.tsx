@@ -21,13 +21,7 @@ export const ImageInput = observer(
             event.target.value = "";
             return;
           }
-          const list: Array<File> = [];
-          for (let index = 0; index < files.length; index++) {
-            const file = files.item(index);
-            if (file) {
-              list.push(file);
-            }
-          }
+          const list = Array.from(files).filter((file) => !!file);
           await createImageList(list);
           event.target.value = "";
         }}
