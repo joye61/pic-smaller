@@ -61,11 +61,11 @@ Figure 4: Where to open the localhost website link
 
 ## Deploy
 
-If you want to independently deploy this project on your own server, the following document based on Docker, and [Dockerfile](./Dockerfile) script has been tested. Within the project root directory, follow the instructions to start docker application
+If you want to independently deploy this project on your own server, the following document based on Docker, follow the instructions to start docker application
 
 ```bash
-# Build docker image from Dockerfile
-docker build -t picsmaller .
+# Pull docker image from ghcr.io
+docker pull ghcr.io/joye61/pic-smaller:latest
 
 # Start a container
 docker run -p 3001:3001 -d picsmaller
