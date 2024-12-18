@@ -16,6 +16,7 @@ export const langList: NonNullable<MenuProps["items"]> = [
   { key: "ja-JP", label: "日本語" },
   { key: "zh-TW", label: "繁體中文" },
   { key: "zh-CN", label: "简体中文" },
+  { key: "fa-IR", label: "فارسی" },
 ];
 
 function getLang() {
