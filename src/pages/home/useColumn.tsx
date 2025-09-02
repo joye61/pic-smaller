@@ -1,13 +1,7 @@
 import { Flex, Space, Tooltip, Typography, message, theme } from "antd";
 import style from "./index.module.scss";
 import { TableProps } from "antd/es/table";
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  CheckCircleFilled,
-  DeleteOutlined,
-  DownloadOutlined,
-} from "@ant-design/icons";
+import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { gstate } from "@/global";
 import { ImageItem, homeState } from "@/states/home";
 import { Indicator } from "@/components/Indicator";
@@ -28,12 +22,11 @@ export function useColumn(disabled: boolean) {
       render(_, row) {
         if (row.compress && row.preview) {
           return (
-            <CheckCircleFilled
-              style={{
-                fontSize: "17px",
-                color: token.colorPrimary,
-              }}
-            />
+            <div className={style.fileok}>
+              <svg viewBox="0 0 1024 1024">
+                <path d="M128 128l0 768 768 0L896 128 128 128zM424.704 768 198.464 541.696 288.96 451.2l135.744 135.744 316.8-316.8L832 360.704 424.704 768z" />
+              </svg>
+            </div>
           );
         }
         return <Indicator />;
@@ -212,21 +205,35 @@ export function useColumn(disabled: boolean) {
       className: style.action,
       render(_, row) {
         return (
-          <Space size={isMobile ? "large" : undefined}>
+          <Space
+            size={isMobile ? "large" : undefined}
+            className={style.actionlink}
+          >
             <Typography.Link
               type="secondary"
               disabled={disabled}
+              style={{ fontSize: 0 }}
               onClick={() => {
                 homeState.list.delete(row.key);
               }}
             >
               <Tooltip title={gstate.locale?.listAction.removeOne}>
-                <DeleteOutlined />
+                <svg viewBox="0 0 1024 1024" width="20" height="20">
+                  <path
+                    d="M912 239.2H112a5.333333 5.333333 0 0 0-5.333333 5.333333v64a5.333333 5.333333 0 0 0 5.333333 5.333334h88.32a5.333333 5.333333 0 0 1 5.333333 5.333333V912a5.333333 5.333333 0 0 0 5.333334 5.333333h601.973333a5.333333 5.333333 0 0 0 5.333333-5.333333V319.2a5.333333 5.333333 0 0 1 5.333334-5.333333H912a5.333333 5.333333 0 0 0 5.333333-5.333334v-64a5.333333 5.333333 0 0 0-5.333333-5.333333z m-470.24 486.506667a5.333333 5.333333 0 0 1-5.333333 5.333333h-64a5.333333 5.333333 0 0 1-5.333334-5.333333V430.826667a5.333333 5.333333 0 0 1 5.333334-5.333334h64a5.333333 5.333333 0 0 1 5.333333 5.333334z m215.146667 0a5.333333 5.333333 0 0 1-5.333334 5.333333h-64a5.333333 5.333333 0 0 1-5.333333-5.333333V430.826667a5.333333 5.333333 0 0 1 5.333333-5.333334h64a5.333333 5.333333 0 0 1 5.333334 5.333334z"
+                    fill="#ff4d4f"
+                  ></path>
+                  <path
+                    d="M320 106.666667m5.333333 0l373.333334 0q5.333333 0 5.333333 5.333333l0 64q0 5.333333-5.333333 5.333333l-373.333334 0q-5.333333 0-5.333333-5.333333l0-64q0-5.333333 5.333333-5.333333Z"
+                    fill="#ff4d4f"
+                  ></path>
+                </svg>
               </Tooltip>
             </Typography.Link>
             <Typography.Link
               type="secondary"
               disabled={disabled}
+              style={{ fontSize: 0 }}
               onClick={() => {
                 if (row.compress?.blob) {
                   const fileName = getOutputFileName(row, homeState.option);
@@ -235,7 +242,12 @@ export function useColumn(disabled: boolean) {
               }}
             >
               <Tooltip title={gstate.locale?.listAction.downloadOne}>
-                <DownloadOutlined />
+                <svg viewBox="0 0 1024 1024" width="18" height="20">
+                  <path
+                    d="M736 448l-256 256-256-256 160 0 0-384 192 0 0 384zM480 704l-480 0 0 256 960 0 0-256-480 0zM896 832l-128 0 0-64 128 0 0 64z"
+                    fill="#707070"
+                  />
+                </svg>
               </Tooltip>
             </Typography.Link>
           </Space>

@@ -196,9 +196,9 @@ export const CompressOption = observer(() => {
 
   return (
     <>
-      <Divider orientation="left" orientationMargin="0">
+      <div className={style.olabel}>
         {gstate.locale?.optionPannel.resizeLable}
-      </Divider>
+      </div>
       <OptionItem>
         <Select
           style={{ width: "100%" }}
@@ -224,9 +224,11 @@ export const CompressOption = observer(() => {
         {input}
       </OptionItem>
 
-      <Divider orientation="left" orientationMargin="0">
+      <Divider />
+
+      <div className={style.olabel}>
         {gstate.locale?.optionPannel.outputFormat}
-      </Divider>
+      </div>
       <OptionItem>
         <Select
           style={{ width: "100%" }}
@@ -243,9 +245,10 @@ export const CompressOption = observer(() => {
       {/* Colorpicker option */}
       {colorPicker}
 
-      <Divider orientation="left" orientationMargin="0">
+      <Divider />
+      <div className={style.olabel}>
         {gstate.locale?.optionPannel.jpegLable}
-      </Divider>
+      </div>
 
       <OptionItem desc={gstate.locale?.optionPannel?.qualityTitle}>
         <Slider
@@ -261,9 +264,8 @@ export const CompressOption = observer(() => {
         />
       </OptionItem>
 
-      <Divider orientation="left" orientationMargin="0">
-        {gstate.locale?.optionPannel.pngLable}
-      </Divider>
+      <Divider />
+      <div className={style.olabel}>{gstate.locale?.optionPannel.pngLable}</div>
 
       <OptionItem desc={gstate.locale?.optionPannel.colorsDesc}>
         <Slider
@@ -293,9 +295,8 @@ export const CompressOption = observer(() => {
         />
       </OptionItem>
 
-      <Divider orientation="left" orientationMargin="0">
-        {gstate.locale?.optionPannel.gifLable}
-      </Divider>
+      <Divider />
+      <div className={style.olabel}>{gstate.locale?.optionPannel.gifLable}</div>
 
       <OptionItem>
         <Checkbox
@@ -325,9 +326,10 @@ export const CompressOption = observer(() => {
 
       {Mimes.avif && (
         <>
-          <Divider orientation="left" orientationMargin="0">
+          <Divider />
+          <div className={style.olabel}>
             {gstate.locale?.optionPannel.avifLable}
-          </Divider>
+          </div>
 
           <OptionItem desc={gstate.locale?.optionPannel.avifQuality}>
             <Slider

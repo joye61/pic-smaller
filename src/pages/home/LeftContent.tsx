@@ -1,4 +1,4 @@
-import { Button, Flex, Space, Table, Tooltip } from "antd";
+import { Button, Flex, Space, Table } from "antd";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 import {
@@ -88,23 +88,26 @@ export const LeftContent = observer(() => {
           )}
         </Space>
         <Space>
-          <Tooltip title={gstate.locale?.listAction.reCompress}>
-            <Button
-              disabled={disabled}
-              icon={<ReloadOutlined />}
-              onClick={async () => {
-                homeState.reCompress();
-              }}
-            />
-          </Tooltip>
           <Button
             disabled={disabled}
             icon={<ClearOutlined />}
+            danger
+            type="primary"
             onClick={() => {
               homeState.clear();
             }}
           >
             {!isMobile && gstate.locale?.listAction.clear}
+          </Button>
+          <Button
+            disabled={disabled}
+            icon={<ReloadOutlined />}
+            type="primary"
+            onClick={async () => {
+              homeState.reCompress();
+            }}
+          >
+            {gstate.locale?.listAction.reCompress}
           </Button>
           <Button
             icon={<DownloadOutlined />}

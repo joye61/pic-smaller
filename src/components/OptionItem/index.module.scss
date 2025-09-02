@@ -1,7 +1,11 @@
 .container {
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 
 .desc {
   margin-bottom: 8px;
+}
+
+:global(.ant-slider) {
+  margin: 11px 1px !important;
 }

@@ -31,7 +31,7 @@ export const RightOption = observer(() => {
           }
         >
           <Typography.Text type="secondary" className={style.optionHelp}>
-            <ExclamationCircleOutlined />
+            <ExclamationCircleOutlined/>
           </Typography.Text>
         </Popover>
         <Space>

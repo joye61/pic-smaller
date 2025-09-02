@@ -16,9 +16,9 @@ $border: 1px solid #dfdfdf;
 .locale {
   cursor: pointer;
   svg {
-    width: 18px;
-    height: 18px;
-    margin-right: 4px;
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
     path {
       fill: currentColor;
     }
@@ -122,5 +122,23 @@ a.github {
   margin-left: 16px;
   span {
     font-size: 24px;
+  }
+}
+
+.fileok {
+  font-size: 0;
+  svg {
+    width: 20px;
+    height: 20px;
+    path {
+      fill: #078249;
+    }
+  }
+}
+
+.actionlink {
+  a,
+  :global(.ant-space-item) {
+    font-size: 0;
   }
 }

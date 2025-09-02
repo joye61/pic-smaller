@@ -25,7 +25,7 @@ $border: 1px solid #dfdfdf;
     padding: 0 16px;
   }
   > div:nth-child(2) {
-    padding: 0 16px;
+    padding: 16px;
     overflow-y: auto;
     flex: 1;
     height: calc(100% - $h1);
@@ -34,6 +34,14 @@ $border: 1px solid #dfdfdf;
 
 .optionHelp {
   cursor: pointer;
+  font-size: 0;
+  > span {
+    font-size: 0;
+  }
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 .optionHelpBox {
   width: 320px;
