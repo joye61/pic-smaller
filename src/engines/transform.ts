@@ -123,6 +123,7 @@ export async function createImageList(files: Array<File>) {
     homeState.list.set(item.key, item);
   });
 
+  homeState.option = toJS(homeState.tempOption);
   homeState.list.forEach((item) => {
     createPreviewTask(item);
     createCompressTask(item);
