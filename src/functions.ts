@@ -152,11 +152,14 @@ export async function getFilesFromHandle(
 
   // If handle is a directory
   if (handle.kind === "directory") {
-    const result: Array<File> = [];
+    const PromiseList: Array<Promise<File[]>> = [];
+    const result: File[] = [];
     for await (const item of (handle as any).values()) {
-      const subList = await getFilesFromHandle(item);
-      result.push(...subList);
+      const subPromiseList = getFilesFromHandle(item);
+      PromiseList.push(subPromiseList);
     }
+    const fileListList = await Promise.all(PromiseList);
+    result.push(...fileListList.flat());
     return result;
   }
 
