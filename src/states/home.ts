@@ -16,6 +16,13 @@ export const DefaultCompressOption: CompressOption = {
     cropHeightRatio: undefined,
     cropWidthSize: undefined,
     cropHeightSize: undefined,
+    presetCrop: {
+      paperSize: "a4",
+      orientation: "portrait",
+      reference: "width",
+      cropPx: 0,
+      offsetPx: 0,
+    },
   },
   format: {
     target: undefined,
@@ -76,6 +83,8 @@ export class HomeState {
   isCropMode() {
     const resize = this.option.resize;
     return (
+      (resize.method === "presetCrop" &&
+        resize.presetCrop?.paperSize != null) ||
       (resize.method === "setCropRatio" &&
         resize.cropWidthRatio &&
         resize.cropHeightRatio &&

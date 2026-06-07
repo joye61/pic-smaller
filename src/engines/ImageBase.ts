@@ -17,7 +17,8 @@ export interface CompressOption {
       | "setShort"
       | "setLong"
       | "setCropRatio"
-      | "setCropSize";
+      | "setCropSize"
+      | "presetCrop";
     width?: number;
     height?: number;
     short?: number;
@@ -26,6 +27,13 @@ export interface CompressOption {
     cropHeightRatio?: number;
     cropWidthSize?: number;
     cropHeightSize?: number;
+    presetCrop?: {
+      paperSize: string;
+      orientation: "portrait" | "landscape";
+      reference: "width" | "height";
+      cropPx: number;
+      offsetPx: number;
+    };
   };
   format: {
     target?: "jpg" | "jpeg" | "png" | "webp" | "avif";
@@ -61,6 +69,19 @@ export interface Dimension {
   width: number;
   height: number;
 }
+
+export const PAPER_SIZES: Record<
+  string,
+  { label: string; width: number; height: number }
+> = {
+  a3: { label: "A3", width: 297, height: 420 },
+  a4: { label: "A4", width: 210, height: 297 },
+  a5: { label: "A5", width: 148, height: 210 },
+  letter: { label: "US Letter", width: 216, height: 279 },
+  legal: { label: "US Legal", width: 216, height: 356 },
+  b4: { label: "B4", width: 257, height: 364 },
+  b5: { label: "B5", width: 182, height: 257 },
+};
 
 export abstract class ImageBase {
   constructor(
@@ -232,6 +253,66 @@ export abstract class ImageBase {
       };
     }
 
+    // Crop via preset paper size
+    if (method === "presetCrop") {
+      if (!this.option.resize.presetCrop) {
+        return originDimension;
+      }
+
+      const { paperSize, orientation, reference, cropPx, offsetPx } =
+        this.option.resize.presetCrop;
+      const paper = PAPER_SIZES[paperSize];
+      if (!paper || cropPx == null || offsetPx == null) {
+        return originDimension;
+      }
+
+      let ratioW = paper.width;
+      let ratioH = paper.height;
+      if (orientation === "landscape") {
+        ratioW = paper.height;
+        ratioH = paper.width;
+      }
+
+      const refIsWidth = reference === "width";
+      const refDim = refIsWidth ? this.info.width : this.info.height;
+      const otherDim = refIsWidth ? this.info.height : this.info.width;
+      const ratioRef = refIsWidth ? ratioW : ratioH;
+      const ratioOther = refIsWidth ? ratioH : ratioW;
+
+      const cropStart = Math.max(0, cropPx + offsetPx);
+      const cropEnd = Math.max(0, cropPx - offsetPx);
+      const newRefDim = refDim - cropStart - cropEnd;
+
+      if (newRefDim <= 0) {
+        return originDimension;
+      }
+
+      const newOtherDim = Math.round(newRefDim * (ratioOther / ratioRef));
+
+      if (newOtherDim > otherDim) {
+        return originDimension;
+      }
+
+      const refOffset = cropStart;
+      const otherOffset = Math.round((otherDim - newOtherDim) / 2);
+
+      if (refIsWidth) {
+        return {
+          x: refOffset,
+          y: otherOffset,
+          width: Math.ceil(newRefDim),
+          height: Math.ceil(newOtherDim),
+        };
+      } else {
+        return {
+          x: otherOffset,
+          y: refOffset,
+          width: Math.ceil(newOtherDim),
+          height: Math.ceil(newRefDim),
+        };
+      }
+    }
+
     return originDimension;
   }
 
@@ -311,7 +392,7 @@ export abstract class ImageBase {
     const image = await createImageBitmap(this.info.blob);
 
     const method = this.option.resize.method;
-    if (method && ["setCropRatio", "setCropSize"].includes(method)) {
+    if (method && ["setCropRatio", "setCropSize", "presetCrop"].includes(method)) {
       // Crop mode only
       context?.drawImage(
         image,

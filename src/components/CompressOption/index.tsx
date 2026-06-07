@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   ColorPicker,
   Divider,
@@ -13,6 +14,7 @@ import { DefaultCompressOption, homeState } from "@/states/home";
 import { gstate } from "@/global";
 import { OptionItem } from "../OptionItem";
 import { Mimes } from "@/mimes";
+import { PAPER_SIZES } from "@/engines/ImageBase";
 
 export const CompressOption = observer(() => {
   const disabled = homeState.hasTaskRunning();
@@ -42,6 +44,10 @@ export const CompressOption = observer(() => {
       value: "setCropSize",
       label: gstate.locale?.optionPannel?.setCropSize,
     },
+    {
+      value: "presetCrop",
+      label: gstate.locale?.optionPannel?.presetCrop,
+    },
   ];
 
   const getFormatOptions = () => {
@@ -56,6 +62,44 @@ export const CompressOption = observer(() => {
     });
     return options;
   };
+
+  const paperSizeOptions = Object.entries(PAPER_SIZES).map(([key, val]) => ({
+    value: key,
+    label: val.label,
+  }));
+
+  const pc = resizeMethod === "presetCrop" ? (homeState.tempOption.resize.presetCrop || {
+    paperSize: "a4",
+    orientation: "portrait" as const,
+    reference: "width" as const,
+    cropPx: 0,
+    offsetPx: 0,
+  }) : null;
+
+  let presetCropWarning = false;
+  if (pc && homeState.list.size > 0) {
+    for (const [_, item] of homeState.list) {
+      const paper = PAPER_SIZES[pc.paperSize];
+      if (!paper) { presetCropWarning = true; break; }
+      let ratioW = paper.width;
+      let ratioH = paper.height;
+      if (pc.orientation === "landscape") {
+        ratioW = paper.height;
+        ratioH = paper.width;
+      }
+      const refIsWidth = pc.reference === "width";
+      const refDim = refIsWidth ? item.width : item.height;
+      const otherDim = refIsWidth ? item.height : item.width;
+      const ratioRef = refIsWidth ? ratioW : ratioH;
+      const ratioOther = refIsWidth ? ratioH : ratioW;
+      const cropStart = Math.max(0, (pc.cropPx || 0) + (pc.offsetPx || 0));
+      const cropEnd = Math.max(0, (pc.cropPx || 0) - (pc.offsetPx || 0));
+      const newRefDim = refDim - cropStart - cropEnd;
+      if (newRefDim <= 0) { presetCropWarning = true; break; }
+      const newOtherDim = Math.round(newRefDim * (ratioOther / ratioRef));
+      if (newOtherDim > otherDim) { presetCropWarning = true; break; }
+    }
+  }
 
   // You should only allow to resize a side
   let input: React.ReactNode = null;
@@ -171,6 +215,121 @@ export const CompressOption = observer(() => {
         />
       </Flex>
     );
+  } else if (resizeMethod === "presetCrop" && pc) {
+    input = (
+      <div className={style.presetCropInput}>
+        <div className={style.presetRow}>
+          <span>{gstate.locale?.optionPannel?.presetPaperSize}</span>
+          <Select
+            value={pc.paperSize}
+            options={paperSizeOptions}
+            disabled={disabled}
+            onChange={(value) => {
+              homeState.tempOption.resize = {
+                ...homeState.tempOption.resize,
+                presetCrop: { ...pc, paperSize: value },
+              };
+            }}
+          />
+        </div>
+        <div className={style.presetRow}>
+          <span>{gstate.locale?.optionPannel?.presetOrientation}</span>
+          <Select
+            value={pc.orientation}
+            options={[
+              { value: "portrait", label: gstate.locale?.optionPannel?.presetPortrait },
+              { value: "landscape", label: gstate.locale?.optionPannel?.presetLandscape },
+            ]}
+            disabled={disabled}
+            onChange={(value) => {
+              homeState.tempOption.resize = {
+                ...homeState.tempOption.resize,
+                presetCrop: { ...pc, orientation: value },
+              };
+            }}
+          />
+        </div>
+        <div className={style.presetRow}>
+          <span>{gstate.locale?.optionPannel?.presetRefWidth}</span>
+          <Select
+            value={pc.reference}
+            options={[
+              { value: "width", label: gstate.locale?.optionPannel?.presetRefWidth },
+              { value: "height", label: gstate.locale?.optionPannel?.presetRefHeight },
+            ]}
+            disabled={disabled}
+            onChange={(value) => {
+              homeState.tempOption.resize = {
+                ...homeState.tempOption.resize,
+                presetCrop: { ...pc, reference: value },
+              };
+            }}
+          />
+        </div>
+        <div className={style.presetRow}>
+          <span>{gstate.locale?.optionPannel?.presetCropPx}</span>
+          <InputNumber
+            min={0}
+            max={1000}
+            step={1}
+            disabled={disabled}
+            value={pc.cropPx}
+            onChange={(value) => {
+              homeState.tempOption.resize = {
+                ...homeState.tempOption.resize,
+                presetCrop: { ...pc, cropPx: value ?? 0 },
+              };
+            }}
+          />
+        </div>
+        <div className={style.presetRow}>
+          <span>{gstate.locale?.optionPannel?.presetOffsetPx}</span>
+          <InputNumber
+            min={-500}
+            max={500}
+            step={1}
+            disabled={disabled}
+            value={pc.offsetPx}
+            onChange={(value) => {
+              homeState.tempOption.resize = {
+                ...homeState.tempOption.resize,
+                presetCrop: { ...pc, offsetPx: value ?? 0 },
+              };
+            }}
+          />
+        </div>
+        {presetCropWarning && (
+          <div className={style.presetWarning}>
+            <span>{gstate.locale?.optionPannel?.presetCropWarning}</span>
+            <div className={style.warningActions}>
+              <Button size="small" onClick={() => {
+                homeState.tempOption.resize = {
+                  ...homeState.tempOption.resize,
+                  presetCrop: { ...pc, reference: pc.reference === "width" ? "height" : "width" },
+                };
+              }}>
+                {gstate.locale?.optionPannel?.presetSwitchRef}
+              </Button>
+              <Button size="small" onClick={() => {
+                homeState.tempOption.resize = {
+                  method: undefined,
+                  width: undefined,
+                  height: undefined,
+                  short: undefined,
+                  long: undefined,
+                  cropWidthRatio: undefined,
+                  cropHeightRatio: undefined,
+                  cropWidthSize: undefined,
+                  cropHeightSize: undefined,
+                };
+              }}>
+                {gstate.locale?.optionPannel?.presetCancelCrop}
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
   }
 
   // JPEG dont't support transparent, when convert to JPEG,
@@ -208,7 +367,7 @@ export const CompressOption = observer(() => {
           placeholder={gstate.locale?.optionPannel.resizePlaceholder}
           allowClear
           onChange={(value) => {
-            homeState.tempOption.resize = {
+            const base = {
               method: value,
               width: undefined,
               height: undefined,
@@ -218,7 +377,21 @@ export const CompressOption = observer(() => {
               cropHeightRatio: undefined,
               cropWidthSize: undefined,
               cropHeightSize: undefined,
-            };
+            } as any;
+            if (value === "presetCrop") {
+              homeState.tempOption.resize = {
+                ...base,
+                presetCrop: {
+                  paperSize: "a4",
+                  orientation: "portrait",
+                  reference: "width",
+                  cropPx: 0,
+                  offsetPx: 0,
+                },
+              };
+            } else {
+              homeState.tempOption.resize = base;
+            }
           }}
         />
         {input}
