@@ -60,6 +60,18 @@ export interface LocaleData {
     cwSizePlaceholder: string;
     chSizePlaceholder: string;
     cropCompareWarning: string;
+    presetCrop: string;
+    presetPaperSize: string;
+    presetOrientation: string;
+    presetPortrait: string;
+    presetLandscape: string;
+    presetRefWidth: string;
+    presetRefHeight: string;
+    presetCropPx: string;
+    presetOffsetPx: string;
+    presetCropWarning: string;
+    presetSwitchRef: string;
+    presetCancelCrop: string;
     qualityTitle: string;
     resetBtn: string;
     confirmBtn: string;

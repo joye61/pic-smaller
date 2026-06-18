@@ -26,3 +26,41 @@
   position: relative;
   margin-bottom: 8px;
 }
+
+.presetCropInput {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.presetRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  > span {
+    flex-shrink: 0;
+    font-size: 13px;
+    min-width: 70px;
+  }
+  > div {
+    flex-grow: 1;
+  }
+}
+
+.presetWarning {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: #fffbe6;
+  border: 1px solid #ffe58f;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #ad8b00;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  .warningActions {
+    display: flex;
+    gap: 8px;
+  }
+}

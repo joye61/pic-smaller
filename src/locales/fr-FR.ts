@@ -69,6 +69,18 @@ const localeData: LocaleData = {
     transparentFillDesc: "Couleur de remplissage transparente",
     cropCompareWarning:
       "Le mode Recadrage ne prend pas en charge l'aperçu de comparaison",
+    presetCrop: "Preset Crop (Paper)",
+    presetPaperSize: "Paper Size",
+    presetOrientation: "Orientation",
+    presetPortrait: "Portrait",
+    presetLandscape: "Landscape",
+    presetRefWidth: "Based on width",
+    presetRefHeight: "Based on height",
+    presetCropPx: "Crop per side (px)",
+    presetOffsetPx: "Offset (px)",
+    presetCropWarning: "Image's {axis} is insufficient for {paper} ratio",
+    presetSwitchRef: "Switch reference edge",
+    presetCancelCrop: "Cancel preset crop",
   },
   error404: {
     backHome: "Retour à l'accueil",
