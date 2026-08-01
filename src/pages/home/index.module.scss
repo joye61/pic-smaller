@@ -1,20 +1,27 @@
-$headerHeight: 60px;
-$border: 1px solid #dfdfdf;
+$headerHeight: 72px;
+$border: 1px solid #dce3e0;
 
 .container {
   height: 100vh;
-  background-color: #f5f5f5;
+  min-height: 520px;
+  background: #f3f6f5;
 }
 
 .header {
-  background-color: #fff;
+  position: relative;
+  z-index: 10;
+  background-color: #ffffff;
   height: $headerHeight;
-  padding: 0 16px;
+  padding: 0 24px;
   border-bottom: $border;
 }
 
 .locale {
+  min-height: 40px;
+  padding: 0 10px;
   cursor: pointer;
+  border-radius: 9px;
+  transition: background-color 0.2s ease, color 0.2s ease;
   svg {
     width: 20px;
     height: 20px;
@@ -28,7 +35,8 @@ $border: 1px solid #dfdfdf;
     color: currentColor;
   }
   &:hover {
-    color: #1da565;
+    color: #087357;
+    background: #edf3f1;
   }
 }
 
@@ -38,7 +46,7 @@ $border: 1px solid #dfdfdf;
 }
 
 .status {
-  padding-left: 16px !important;
+  padding-left: 24px !important;
 }
 .action {
   padding-right: 16px !important;
@@ -64,6 +72,8 @@ $border: 1px solid #dfdfdf;
   height: 50px;
   position: relative;
   overflow: hidden;
+  border: 1px solid #d4ddda;
+  border-radius: 6px;
   img {
     width: 100%;
     height: 100%;
@@ -82,27 +92,27 @@ $border: 1px solid #dfdfdf;
     width: 100%;
     height: 100%;
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(17, 29, 25, 0.72);
     svg {
       width: 20px;
       path {
-        fill: #f5f5f5;
+        fill: #ffffff;
       }
     }
   }
 }
 
 .content {
-  $h1: 60px;
-  $h3: 60px;
+  $h1: 64px;
+  $h3: 64px;
   height: 100%;
   overflow: hidden;
   flex-grow: 1;
   > div:nth-child(1) {
     height: $h1;
     border-bottom: $border;
-    background-color: #fafafa;
-    padding: 0 16px;
+    background-color: #ffffff;
+    padding: 0 24px;
   }
   > div:nth-child(2) {
     flex: 1;
@@ -111,28 +121,81 @@ $border: 1px solid #dfdfdf;
   > div:nth-child(3) {
     height: $h3;
     border-top: $border;
-    padding: 0 16px;
-    background-color: #fafafa;
+    padding: 0 24px;
+    background-color: #ffffff;
   }
 }
 
 a.github {
   cursor: pointer;
-  color: #000;
-  margin-left: 16px;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  color: #34433e;
+  margin-left: 4px;
+  border-radius: 9px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  &:hover {
+    color: #087357;
+    background: #edf3f1;
+  }
   span {
     font-size: 24px;
   }
 }
 
+:global(.ant-table-wrapper) {
+  height: 100%;
+  background: #ffffff;
+  .ant-table {
+    color: #26332f;
+    background: #ffffff;
+  }
+  .ant-table-thead > tr > th {
+    border-bottom-color: #dce3e0;
+    font-weight: 600;
+  }
+  .ant-table-tbody > tr > td {
+    border-bottom-color: #e7ecea;
+    background: #ffffff;
+  }
+  .ant-table-cell-fix-left,
+  .ant-table-cell-fix-right {
+    background: #ffffff;
+  }
+}
+
+@media (max-width: 640px) {
+  $mobileHeaderHeight: 64px;
+  .header {
+    height: $mobileHeaderHeight;
+    padding: 0 12px;
+  }
+  .main {
+    height: calc(100% - $mobileHeaderHeight);
+  }
+  .locale span {
+    display: none;
+  }
+  .content > div:nth-child(1),
+  .content > div:nth-child(3) {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+  .status {
+    padding-left: 12px !important;
+  }
+}
+
 .fileok {
-  font-size: 0;
+  display: inline-flex;
+  align-items: center;
+  color: #087f60;
+  font-size: 20px;
   svg {
     width: 20px;
     height: 20px;
-    path {
-      fill: #078249;
-    }
   }
 }
 
@@ -140,5 +203,14 @@ a.github {
   a,
   :global(.ant-space-item) {
     font-size: 0;
+  }
+  a:first-child {
+    color: #c53b3f;
+  }
+  a:last-child {
+    color: #53615c;
+  }
+  svg path {
+    fill: currentColor;
   }
 }

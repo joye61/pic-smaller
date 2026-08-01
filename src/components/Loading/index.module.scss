@@ -6,10 +6,12 @@
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 50;
+  background: rgba(20, 30, 27, 0.38);
   > div {
-    width: 60px;
-    height: 60px;
-    background-color: rgba(0, 0, 0, 0.8);
+    width: 64px;
+    height: 64px;
+    background-color: #173d32;
+    border: 1px solid #173d32;
   }
 }

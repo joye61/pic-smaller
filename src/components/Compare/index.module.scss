@@ -24,22 +24,22 @@
   right: 0;
   top: 0;
   bottom: 0;
-  z-index: 9;
+  z-index: 20;
   user-select: none;
-  background-color: #fff;
+  background-color: #f4f6f5;
   background-image: linear-gradient(
       45deg,
-      #e0e0e0 25%,
+      #dce3e0 25%,
       transparent 25%,
       transparent 75%,
-      #e0e0e0 75%
+      #dce3e0 75%
     ),
     linear-gradient(
       45deg,
-      #e0e0e0 25%,
+      #dce3e0 25%,
       transparent 25%,
       transparent 75%,
-      #e0e0e0 75%
+      #dce3e0 75%
     );
   background-size: 20px 20px;
   background-position:
@@ -81,17 +81,18 @@
     top: 0;
     bottom: 0;
     z-index: 3;
-    background-color: #000;
+    background-color: #dce7e3;
     > div {
       position: absolute;
-      width: 30px;
-      height: 30px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       cursor: grab;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: #087f60;
+      border: 2px solid #ffffff;
       svg {
         width: 20px;
         height: 20px;
@@ -105,8 +106,12 @@
 
 .action {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 20px;
+  right: 20px;
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid #d4ddda;
+  border-radius: 6px;
 }
 
 .before {
@@ -122,4 +127,5 @@
 
 .help {
   width: 240px;
+  line-height: 1.6;
 }

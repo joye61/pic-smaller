@@ -10,6 +10,7 @@ import { createImageList } from "@/engines/transform";
 import { getFilesFromEntry, getFilesFromHandle } from "@/functions";
 import { sprintf } from "sprintf-js";
 import { Mimes } from "@/mimes";
+import { InboxOutlined } from "@ant-design/icons";
 
 export const UploadCard = observer(() => {
   const { token } = theme.useToken();
@@ -88,9 +89,9 @@ export const UploadCard = observer(() => {
       style={{ borderRadius: token.borderRadiusLG }}
     >
       <Flex vertical align="center" className={style.inner}>
-        <svg viewBox="0 0 1024 1024">
-          <path d="M128 256l0 640 896 0L1024 256 128 256zM960 789.344 832 576l-145.056 120.896L576 512 192 832 192 320l768 0L960 789.344zM256 480A3 3 7560 1 0 448 480 3 3 7560 1 0 256 480zM896 128 0 128 0 768 64 768 64 192 896 192z" />
-        </svg>
+        <div className={style.uploadIcon}>
+          <InboxOutlined />
+        </div>
         <Typography.Text>{gstate.locale?.uploadCard.title}</Typography.Text>
         <div>
           {sprintf(

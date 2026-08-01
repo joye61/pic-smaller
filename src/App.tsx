@@ -27,10 +27,57 @@ export const App = observer(() => {
       locale={gstate.locale?.antLocale}
       theme={{
         token: {
-          borderRadius: 0,
-          colorPrimary: "#078249",
-          colorLink: "#078249",
-          colorSuccess: "#078249",
+          borderRadius: 6,
+          colorPrimary: "#087f60",
+          colorLink: "#087357",
+          colorSuccess: "#087f60",
+          colorError: "#c53b3f",
+          colorWarning: "#a66b00",
+          colorText: "#17211e",
+          colorTextSecondary: "#5e6b67",
+          colorTextTertiary: "#87918e",
+          colorBorder: "#d7dfdc",
+          colorBorderSecondary: "#e7ecea",
+          colorBgBase: "#ffffff",
+          colorBgLayout: "#f3f6f5",
+          colorBgContainer: "#ffffff",
+          colorBgElevated: "#ffffff",
+          controlHeight: 40,
+          fontFamily:
+            '"Source Sans 3", "Segoe UI", "Microsoft YaHei", sans-serif',
+          boxShadow: "none",
+          boxShadowSecondary: "none",
+        },
+        components: {
+          Button: {
+            fontWeight: 600,
+            primaryShadow: "none",
+            defaultShadow: "none",
+            dangerShadow: "none",
+            defaultBg: "#ffffff",
+            defaultBorderColor: "#cbd5d1",
+            defaultColor: "#26332f",
+          },
+          Table: {
+            headerBg: "#f3f6f5",
+            headerColor: "#3f4d48",
+            rowHoverBg: "#f3f8f6",
+            borderColor: "#e1e7e4",
+          },
+          Drawer: {
+            colorBgElevated: "#ffffff",
+          },
+          Select: {
+            selectorBg: "#ffffff",
+            optionSelectedBg: "#e7f2ee",
+          },
+          Slider: {
+            railBg: "#dce3e0",
+            railHoverBg: "#ccd6d2",
+            trackBg: "#087f60",
+            trackHoverBg: "#066e53",
+            handleColor: "#087f60",
+          },
         },
       }}
     >

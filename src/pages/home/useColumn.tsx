@@ -1,7 +1,11 @@
 import { Flex, Space, Tooltip, Typography, message, theme } from "antd";
 import style from "./index.module.scss";
 import { TableProps } from "antd/es/table";
-import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  CheckCircleFilled,
+} from "@ant-design/icons";
 import { gstate } from "@/global";
 import { ImageItem, homeState } from "@/states/home";
 import { Indicator } from "@/components/Indicator";
@@ -23,9 +27,7 @@ export function useColumn(disabled: boolean) {
         if (row.compress && row.preview) {
           return (
             <div className={style.fileok}>
-              <svg viewBox="0 0 1024 1024">
-                <path d="M128 128l0 768 768 0L896 128 128 128zM424.704 768 198.464 541.696 288.96 451.2l135.744 135.744 316.8-316.8L832 360.704 424.704 768z" />
-              </svg>
+              <CheckCircleFilled />
             </div>
           );
         }

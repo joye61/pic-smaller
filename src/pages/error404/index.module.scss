@@ -1,4 +1,12 @@
 .container {
   height: 100vh;
   width: 100vw;
+  background: #f3f6f5;
+  :global(.ant-result) {
+    width: min(520px, calc(100% - 32px));
+    padding: 48px 24px;
+    background: #ffffff;
+    border: 1px solid #dce3e0;
+    border-radius: 8px;
+  }
 }

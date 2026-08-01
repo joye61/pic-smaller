@@ -1,8 +1,32 @@
 .container {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   line-height: 1;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 600;
-  span {
-    font-size: 22px;
+  white-space: nowrap;
+  .icon {
+    position: relative;
+    display: block;
+    flex: none;
+    border: 1px solid #d4ddda;
+    border-radius: 9px;
+    overflow: hidden;
+    img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 125%;
+      height: 125%;
+      max-width: none;
+      transform: translate(-50%, -50%);
+    }
+  }
+  > span:last-child {
+    color: #17211e;
+    font-family: "Lexend", "Source Sans 3", sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0;
   }
 }

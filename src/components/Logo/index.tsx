@@ -7,10 +7,18 @@ interface LogoProps {
   title?: string;
 }
 
-export const Logo = observer(({ title = "Pic Smaller" }: LogoProps) => {
-  return (
-    <div className={style.container}>
-      <Typography.Text>{title}</Typography.Text>
-    </div>
-  );
-});
+export const Logo = observer(
+  ({ iconSize = 40, title = "Pic Smaller" }: LogoProps) => {
+    return (
+      <div className={style.container}>
+        <span
+          className={style.icon}
+          style={{ width: iconSize, height: iconSize }}
+        >
+          <img src="/logo.png" alt="" aria-hidden="true" />
+        </span>
+        <Typography.Text>{title}</Typography.Text>
+      </div>
+    );
+  },
+);

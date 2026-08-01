@@ -1,3 +1,11 @@
 .progress {
-  margin-left: 8px;
+  margin-left: 10px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .progress {
+    font-size: 13px;
+  }
 }
