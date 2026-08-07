@@ -1,54 +1,79 @@
-@import "antd/dist/reset.css";
-@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700&display=swap");
 
 :root {
-  color: #17211e;
-  background: #f3f6f5;
-  font-family: "Source Sans 3", "Segoe UI", "Microsoft YaHei", sans-serif;
+  --color-primary: #172033;
+  --color-on-primary: #ffffff;
+  --color-secondary: #007a60;
+  --color-secondary-hover: #006b54;
+  --color-action-soft: #e8f5f1;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f5f7fa;
+  --color-surface-muted: #eef2f6;
+  --color-background: var(--color-surface-subtle);
+  --color-foreground: #172033;
+  --color-text-muted: #64748b;
+  --color-border: #d5dde7;
+  --color-border-strong: #98aaa6;
+  --color-success: #15803d;
+  --color-success-soft: #f0fdf4;
+  --color-warning: #9a6700;
+  --color-warning-soft: #fffbeb;
+  --color-destructive: #c2414b;
+  --color-overlay: rgba(23, 32, 51, .46);
+  --shadow-menu: 0 16px 40px rgba(23, 50, 77, .16), 0 3px 10px rgba(23, 50, 77, .08);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+  --color-muted: var(--color-surface-muted);
+  --color-accent: var(--color-secondary);
+  --color-ring: var(--color-secondary);
+  color: var(--color-foreground);
+  background: var(--color-background);
+  font-family: "Public Sans", "Microsoft YaHei", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 88px; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--color-background); }
+button, input, select { font: inherit; }
+button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
+button, a { cursor: pointer; }
+img { max-width: 100%; }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  background: #f3f6f5;
+.button {
+  min-height: 44px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  background: var(--color-surface);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  transition: color .2s ease, background .2s ease, border-color .2s ease, transform .2s ease;
 }
+.button:hover:not(:disabled) { border-color: var(--color-border-strong); background: var(--color-surface-subtle); transform: translateY(-1px); }
+.button:disabled { opacity: .5; cursor: not-allowed; }
+/* Primary action: filled with the accent color.
+   .buttonAccent is kept as an alias so existing call sites
+   share the exact same visual language. */
+.buttonPrimary, .buttonAccent { color: #fff; background: var(--color-secondary); border-color: var(--color-secondary); }
+.buttonPrimary:hover:not(:disabled), .buttonAccent:hover:not(:disabled) { color: #fff; background: var(--color-secondary-hover); border-color: var(--color-secondary-hover); }
+.buttonLarge { min-height: 50px; padding: 0 20px; }
 
-button,
-a,
-[role="button"] {
-  -webkit-tap-highlight-color: transparent;
-}
+:focus-visible { outline: 3px solid color-mix(in srgb, var(--color-secondary) 45%, transparent); outline-offset: 2px; }
 
-:focus-visible {
-  outline: 2px solid #087f60;
-  outline-offset: 2px;
-}
+.__initial { height: 100vh; display: grid; place-items: center; }
+.__initial > div { display: grid; justify-items: center; gap: 14px; color: var(--color-text-muted); }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-.__initial {
-  height: 100vh;
-  img {
-    width: 48px;
-    border-radius: 10px;
-  }
-  span {
-    margin-top: 10px;
-  }
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

@@ -1,15 +1,17 @@
 import { LocaleData } from "@/type";
-import zhCN from "antd/locale/zh_CN";
 
 const localeData: LocaleData = {
-  antLocale: zhCN,
   logo: "图小小",
   initial: "初始化中",
   previewHelp: "拖动分割线对比压缩效果：左边是原始图，右边是压缩图",
+  heif: {
+    previewUnavailable: "浏览器无法直接显示 HEIC/HEIF 原图，因此暂不支持压缩前后对比。",
+    originalPreserved: "未指定输出格式，已保留 HEIC/HEIF 原文件；如需缩放或压缩，请选择输出格式。",
+  },
   uploadCard: {
     title: "选取图片到这里，支持拖拽图片和文件夹",
     subTitle: "开源的批量图片压缩工具，支持 %s 格式",
-    pasteHint: "💡 提示：您也可以复制图片后按 Ctrl+V (Cmd+V) 粘贴",
+    pasteHint: "提示：您也可以复制图片后按 Ctrl+V (Cmd+V) 粘贴",
   },
   listAction: {
     batchAppend: "批量添加",

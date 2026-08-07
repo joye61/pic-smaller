@@ -1,18 +1,20 @@
 // 日语
 
 import { LocaleData } from "@/type";
-import jaJP from "antd/locale/ja_JP";
 
 const localeData: LocaleData = {
-  antLocale: jaJP,
-  logo: "Pic Smaller",
+  logo: "PicSmaller",
   initial: "初期化中",
   previewHelp:
     "分割線をドラッグして圧縮効果を比較します。左が元の画像、右が圧縮された画像です",
+  heif: {
+    previewUnavailable: "ブラウザーでは元の HEIC/HEIF 画像を直接表示できないため、圧縮前後の比較は利用できません。",
+    originalPreserved: "出力形式が選択されていないため、元の HEIC/HEIF ファイルを保持しました。サイズ変更または圧縮するには出力形式を選択してください。",
+  },
   uploadCard: {
     title: "画像をドラッグまたは選択",
     subTitle: "対応フォーマット：%s",
-    pasteHint: "💡 Ctrl+V で画像を貼り付け、またはドラッグ＆ドロップ可能",
+    pasteHint: "Ctrl+V で画像を貼り付け、またはドラッグ＆ドロップ可能",
   },
   listAction: {
     batchAppend: "バッチ追加",
@@ -37,7 +39,7 @@ const localeData: LocaleData = {
   optionPannel: {
     failTip:
       "小さくすることができません。パラメータを調整して再試行してください。",
-    help: "Pic Smaller はバッチ画像圧縮アプリケーションです。オプションの変更はすべての画像に適用されます。",
+    help: "PicSmaller はバッチ画像圧縮アプリケーションです。オプションの変更はすべての画像に適用されます。",
     resizeLable: "画像のサイズを変更する",
     jpegLable: "JPEG/WEBPパラメータ",
     pngLable: "PNG パラメータ",

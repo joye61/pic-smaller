@@ -1,10 +1,10 @@
-import { CompressOption, ProcessOutput } from "@/engines/ImageBase";
+import { CompressOption, PREVIEW_MAX_SIZE, ProcessOutput } from "@/engines/ImageBase";
 import { createCompressTask } from "@/engines/transform";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, reaction } from "mobx";
 
 export const DefaultCompressOption: CompressOption = {
   preview: {
-    maxSize: 256,
+    maxSize: PREVIEW_MAX_SIZE,
   },
   resize: {
     method: undefined,
@@ -63,17 +63,57 @@ export type ImageItem = {
   height: number;
   preview?: ProcessOutput;
   compress?: ProcessOutput;
+  status: "pending" | "processing" | "done" | "error";
+  processError?: string;
+  preservedOriginal?: boolean;
 };
+
+function revokeItemUrls(item?: ImageItem) {
+  if (!item) return;
+  if (item.src) URL.revokeObjectURL(item.src);
+  if (item.preview?.src) URL.revokeObjectURL(item.preview.src);
+  if (item.compress?.src) URL.revokeObjectURL(item.compress.src);
+}
+
+const OPTION_STORAGE_KEY = "pic-smaller-options";
+
+function loadPersistedOption(): CompressOption {
+  try {
+    const raw = localStorage.getItem(OPTION_STORAGE_KEY);
+    if (raw) {
+      const persisted = JSON.parse(raw);
+      return { ...DefaultCompressOption, ...persisted };
+    }
+  } catch {}
+  return { ...DefaultCompressOption };
+}
+
+function persistOption(option: CompressOption) {
+  try {
+    localStorage.setItem(OPTION_STORAGE_KEY, JSON.stringify(option));
+  } catch {}
+}
 
 export class HomeState {
   public list: Map<number, ImageItem> = new Map();
-  public option: CompressOption = DefaultCompressOption;
-  public tempOption: CompressOption = DefaultCompressOption;
+  public option: CompressOption = loadPersistedOption();
+  public tempOption: CompressOption = loadPersistedOption();
   public compareId: number | null = null;
   public showOption: boolean = false;
+  public completedCompressCount: number = 0;
+  public completedPreviewCount: number = 0;
+  public originSize: number = 0;
+  public outputSize: number = 0;
 
   constructor() {
     makeAutoObservable(this);
+
+    // Auto-persist temp option changes so settings survive page reloads
+    // even before the user commits them by starting a batch.
+    reaction(
+      () => this.tempOption,
+      (opt) => persistOption(opt),
+    );
   }
 
   /**
@@ -99,27 +139,50 @@ export class HomeState {
   }
 
   clear() {
+    this.list.forEach((item) => revokeItemUrls(item));
     this.list.clear();
+    this.completedCompressCount = 0;
+    this.completedPreviewCount = 0;
+    this.originSize = 0;
+    this.outputSize = 0;
     this.tempOption = { ...DefaultCompressOption };
     this.option = { ...DefaultCompressOption };
+    persistOption(this.option);
+  }
+
+  remove(key: number) {
+    const item = this.list.get(key);
+    if (!item) return;
+    this.originSize -= item.blob.size;
+    if (item.preview) this.completedPreviewCount--;
+    if (item.compress) {
+      this.completedCompressCount--;
+      this.outputSize -= item.compress.blob.size;
+    }
+    revokeItemUrls(item);
+    this.list.delete(key);
   }
 
   reCompress() {
+    // Persist current options before re-compressing
+    persistOption(this.option);
+    this.completedCompressCount = 0;
+    this.outputSize = 0;
     this.list.forEach((info) => {
-      URL.revokeObjectURL(info.compress!.src);
+      if (info.compress?.src) {
+        URL.revokeObjectURL(info.compress.src);
+      }
       info.compress = undefined;
+      info.status = "pending";
+      info.processError = undefined;
+      info.preservedOriginal = false;
       createCompressTask(info);
     });
   }
 
   hasTaskRunning() {
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    for (const [_, value] of this.list) {
-      if (!value.preview || !value.compress) {
-        return true;
-      }
-    }
-    return false;
+    return this.completedPreviewCount < this.list.size ||
+      this.completedCompressCount < this.list.size;
   }
 
   /**
@@ -128,19 +191,12 @@ export class HomeState {
    */
   getProgressHintInfo(): ProgressHintInfo {
     const totalNum = this.list.size;
-    let loadedNum = 0;
-    let originSize = 0;
-    let outputSize = 0;
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    for (const [_, info] of this.list) {
-      originSize += info.blob.size;
-      if (info.compress) {
-        loadedNum++;
-        outputSize += info.compress.blob.size;
-      }
-    }
-    const percent = Math.ceil((loadedNum * 100) / totalNum);
-    const originRate = ((outputSize - originSize) * 100) / originSize;
+    const loadedNum = this.completedCompressCount;
+    const originSize = this.originSize;
+    const outputSize = this.outputSize;
+    const percent = totalNum > 0 ? Math.ceil((loadedNum * 100) / totalNum) : 0;
+    const originRate =
+      originSize > 0 ? ((outputSize - originSize) * 100) / originSize : 0;
     const rate = Number(Math.abs(originRate).toFixed(2));
 
     return {

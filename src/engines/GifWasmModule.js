@@ -1,4 +1,4 @@
-import gifWasmBinaryFile from "./gif.wasm?url";
+const gifWasmBinaryFile = "/wasm/gif.wasm";
 
 export const gifsicle = (function () {
   let wasmUrl = gifWasmBinaryFile;

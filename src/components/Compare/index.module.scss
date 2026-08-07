@@ -19,27 +19,27 @@
 .container {
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
-  z-index: 20;
+  z-index: 100;
   user-select: none;
-  background-color: #f4f6f5;
+  background-color: var(--color-surface-subtle);
   background-image: linear-gradient(
       45deg,
-      #dce3e0 25%,
+      var(--color-border) 25%,
       transparent 25%,
       transparent 75%,
-      #dce3e0 75%
+      var(--color-border) 75%
     ),
     linear-gradient(
       45deg,
-      #dce3e0 25%,
+      var(--color-border) 25%,
       transparent 25%,
       transparent 75%,
-      #dce3e0 75%
+      var(--color-border) 75%
     );
   background-size: 20px 20px;
   background-position:
@@ -66,6 +66,7 @@
     img {
       position: absolute;
       top: 50%;
+      max-width: none;
       transform: translateY(-50%);
     }
   }
@@ -81,7 +82,7 @@
     top: 0;
     bottom: 0;
     z-index: 3;
-    background-color: #dce7e3;
+    background-color: var(--color-border-strong);
     > div {
       position: absolute;
       width: 44px;
@@ -91,15 +92,11 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: #087f60;
+      background-color: var(--color-secondary);
       border: 2px solid #ffffff;
-      svg {
-        width: 20px;
-        height: 20px;
-        path {
-          fill: #fff;
-        }
-      }
+      display: grid;
+      place-items: center;
+      color: #fff;
     }
   }
 }
@@ -109,9 +106,13 @@
   top: 20px;
   right: 20px;
   padding: 6px;
-  background: #ffffff;
-  border: 1px solid #d4ddda;
-  border-radius: 6px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: 6px;
+  button { width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: var(--radius-sm); color: var(--color-primary); background: var(--color-surface); cursor: pointer; }
+  button:hover { background: var(--color-action-soft); }
 }
 
 .before {
@@ -126,6 +127,14 @@
 }
 
 .help {
+  position: absolute;
+  top: 56px;
+  right: 0;
   width: 240px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-foreground);
+  box-shadow: var(--shadow-menu);
   line-height: 1.6;
 }

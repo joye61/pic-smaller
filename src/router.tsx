@@ -56,7 +56,7 @@ async function loadPageComponent(pathname: string) {
     const result = await importer;
     return <result.default />;
   } catch (error) {
-    const error404 = await import(`@/pages/error404/index.tsx`);
+    const error404 = await import("@/views/error404");
     return <error404.default />;
   }
 }

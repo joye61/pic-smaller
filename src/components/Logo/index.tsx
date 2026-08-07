@@ -1,4 +1,3 @@
-import { Typography } from "antd";
 import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 
@@ -8,7 +7,7 @@ interface LogoProps {
 }
 
 export const Logo = observer(
-  ({ iconSize = 40, title = "Pic Smaller" }: LogoProps) => {
+  ({ iconSize = 40, title = "PicSmaller" }: LogoProps) => {
     return (
       <div className={style.container}>
         <span
@@ -17,7 +16,7 @@ export const Logo = observer(
         >
           <img src="/logo.png" alt="" aria-hidden="true" />
         </span>
-        <Typography.Text>{title}</Typography.Text>
+        <span>{title}</span>
       </div>
     );
   },

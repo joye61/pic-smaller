@@ -15,7 +15,7 @@
 
 # production
 /build
-/dist
+/public/codecs/
 
 # misc
 .DS_Store

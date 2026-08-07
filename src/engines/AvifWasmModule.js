@@ -1,4 +1,4 @@
-import avifWasmBinaryFile from "./avif.wasm?url";
+const avifWasmBinaryFile = "/wasm/avif.wasm";
 
 /**
  * Encodes the supplied ImageData rgba array.

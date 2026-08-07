@@ -17,8 +17,14 @@ async function isAvifSupport() {
   }
 }
 
+/**
+ * Probe browser AVIF support and enable/disable Mimes.avif accordingly.
+ * When unsupported, remove the avif key so UI options don't mislead.
+ */
 export async function avifCheck() {
   if (await isAvifSupport()) {
     Mimes.avif = MimeAvif;
+  } else {
+    delete Mimes.avif;
   }
 }

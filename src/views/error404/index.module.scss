@@ -1,0 +1,11 @@
+.container {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--color-background);
+  text-align: center;
+  > div { width: min(520px, 100%); padding: 56px 24px; border: 1px solid var(--color-border); background: #fff; }
+  span { color: var(--color-secondary); font-family: "Libre Bodoni", serif; font-size: 92px; line-height: 1; }
+  h1 { margin: 18px 0 28px; color: var(--color-primary); font-size: 22px; }
+}

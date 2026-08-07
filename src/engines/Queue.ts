@@ -1,10 +1,8 @@
 export type Task = () => Promise<void>;
 
 export class Queue {
-  // Current task list
   list: Array<Task> = [];
-  // Indicate whether task queue running
-  isRunning: boolean = false;
+  running: number = 0;
 
   /**
    *
@@ -18,36 +16,24 @@ export class Queue {
    */
   public push(task: Task) {
     this.list.push(task);
-    if (!this.isRunning) {
-      this.do();
-    }
+    this.schedule();
   }
 
   /**
-   * Execute a batch of tasks
-   * @returns
+   * Execute tasks, filling slots as they become available
    */
-  private async do() {
-    // If list is empty, end run
-    if (this.list.length === 0) {
-      this.isRunning = false;
-      return;
+  private schedule() {
+    while (this.running < this.max && this.list.length > 0) {
+      const task = this.list.shift()!;
+      this.running++;
+      task()
+        .catch((error) => {
+          console.error("[Queue] task failed:", error);
+        })
+        .finally(() => {
+          this.running--;
+          this.schedule();
+        });
     }
-
-    this.isRunning = true;
-    const takeList: Array<Task> = [];
-    for (let i = 0; i < this.max; i++) {
-      const task = this.list.shift();
-      if (task) {
-        takeList.push(task);
-      }
-    }
-
-    // Execute all task
-    const runningList = takeList.map((task) => task());
-    await Promise.all(runningList);
-
-    // Execute next batch
-    await this.do();
   }
 }

@@ -1,16 +1,18 @@
 import { LocaleData } from "@/type";
-import trTR from "antd/locale/tr_TR";
 
 const localeData: LocaleData = {
-  antLocale: trTR,
-  logo: "Pic Smaller",
+  logo: "PicSmaller",
   initial: "Başlatılıyor",
   previewHelp:
     "Sıkıştırma etkisini karşılaştırmak için bölme çizgisini sürükleyin: soldaki orijinal görüntü, sağdaki sıkıştırılmış görüntü",
+  heif: {
+    previewUnavailable: "Tarayıcı özgün HEIC/HEIF görüntüsünü doğrudan gösteremediğinden önce-sonra karşılaştırması kullanılamıyor.",
+    originalPreserved: "Çıktı biçimi seçilmediği için özgün HEIC/HEIF dosyası korundu. Yeniden boyutlandırmak veya sıkıştırmak için bir çıktı biçimi seçin.",
+  },
   uploadCard: {
     title: "Resimlerinizi buraya bırakın",
     subTitle: "Desteklenen formatlar: %s",
-    pasteHint: "💡 Ctrl+V ile yapıştırın veya resimleri sürükleyin",
+    pasteHint: "Ctrl+V ile yapıştırın veya resimleri sürükleyin",
   },
   listAction: {
     batchAppend: "Toplu ekle",
@@ -35,7 +37,7 @@ const localeData: LocaleData = {
   optionPannel: {
     failTip:
       "Daha küçük olamaz, lütfen parametreleri ayarlayın ve tekrar deneyin.",
-    help: "Pic Smaller, toplu resim sıkıştırma uygulamasıdır. Seçeneklerde yapılan değişiklikler tüm resimlere uygulanacaktır.",
+    help: "PicSmaller, toplu resim sıkıştırma uygulamasıdır. Seçeneklerde yapılan değişiklikler tüm resimlere uygulanacaktır.",
     resizeLable: "Görüntüyü yeniden boyutlandır",
     jpegLable: "JPEG/WEBP parametreleri",
     pngLable: "PNG parametreleri",

@@ -9,7 +9,7 @@ import type { CompressOption } from "./engines/ImageBase";
  * @param base
  * @returns
  */
-export function normalize(pathname: string, base = import.meta.env.BASE_URL) {
+export function normalize(pathname: string, base = "/") {
   // Ensure starts with '/'
   pathname = "/" + pathname.replace(/^\/*/, "");
   base = "/" + base.replace(/^\/*/, "");
@@ -43,10 +43,13 @@ export function formatSize(num: number) {
  */
 export function createDownload(name: string, blob: Blob) {
   const anchor = document.createElement("a");
-  anchor.href = URL.createObjectURL(blob);
+  const url = URL.createObjectURL(blob);
+  anchor.href = url;
   anchor.download = name;
   anchor.click();
   anchor.remove();
+  // Release the temporary object URL right after the click.
+  setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 /**
@@ -57,17 +60,24 @@ export function createDownload(name: string, blob: Blob) {
  * @param name will pushed to names
  */
 export function getUniqNameOnNames(names: Set<string>, name: string): string {
-  const getName = (checkName: string): string => {
-    if (names.has(checkName)) {
-      const nameParts = checkName.split(".");
-      const extension = nameParts.pop();
-      const newName = nameParts.join("") + "(1)." + extension;
-      return getName(newName);
-    } else {
-      return checkName;
-    }
-  };
-  return getName(name);
+  let checkName = name;
+  let attempts = 0;
+  const maxAttempts = 100;
+
+  while (names.has(checkName) && attempts < maxAttempts) {
+    const nameParts = checkName.split(".");
+    const extension = nameParts.pop();
+    checkName = nameParts.join("") + "(1)." + extension;
+    attempts++;
+  }
+
+  if (names.has(checkName)) {
+    const nameParts = name.split(".");
+    const extension = nameParts.pop();
+    checkName = nameParts.join("") + "(" + Date.now() + ")." + extension;
+  }
+
+  return checkName;
 }
 
 /**
@@ -169,6 +179,10 @@ export async function getFilesFromHandle(
  */
 export function splitFileName(fileName: string) {
   const index = fileName.lastIndexOf(".");
+  // No extension: keep the whole name, empty suffix.
+  if (index <= 0) {
+    return { name: fileName, suffix: "" };
+  }
   const name = fileName.substring(0, index);
   const suffix = fileName.substring(index + 1).toLowerCase();
   return { name, suffix };
@@ -181,14 +195,14 @@ export function splitFileName(fileName: string) {
  * @returns
  */
 export function getOutputFileName(item: ImageItem, option: CompressOption) {
-  if (item.blob.type === item.compress?.blob.type) {
+  if (!item.compress || item.blob.type === item.compress.blob.type) {
     return item.name;
   }
 
   const { name, suffix } = splitFileName(item.name);
   let resultSuffix = suffix;
   for (const key in Mimes) {
-    if (item.compress!.blob.type === Mimes[key]) {
+    if (item.compress.blob.type === Mimes[key]) {
       resultSuffix = key;
       break;
     }

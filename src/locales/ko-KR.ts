@@ -1,18 +1,20 @@
 // 韩语
 
 import { LocaleData } from "@/type";
-import koKR from "antd/locale/ko_KR";
 
 const localeData: LocaleData = {
-  antLocale: koKR,
-  logo: "Pic Smaller",
+  logo: "PicSmaller",
   initial: "초기화 중",
   previewHelp:
     "압축 효과를 비교하려면 구분선을 드래그하세요. 왼쪽은 원본 이미지, 오른쪽은 압축된 이미지입니다.",
+  heif: {
+    previewUnavailable: "브라우저에서 원본 HEIC/HEIF 이미지를 직접 표시할 수 없어 압축 전후 비교를 사용할 수 없습니다.",
+    originalPreserved: "출력 형식을 선택하지 않아 원본 HEIC/HEIF 파일을 유지했습니다. 크기 조정이나 압축을 하려면 출력 형식을 선택하세요.",
+  },
   uploadCard: {
     title: "이미지 파일을 여기에 넣기",
     subTitle: "지원 형식: %s",
-    pasteHint: "💡 Ctrl+V로 붙여넣기 또는 이미지를 끌어다 놓기",
+    pasteHint: "Ctrl+V로 붙여넣기 또는 이미지를 끌어다 놓기",
   },
 
   listAction: {
@@ -37,7 +39,7 @@ const localeData: LocaleData = {
   },
   optionPannel: {
     failTip: "더 작게 만들 수 없습니다. 매개변수를 조정하고 다시 시도하세요.",
-    help: "Pic Smaller는 옵션에 대한 수정 사항이 모든 이미지에 적용되는 일괄 이미지 압축 응용 프로그램입니다.",
+    help: "PicSmaller는 옵션에 대한 수정 사항이 모든 이미지에 적용되는 일괄 이미지 압축 응용 프로그램입니다.",
     resizeLable: "이미지 크기 조정",
     jpegLable: "JPEG/WEBP 매개변수",
     pngLable: "PNG 매개변수",

@@ -1,538 +1,162 @@
-import {
-  Button,
-  Checkbox,
-  ColorPicker,
-  Divider,
-  Flex,
-  InputNumber,
-  Select,
-  Slider,
-} from "antd";
-import style from "./index.module.scss";
 import { observer } from "mobx-react-lite";
-import { DefaultCompressOption, homeState } from "@/states/home";
+import style from "./index.module.scss";
+import { homeState } from "@/states/home";
 import { gstate } from "@/global";
-import { OptionItem } from "../OptionItem";
-import { Mimes } from "@/mimes";
+import { OutputFormats } from "@/mimes";
 import { PAPER_SIZES } from "@/engines/ImageBase";
+import { Select } from "@/components/Select";
+
+type ResizeMethod = typeof homeState.tempOption.resize.method;
+
+type NumberFieldProps = {
+  value?: number;
+  min?: number;
+  max?: number;
+  placeholder?: string;
+  disabled: boolean;
+  onChange: (value: number) => void;
+};
+
+function NumberField({ value, min = 0, max, placeholder, disabled, onChange }: NumberFieldProps) {
+  return (
+    <input type="number" value={value ?? ""} min={min} max={max} step={1} placeholder={placeholder} disabled={disabled} onChange={(event) => onChange(Number(event.target.value))} />
+  );
+}
+
+type RangeFieldProps = {
+  label?: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  disabled: boolean;
+  onChange: (value: number) => void;
+};
+
+function RangeField({ label, value, min, max, step, disabled, onChange }: RangeFieldProps) {
+  return (
+    <label className={style.rangeField}>
+      <span>{label}<b>{value}</b></span>
+      <input type="range" value={value} min={min} max={max} step={step} disabled={disabled} onChange={(event) => onChange(Number(event.target.value))} />
+    </label>
+  );
+}
 
 export const CompressOption = observer(() => {
   const disabled = homeState.hasTaskRunning();
-  const resizeMethod = homeState.tempOption.resize.method;
-  const resizeOptions = [
-    {
-      value: "fitWidth",
-      label: gstate.locale?.optionPannel?.fitWidth,
-    },
-    {
-      value: "fitHeight",
-      label: gstate.locale?.optionPannel?.fitHeight,
-    },
-    {
-      value: "setShort",
-      label: gstate.locale?.optionPannel?.setShort,
-    },
-    {
-      value: "setLong",
-      label: gstate.locale?.optionPannel?.setLong,
-    },
-    {
-      value: "setCropRatio",
-      label: gstate.locale?.optionPannel?.setCropRatio,
-    },
-    {
-      value: "setCropSize",
-      label: gstate.locale?.optionPannel?.setCropSize,
-    },
-    {
-      value: "presetCrop",
-      label: gstate.locale?.optionPannel?.presetCrop,
-    },
-  ];
+  const locale = gstate.locale?.optionPannel;
+  const resize = homeState.tempOption.resize;
+  const resizeMethod = resize.method;
+  const targetFormat = homeState.tempOption.format.target;
+  const showJpegOptions = !targetFormat || ["jpg", "jpeg", "webp"].includes(targetFormat);
+  const showPngOptions = !targetFormat || targetFormat === "png";
+  const showGifOptions = !targetFormat;
+  const showAvifOptions = !targetFormat || targetFormat === "avif";
+  const preset = resizeMethod === "presetCrop"
+    ? resize.presetCrop ?? { paperSize: "a4", orientation: "portrait" as const, reference: "width" as const, cropPx: 0, offsetPx: 0 }
+    : null;
 
-  const getFormatOptions = () => {
-    const options: { label: string; value: string }[] = [];
-    Object.keys(Mimes).forEach((mime) => {
-      if (!["svg", "gif"].includes(mime)) {
-        options.push({
-          value: mime,
-          label: mime.toUpperCase(),
-        });
-      }
-    });
-    return options;
+  const setResizeMethod = (method: ResizeMethod) => {
+    homeState.tempOption.resize = {
+      method,
+      width: undefined,
+      height: undefined,
+      short: undefined,
+      long: undefined,
+      cropWidthRatio: undefined,
+      cropHeightRatio: undefined,
+      cropWidthSize: undefined,
+      cropHeightSize: undefined,
+      presetCrop: method === "presetCrop"
+        ? { paperSize: "a4", orientation: "portrait", reference: "width", cropPx: 0, offsetPx: 0 }
+        : undefined,
+    };
   };
 
-  const paperSizeOptions = Object.entries(PAPER_SIZES).map(([key, val]) => ({
-    value: key,
-    label: val.label,
-  }));
+  const pairField = (first: React.ReactNode, separator: string, second: React.ReactNode) => (
+    <div className={style.pairField}>{first}<span>{separator}</span>{second}</div>
+  );
 
-  const pc = resizeMethod === "presetCrop" ? (homeState.tempOption.resize.presetCrop || {
-    paperSize: "a4",
-    orientation: "portrait" as const,
-    reference: "width" as const,
-    cropPx: 0,
-    offsetPx: 0,
-  }) : null;
+  const resizeOptions = [
+    { value: "fitWidth", label: locale?.fitWidth ?? "" },
+    { value: "fitHeight", label: locale?.fitHeight ?? "" },
+    { value: "setShort", label: locale?.setShort ?? "" },
+    { value: "setLong", label: locale?.setLong ?? "" },
+    { value: "setCropRatio", label: locale?.setCropRatio ?? "" },
+    { value: "setCropSize", label: locale?.setCropSize ?? "" },
+    { value: "presetCrop", label: locale?.presetCrop ?? "" },
+  ];
 
-  let presetCropWarning = false;
-  if (pc && homeState.list.size > 0) {
-    for (const [_, item] of homeState.list) {
-      const paper = PAPER_SIZES[pc.paperSize];
-      if (!paper) { presetCropWarning = true; break; }
-      let ratioW = paper.width;
-      let ratioH = paper.height;
-      if (pc.orientation === "landscape") {
-        ratioW = paper.height;
-        ratioH = paper.width;
+  let resizeField: React.ReactNode = null;
+  if (resizeMethod === "fitWidth") {
+    resizeField = <NumberField value={resize.width} disabled={disabled} placeholder={locale?.widthPlaceholder} onChange={(value) => { resize.width = value; }} />;
+  } else if (resizeMethod === "fitHeight") {
+    resizeField = <NumberField value={resize.height} disabled={disabled} placeholder={locale?.heightPlaceholder} onChange={(value) => { resize.height = value; }} />;
+  } else if (resizeMethod === "setShort") {
+    resizeField = <NumberField value={resize.short} disabled={disabled} placeholder={locale?.shortPlaceholder} onChange={(value) => { resize.short = value; }} />;
+  } else if (resizeMethod === "setLong") {
+    resizeField = <NumberField value={resize.long} disabled={disabled} placeholder={locale?.longPlaceholder} onChange={(value) => { resize.long = value; }} />;
+  } else if (resizeMethod === "setCropRatio") {
+    resizeField = pairField(
+      <NumberField value={resize.cropWidthRatio} min={1} disabled={disabled} placeholder={locale?.cwRatioPlaceholder} onChange={(value) => { resize.cropWidthRatio = value; }} />,
+      ":",
+      <NumberField value={resize.cropHeightRatio} min={1} disabled={disabled} placeholder={locale?.chRatioPlaceholder} onChange={(value) => { resize.cropHeightRatio = value; }} />,
+    );
+  } else if (resizeMethod === "setCropSize") {
+    resizeField = pairField(
+      <NumberField value={resize.cropWidthSize} min={1} disabled={disabled} placeholder={locale?.cwSizePlaceholder} onChange={(value) => { resize.cropWidthSize = value; }} />,
+      "x",
+      <NumberField value={resize.cropHeightSize} min={1} disabled={disabled} placeholder={locale?.chSizePlaceholder} onChange={(value) => { resize.cropHeightSize = value; }} />,
+    );
+  }
+
+  let presetWarning = false;
+  if (preset && homeState.list.size > 0) {
+    for (const item of homeState.list.values()) {
+      const paper = PAPER_SIZES[preset.paperSize];
+      if (!paper) { presetWarning = true; break; }
+      const ratioWidth = preset.orientation === "landscape" ? paper.height : paper.width;
+      const ratioHeight = preset.orientation === "landscape" ? paper.width : paper.height;
+      const referenceDimension = preset.reference === "width" ? item.width : item.height;
+      const otherDimension = preset.reference === "width" ? item.height : item.width;
+      const referenceRatio = preset.reference === "width" ? ratioWidth : ratioHeight;
+      const otherRatio = preset.reference === "width" ? ratioHeight : ratioWidth;
+      const remaining = referenceDimension - Math.max(0, preset.cropPx + preset.offsetPx) - Math.max(0, preset.cropPx - preset.offsetPx);
+      if (remaining <= 0 || Math.round(remaining * otherRatio / referenceRatio) > otherDimension) {
+        presetWarning = true;
+        break;
       }
-      const refIsWidth = pc.reference === "width";
-      const refDim = refIsWidth ? item.width : item.height;
-      const otherDim = refIsWidth ? item.height : item.width;
-      const ratioRef = refIsWidth ? ratioW : ratioH;
-      const ratioOther = refIsWidth ? ratioH : ratioW;
-      const cropStart = Math.max(0, (pc.cropPx || 0) + (pc.offsetPx || 0));
-      const cropEnd = Math.max(0, (pc.cropPx || 0) - (pc.offsetPx || 0));
-      const newRefDim = refDim - cropStart - cropEnd;
-      if (newRefDim <= 0) { presetCropWarning = true; break; }
-      const newOtherDim = Math.round(newRefDim * (ratioOther / ratioRef));
-      if (newOtherDim > otherDim) { presetCropWarning = true; break; }
     }
   }
 
-  // You should only allow to resize a side
-  let input: React.ReactNode = null;
-  if (resizeMethod === "fitWidth") {
-    input = (
-      <div className={style.resizeInput}>
-        <InputNumber
-          min={0}
-          step={1}
-          disabled={disabled}
-          placeholder={gstate.locale?.optionPannel?.widthPlaceholder}
-          value={homeState.tempOption.resize.width}
-          onChange={(value) => {
-            homeState.tempOption.resize.width = value!;
-          }}
-        />
-      </div>
-    );
-  } else if (resizeMethod === "fitHeight") {
-    input = (
-      <div className={style.resizeInput}>
-        <InputNumber
-          min={0}
-          step={1}
-          disabled={disabled}
-          placeholder={gstate.locale?.optionPannel?.heightPlaceholder}
-          value={homeState.tempOption.resize.height}
-          onChange={(value) => {
-            homeState.tempOption.resize.height = value!;
-          }}
-        />
-      </div>
-    );
-  } else if (resizeMethod === "setShort") {
-    input = (
-      <div className={style.resizeInput}>
-        <InputNumber
-          min={0}
-          step={1}
-          disabled={disabled}
-          placeholder={gstate.locale?.optionPannel?.shortPlaceholder}
-          value={homeState.tempOption.resize.short}
-          onChange={(value) => {
-            homeState.tempOption.resize.short = value!;
-          }}
-        />
-      </div>
-    );
-  } else if (resizeMethod === "setLong") {
-    input = (
-      <div className={style.resizeInput}>
-        <InputNumber
-          min={0}
-          step={1}
-          disabled={disabled}
-          placeholder={gstate.locale?.optionPannel?.longPlaceholder}
-          value={homeState.tempOption.resize.long}
-          onChange={(value) => {
-            homeState.tempOption.resize.long = value!;
-          }}
-        />
-      </div>
-    );
-  } else if (resizeMethod === "setCropRatio") {
-    input = (
-      <Flex align="center" className={style.cropInput}>
-        <InputNumber
-          min={1}
-          step={1}
-          disabled={disabled}
-          placeholder={gstate.locale?.optionPannel?.cwRatioPlaceholder}
-          value={homeState.tempOption.resize.cropWidthRatio}
-          onChange={(value) => {
-            homeState.tempOption.resize.cropWidthRatio = value!;
-          }}
-        />
-        <div>:</div>
-        <InputNumber
-          min={1}
-          step={1}
-          disabled={disabled}
-          placeholder={gstate.locale?.optionPannel?.chRatioPlaceholder}
-          value={homeState.tempOption.resize.cropHeightRatio}
-          onChange={(value) => {
-            homeState.tempOption.resize.cropHeightRatio = value!;
-          }}
-        />
-      </Flex>
-    );
-  } else if (resizeMethod === "setCropSize") {
-    input = (
-      <Flex align="center" className={style.cropInput}>
-        <InputNumber
-          min={1}
-          step={1}
-          disabled={disabled}
-          placeholder={gstate.locale?.optionPannel?.cwSizePlaceholder}
-          value={homeState.tempOption.resize.cropWidthSize}
-          onChange={(value) => {
-            homeState.tempOption.resize.cropWidthSize = value!;
-          }}
-        />
-        <div>×</div>
-        <InputNumber
-          min={1}
-          step={1}
-          disabled={disabled}
-          placeholder={gstate.locale?.optionPannel?.chSizePlaceholder}
-          value={homeState.tempOption.resize.cropHeightSize}
-          onChange={(value) => {
-            homeState.tempOption.resize.cropHeightSize = value!;
-          }}
-        />
-      </Flex>
-    );
-  } else if (resizeMethod === "presetCrop" && pc) {
-    input = (
-      <div className={style.presetCropInput}>
-        <div className={style.presetRow}>
-          <span>{gstate.locale?.optionPannel?.presetPaperSize}</span>
-          <Select
-            value={pc.paperSize}
-            options={paperSizeOptions}
-            disabled={disabled}
-            onChange={(value) => {
-              homeState.tempOption.resize = {
-                ...homeState.tempOption.resize,
-                presetCrop: { ...pc, paperSize: value },
-              };
-            }}
-          />
-        </div>
-        <div className={style.presetRow}>
-          <span>{gstate.locale?.optionPannel?.presetOrientation}</span>
-          <Select
-            value={pc.orientation}
-            options={[
-              { value: "portrait", label: gstate.locale?.optionPannel?.presetPortrait },
-              { value: "landscape", label: gstate.locale?.optionPannel?.presetLandscape },
-            ]}
-            disabled={disabled}
-            onChange={(value) => {
-              homeState.tempOption.resize = {
-                ...homeState.tempOption.resize,
-                presetCrop: { ...pc, orientation: value },
-              };
-            }}
-          />
-        </div>
-        <div className={style.presetRow}>
-          <span>{gstate.locale?.optionPannel?.presetRefWidth}</span>
-          <Select
-            value={pc.reference}
-            options={[
-              { value: "width", label: gstate.locale?.optionPannel?.presetRefWidth },
-              { value: "height", label: gstate.locale?.optionPannel?.presetRefHeight },
-            ]}
-            disabled={disabled}
-            onChange={(value) => {
-              homeState.tempOption.resize = {
-                ...homeState.tempOption.resize,
-                presetCrop: { ...pc, reference: value },
-              };
-            }}
-          />
-        </div>
-        <div className={style.presetRow}>
-          <span>{gstate.locale?.optionPannel?.presetCropPx}</span>
-          <InputNumber
-            min={0}
-            max={1000}
-            step={1}
-            disabled={disabled}
-            value={pc.cropPx}
-            onChange={(value) => {
-              homeState.tempOption.resize = {
-                ...homeState.tempOption.resize,
-                presetCrop: { ...pc, cropPx: value ?? 0 },
-              };
-            }}
-          />
-        </div>
-        <div className={style.presetRow}>
-          <span>{gstate.locale?.optionPannel?.presetOffsetPx}</span>
-          <InputNumber
-            min={-500}
-            max={500}
-            step={1}
-            disabled={disabled}
-            value={pc.offsetPx}
-            onChange={(value) => {
-              homeState.tempOption.resize = {
-                ...homeState.tempOption.resize,
-                presetCrop: { ...pc, offsetPx: value ?? 0 },
-              };
-            }}
-          />
-        </div>
-        {presetCropWarning && (
-          <div className={style.presetWarning}>
-            <span>{gstate.locale?.optionPannel?.presetCropWarning}</span>
-            <div className={style.warningActions}>
-              <Button size="small" onClick={() => {
-                homeState.tempOption.resize = {
-                  ...homeState.tempOption.resize,
-                  presetCrop: { ...pc, reference: pc.reference === "width" ? "height" : "width" },
-                };
-              }}>
-                {gstate.locale?.optionPannel?.presetSwitchRef}
-              </Button>
-              <Button size="small" onClick={() => {
-                homeState.tempOption.resize = {
-                  method: undefined,
-                  width: undefined,
-                  height: undefined,
-                  short: undefined,
-                  long: undefined,
-                  cropWidthRatio: undefined,
-                  cropHeightRatio: undefined,
-                  cropWidthSize: undefined,
-                  cropHeightSize: undefined,
-                };
-              }}>
-                {gstate.locale?.optionPannel?.presetCancelCrop}
-              </Button>
-            </div>
+  return (
+    <div className={style.container}>
+      <section>
+        <h4>{locale?.resizeLable}</h4>
+        <Select value={resizeMethod} options={resizeOptions} placeholder={locale?.resizePlaceholder} disabled={disabled} onChange={(value) => setResizeMethod(value as ResizeMethod)} onClear={() => setResizeMethod(undefined)} />
+        {resizeField && <div className={style.fieldGap}>{resizeField}</div>}
+        {preset && (
+          <div className={style.presetGrid}>
+            <label><span>{locale?.presetPaperSize}</span><Select value={preset.paperSize} options={Object.entries(PAPER_SIZES).map(([value, paper]) => ({ value, label: paper.label }))} disabled={disabled} onChange={(value) => { preset.paperSize = value; }} /></label>
+            <label><span>{locale?.presetOrientation}</span><Select value={preset.orientation} options={[{ value: "portrait", label: locale?.presetPortrait ?? "" }, { value: "landscape", label: locale?.presetLandscape ?? "" }]} disabled={disabled} onChange={(value) => { preset.orientation = value as "portrait" | "landscape"; }} /></label>
+            <label><span>{locale?.presetRefWidth}</span><Select value={preset.reference} options={[{ value: "width", label: locale?.presetRefWidth ?? "" }, { value: "height", label: locale?.presetRefHeight ?? "" }]} disabled={disabled} onChange={(value) => { preset.reference = value as "width" | "height"; }} /></label>
+            <label><span>{locale?.presetCropPx}</span><NumberField value={preset.cropPx} min={0} max={1000} disabled={disabled} onChange={(value) => { preset.cropPx = value; }} /></label>
+            <label><span>{locale?.presetOffsetPx}</span><NumberField value={preset.offsetPx} min={-500} max={500} disabled={disabled} onChange={(value) => { preset.offsetPx = value; }} /></label>
+            {presetWarning && <div className={style.warning}><span>{locale?.presetCropWarning}</span><button type="button" onClick={() => { preset.reference = preset.reference === "width" ? "height" : "width"; }}>{locale?.presetSwitchRef}</button><button type="button" onClick={() => setResizeMethod(undefined)}>{locale?.presetCancelCrop}</button></div>}
           </div>
         )}
-      </div>
-    );
-  }
+      </section>
 
-  // JPEG dont't support transparent, when convert to JPEG,
-  // we should give an option to choose transparent fill color
-  let colorPicker: React.ReactNode = null;
-  const target = homeState.tempOption.format.target;
-  if (target && ["jpg", "jpeg"].includes(target)) {
-    colorPicker = (
-      <OptionItem desc={gstate.locale?.optionPannel.transparentFillDesc}>
-        <ColorPicker
-          showText
-          disabledAlpha
-          disabled={disabled}
-          value={homeState.tempOption.format.transparentFill}
-          onChangeComplete={(value) => {
-            homeState.tempOption.format.transparentFill =
-              "#" + value.toHex().toUpperCase();
-          }}
-        />
-      </OptionItem>
-    );
-  }
+      <section>
+        <h4>{locale?.outputFormat}</h4>
+        <Select value={homeState.tempOption.format.target} options={OutputFormats.map((format) => ({ value: format, label: format === "jpg" ? "JPEG" : format.toUpperCase() }))} placeholder={locale?.outputFormatPlaceholder} disabled={disabled} onChange={(value) => { homeState.tempOption.format.target = value as typeof homeState.tempOption.format.target; }} onClear={() => { homeState.tempOption.format.target = undefined; }} />
+        {["jpg", "jpeg"].includes(homeState.tempOption.format.target ?? "") && <label className={style.colorField}><span>{locale?.transparentFillDesc}</span><input type="color" disabled={disabled} value={homeState.tempOption.format.transparentFill} onChange={(event) => { homeState.tempOption.format.transparentFill = event.target.value.toUpperCase(); }} /></label>}
+      </section>
 
-  return (
-    <>
-      <div className={style.olabel}>
-        {gstate.locale?.optionPannel.resizeLable}
-      </div>
-      <OptionItem>
-        <Select
-          style={{ width: "100%" }}
-          value={resizeMethod}
-          options={resizeOptions}
-          disabled={disabled}
-          placeholder={gstate.locale?.optionPannel.resizePlaceholder}
-          allowClear
-          onChange={(value) => {
-            const base = {
-              method: value,
-              width: undefined,
-              height: undefined,
-              short: undefined,
-              long: undefined,
-              cropWidthRatio: undefined,
-              cropHeightRatio: undefined,
-              cropWidthSize: undefined,
-              cropHeightSize: undefined,
-            } as any;
-            if (value === "presetCrop") {
-              homeState.tempOption.resize = {
-                ...base,
-                presetCrop: {
-                  paperSize: "a4",
-                  orientation: "portrait",
-                  reference: "width",
-                  cropPx: 0,
-                  offsetPx: 0,
-                },
-              };
-            } else {
-              homeState.tempOption.resize = base;
-            }
-          }}
-        />
-        {input}
-      </OptionItem>
-
-      <Divider />
-
-      <div className={style.olabel}>
-        {gstate.locale?.optionPannel.outputFormat}
-      </div>
-      <OptionItem>
-        <Select
-          style={{ width: "100%" }}
-          value={homeState.tempOption.format.target}
-          options={getFormatOptions()}
-          disabled={disabled}
-          placeholder={gstate.locale?.optionPannel.outputFormatPlaceholder}
-          allowClear
-          onChange={(value) => {
-            homeState.tempOption.format.target = value;
-          }}
-        />
-      </OptionItem>
-      {/* Colorpicker option */}
-      {colorPicker}
-
-      <Divider />
-      <div className={style.olabel}>
-        {gstate.locale?.optionPannel.jpegLable}
-      </div>
-
-      <OptionItem desc={gstate.locale?.optionPannel?.qualityTitle}>
-        <Slider
-          defaultValue={DefaultCompressOption.jpeg.quality}
-          value={homeState.tempOption.jpeg.quality}
-          min={0}
-          max={1}
-          step={0.01}
-          disabled={disabled}
-          onChange={(value) => {
-            homeState.tempOption.jpeg.quality = value;
-          }}
-        />
-      </OptionItem>
-
-      <Divider />
-      <div className={style.olabel}>{gstate.locale?.optionPannel.pngLable}</div>
-
-      <OptionItem desc={gstate.locale?.optionPannel.colorsDesc}>
-        <Slider
-          defaultValue={DefaultCompressOption.png.colors}
-          value={homeState.tempOption.png.colors}
-          min={2}
-          max={256}
-          step={1}
-          disabled={disabled}
-          onChange={(value) => {
-            homeState.tempOption.png.colors = value;
-          }}
-        />
-      </OptionItem>
-
-      <OptionItem desc={gstate.locale?.optionPannel.pngDithering}>
-        <Slider
-          defaultValue={DefaultCompressOption.png.dithering}
-          value={homeState.tempOption.png.dithering}
-          min={0}
-          max={1}
-          step={0.01}
-          disabled={disabled}
-          onChange={(value) => {
-            homeState.tempOption.png.dithering = value;
-          }}
-        />
-      </OptionItem>
-
-      <Divider />
-      <div className={style.olabel}>{gstate.locale?.optionPannel.gifLable}</div>
-
-      <OptionItem>
-        <Checkbox
-          checked={homeState.tempOption.gif.dithering}
-          disabled={disabled}
-          onChange={(event) => {
-            homeState.tempOption.gif.dithering = event.target.checked;
-          }}
-        >
-          {gstate.locale?.optionPannel.gifDithering}
-        </Checkbox>
-      </OptionItem>
-
-      <OptionItem desc={gstate.locale?.optionPannel.colorsDesc}>
-        <Slider
-          defaultValue={DefaultCompressOption.gif.colors}
-          value={homeState.tempOption.gif.colors}
-          min={2}
-          max={256}
-          step={1}
-          disabled={disabled}
-          onChange={(value) => {
-            homeState.tempOption.gif.colors = value;
-          }}
-        />
-      </OptionItem>
-
-      {Mimes.avif && (
-        <>
-          <Divider />
-          <div className={style.olabel}>
-            {gstate.locale?.optionPannel.avifLable}
-          </div>
-
-          <OptionItem desc={gstate.locale?.optionPannel.avifQuality}>
-            <Slider
-              defaultValue={DefaultCompressOption.png.colors}
-              value={homeState.tempOption.avif.quality}
-              min={1}
-              max={100}
-              step={1}
-              disabled={disabled}
-              onChange={(value) => {
-                homeState.tempOption.avif.quality = value;
-              }}
-            />
-          </OptionItem>
-
-          <OptionItem desc={gstate.locale?.optionPannel.avifSpeed}>
-            <Slider
-              defaultValue={DefaultCompressOption.avif.speed}
-              value={homeState.tempOption.avif.speed}
-              min={1}
-              max={10}
-              step={1}
-              disabled={disabled}
-              onChange={(value) => {
-                homeState.tempOption.avif.speed = value;
-              }}
-            />
-          </OptionItem>
-        </>
-      )}
-    </>
+      {showJpegOptions && <section><h4>{locale?.jpegLable}</h4><RangeField label={locale?.qualityTitle} value={homeState.tempOption.jpeg.quality} min={0} max={1} step={0.01} disabled={disabled} onChange={(value) => { homeState.tempOption.jpeg.quality = value; }} /></section>}
+      {showPngOptions && <section><h4>{locale?.pngLable}</h4><RangeField label={locale?.colorsDesc} value={homeState.tempOption.png.colors} min={2} max={256} step={1} disabled={disabled} onChange={(value) => { homeState.tempOption.png.colors = value; }} /><RangeField label={locale?.pngDithering} value={homeState.tempOption.png.dithering} min={0} max={1} step={0.01} disabled={disabled} onChange={(value) => { homeState.tempOption.png.dithering = value; }} /></section>}
+      {showGifOptions && <section><h4>{locale?.gifLable}</h4><label className={style.checkField}><input type="checkbox" checked={homeState.tempOption.gif.dithering} disabled={disabled} onChange={(event) => { homeState.tempOption.gif.dithering = event.target.checked; }} /><span>{locale?.gifDithering}</span></label><RangeField label={locale?.colorsDesc} value={homeState.tempOption.gif.colors} min={2} max={256} step={1} disabled={disabled} onChange={(value) => { homeState.tempOption.gif.colors = value; }} /></section>}
+      {showAvifOptions && <section><h4>{locale?.avifLable}</h4><RangeField label={locale?.avifQuality} value={homeState.tempOption.avif.quality} min={1} max={100} step={1} disabled={disabled} onChange={(value) => { homeState.tempOption.avif.quality = value; }} /><RangeField label={locale?.avifSpeed} value={homeState.tempOption.avif.speed} min={1} max={10} step={1} disabled={disabled} onChange={(value) => { homeState.tempOption.avif.speed = value; }} /></section>}
+    </div>
   );
 });

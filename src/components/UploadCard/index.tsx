@@ -1,4 +1,3 @@
-import { Flex, Typography, theme } from "antd";
 import style from "./index.module.scss";
 import { useEffect, useRef } from "react";
 import classNames from "classnames";
@@ -10,12 +9,11 @@ import { createImageList } from "@/engines/transform";
 import { getFilesFromEntry, getFilesFromHandle } from "@/functions";
 import { sprintf } from "sprintf-js";
 import { Mimes } from "@/mimes";
-import { InboxOutlined } from "@ant-design/icons";
+import { Images, LockKeyhole } from "lucide-react";
 
 export const UploadCard = observer(() => {
-  const { token } = theme.useToken();
   const fileRef = useRef<HTMLInputElement>(null);
-  const dragRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const dragLeave = () => {
@@ -82,37 +80,37 @@ export const UploadCard = observer(() => {
   }, []);
 
   return (
-    <Flex
-      justify="center"
-      align="center"
+    <div
       className={classNames(style.container, state.dragActive && style.active)}
-      style={{ borderRadius: token.borderRadiusLG }}
     >
-      <Flex vertical align="center" className={style.inner}>
+      <div className={style.inner}>
         <div className={style.uploadIcon}>
-          <InboxOutlined />
+          <Images aria-hidden="true" />
         </div>
-        <Typography.Text>{gstate.locale?.uploadCard.title}</Typography.Text>
-        <div>
+        <strong>{gstate.locale?.uploadCard.title}</strong>
+        <p>
           {sprintf(
             gstate.locale?.uploadCard.subTitle ?? "",
             Object.keys(Mimes)
               .map((item) => item.toUpperCase())
               .join("/"),
           )}
-        </div>
+        </p>
         <div className={style.pasteHint}>
-          {gstate.locale?.uploadCard.pasteHint}
+          <LockKeyhole size={16} aria-hidden="true" />
+          <span>{gstate.locale?.uploadCard.pasteHint}</span>
         </div>
-      </Flex>
+      </div>
       <ImageInput ref={fileRef} />
-      <div
+      <button
+        type="button"
         className={style.mask}
         ref={dragRef}
+        aria-label={gstate.locale?.uploadCard.title}
         onClick={() => {
           fileRef.current?.click();
         }}
       />
-    </Flex>
+    </div>
   );
 });

@@ -6,4 +6,9 @@ export const Mimes: Record<string, string> = {
   webp: "image/webp",
   gif: "image/gif",
   svg: "image/svg+xml",
+  avif: "image/avif",
+  heic: "image/heic",
+  heif: "image/heif",
 };
+
+export const OutputFormats = ["jpg", "png", "webp", "avif"] as const;

@@ -1,68 +1,30 @@
 import { observer } from "mobx-react-lite";
 import style from "./index.module.scss";
-import { Flex, Progress, Typography } from "antd";
 import { gstate } from "@/global";
-import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { homeState } from "@/states/home";
 import { formatSize } from "@/functions";
 import { useResponse } from "@/media";
+import { CompressionRate } from "@/components/CompressionRate";
 
 export const ProgressHint = observer(() => {
   const info = homeState.getProgressHintInfo();
   const { isMobile } = useResponse();
 
-  let rate: React.ReactNode = null;
-  if (info.originSize > info.outputSize) {
-    rate = (
-      <Typography.Text type="success" strong>
-        {info.rate}%&nbsp;
-        <ArrowDownOutlined />
-      </Typography.Text>
-    );
-  } else {
-    rate = (
-      <Typography.Text type="danger" strong>
-        {info.rate}%&nbsp;
-        <ArrowUpOutlined />
-      </Typography.Text>
-    );
-  }
-
   return (
-    <Flex align="center">
-      <Progress
-        type="circle"
-        percent={info.percent}
-        // strokeColor={info.percent === 100 ? token.colorPrimary : token.colorInfo}
-        strokeWidth={20}
-        size={14}
-      />
+    <div className={style.container}>
+      <div className={style.track} aria-label={`${info.percent}%`}>
+        <span style={{ width: `${info.percent}%` }} />
+      </div>
       <div className={style.progress}>
-        <Typography.Text strong type="success">
-          {info.loadedNum}
-        </Typography.Text>
-        <Typography.Text type="secondary">
-          &nbsp;/&nbsp;{info.totalNum}&nbsp;&nbsp;&nbsp;&nbsp;
-        </Typography.Text>
+        <strong>{info.loadedNum}</strong><span> / {info.totalNum}</span>
         {!isMobile && (
           <>
-            <Typography.Text type="secondary">
-              {gstate.locale?.progress.before}：
-              <Typography.Text>{formatSize(info.originSize)}</Typography.Text>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-            </Typography.Text>
-            <Typography.Text type="secondary">
-              {gstate.locale?.progress.after}：
-              <Typography.Text>{formatSize(info.outputSize)}</Typography.Text>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-            </Typography.Text>
+            <span>{gstate.locale?.progress.before}: <b>{formatSize(info.originSize)}</b></span>
+            <span>{gstate.locale?.progress.after}: <b>{formatSize(info.outputSize)}</b></span>
           </>
         )}
-        <Typography.Text type="secondary">
-          {gstate.locale?.progress.rate}：{rate}
-          &nbsp;&nbsp;&nbsp;&nbsp;
-        </Typography.Text>
+        <span>{gstate.locale?.progress.rate}: <CompressionRate originSize={info.originSize} outputSize={info.outputSize} /></span>
       </div>
-    </Flex>
+    </div>
   );
 });

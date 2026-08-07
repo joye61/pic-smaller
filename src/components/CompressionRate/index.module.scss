@@ -1,0 +1,12 @@
+.positive,
+.negative,
+.neutral {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.positive { color: var(--color-success) !important; }
+.negative { color: var(--color-destructive) !important; }
+.neutral { color: var(--color-text-muted) !important; }

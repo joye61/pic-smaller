@@ -1,16 +1,18 @@
 import { LocaleData } from "@/type";
-import esES from "antd/locale/es_ES";
 
 const localeData: LocaleData = {
-  antLocale: esES,
-  logo: "Pic Smaller",
+  logo: "PicSmaller",
   initial: "Inicializando",
   previewHelp:
     "Arrastra la línea divisoria para comparar el efecto de compresión: a la izquierda es la imagen original, a la derecha es la imagen comprimida",
+  heif: {
+    previewUnavailable: "El navegador no puede mostrar directamente la imagen HEIC/HEIF original, por lo que la comparación no está disponible.",
+    originalPreserved: "No se seleccionó un formato de salida, por lo que se conservó el archivo HEIC/HEIF original. Selecciona un formato para redimensionarlo o comprimirlo.",
+  },
   uploadCard: {
     title: "Selecciona o arrastra tus imágenes aquí",
     subTitle: "Formatos soportados: %s",
-    pasteHint: "💡 Pega con Ctrl+V o arrastra imágenes aquí",
+    pasteHint: "Pega con Ctrl+V o arrastra imágenes aquí",
   },
   listAction: {
     batchAppend: "Añadir imagenes",
@@ -35,7 +37,7 @@ const localeData: LocaleData = {
   optionPannel: {
     failTip:
       "Imposible de reducir más el tamaño, por favor ajusta los parámetros e inténtalo de nuevo.",
-    help: "Pic Smaller es una aplicación de compresión de imágenes por lotes. Las modificaciones se aplicarán a todas las imágenes.",
+    help: "PicSmaller es una aplicación de compresión de imágenes por lotes. Las modificaciones se aplicarán a todas las imágenes.",
     resizeLable: "Cambia el tamaño de la imagen",
     jpegLable: "Parámetros JPEG/WEBP",
     pngLable: "Parámetros PNG",

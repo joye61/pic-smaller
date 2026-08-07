@@ -36,6 +36,48 @@ const unitsReg = new RegExp(
   `^([0-9.]+(?:e\\d+)?)(${Object.keys(units).join("|")})?$`,
 );
 
+function setSvgAttribute(root: string, name: string, value: string) {
+  const attribute = new RegExp(`\\s${name}\\s*=\\s*(["']).*?\\1`, "i");
+  if (attribute.test(root)) {
+    return root.replace(attribute, ` ${name}="${value}"`);
+  }
+  return root.replace(/<svg\b/i, `<svg ${name}="${value}"`);
+}
+
+export function applySvgDimension(
+  source: string,
+  original: { width: number; height: number },
+  dimension: Dimension,
+  crop: boolean,
+) {
+  const rootMatch = source.match(/<svg\b[^>]*>/i);
+  if (!rootMatch) return source;
+
+  let root = rootMatch[0];
+  root = setSvgAttribute(root, "width", String(dimension.width));
+  root = setSvgAttribute(root, "height", String(dimension.height));
+
+  if (crop) {
+    const viewBoxMatch = root.match(/\sviewBox\s*=\s*(["'])(.*?)\1/i);
+    const values = viewBoxMatch?.[2].trim().split(/[\s,]+/).map(Number);
+    const validViewBox = values?.length === 4 && values.every(Number.isFinite);
+    const [minX, minY, viewWidth, viewHeight] = validViewBox
+      ? values
+      : [0, 0, original.width, original.height];
+    const scaleX = viewWidth / original.width;
+    const scaleY = viewHeight / original.height;
+    const viewBox = [
+      minX + dimension.x * scaleX,
+      minY + dimension.y * scaleY,
+      dimension.width * scaleX,
+      dimension.height * scaleY,
+    ].map((value) => Number(value.toFixed(4))).join(" ");
+    root = setSvgAttribute(root, "viewBox", viewBox);
+  }
+
+  return source.replace(rootMatch[0], root);
+}
+
 function parseLength(len: string) {
   const m = unitsReg.exec(len);
   if (!m) {

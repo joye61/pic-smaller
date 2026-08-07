@@ -1,11 +1,32 @@
+.container {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+}
+
+.track {
+  height: 6px;
+  overflow: hidden;
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-full);
+  span {
+    display: block;
+    height: 100%;
+    background: var(--color-secondary);
+    transition: width 0.25s ease;
+  }
+}
+
 .progress {
-  margin-left: 10px;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
+  b, strong { color: var(--color-foreground); }
 }
 
 @media (max-width: 640px) {
-  .progress {
-    font-size: 13px;
-  }
+  .progress { font-size: 13px; gap: 4px 12px; }
 }

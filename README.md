@@ -2,6 +2,8 @@
 
 **Pic Smaller** is a super easy-to-use online image compression tool. Simply upload your desired image(s), and Pic Smaller will automatically perform its compress functionality and provide details on the results. Users can also customize features to suite their desired output, such as setting the output format or number of output colors. It's intuitive, website and mobile friendly, and supports compression configuration. At the same time, because of purely local compression without any server-side logic, it is completely safe.
 
+The web app accepts JPEG, PNG, WebP, GIF, SVG, AVIF, HEIC, and HEIF images. HEIC and HEIF inputs are decoded locally and can be exported as JPEG, PNG, WebP, or AVIF.
+
 <br/>
 
 <div><img src="./docs/demo1.png"></div>
@@ -36,7 +38,7 @@ node -v
 
 ## Develop
 
-Pic smaller is a [Vite](https://vitejs.dev/) + [React](https://react.dev/) project, you have to get familiar with them first. It uses modern browser technologies such as `OffscreenCanvas`, `WebAssembly`, and `Web Worker`. You should also be familiar with them before developing.
+Pic Smaller is a [Next.js](https://nextjs.org/) + [React](https://react.dev/) project. It uses modern browser technologies such as `OffscreenCanvas`, `WebAssembly`, and `Web Worker`. You should also be familiar with them before developing.
 
 ```bash
 # Clone the repo
@@ -68,10 +70,10 @@ If you want to independently deploy this project on your own server, the followi
 docker build -t picsmaller .
 
 # Start a container
-docker run -p 3001:3001 -d picsmaller
+docker run -p 3000:3000 -d picsmaller
 ```
 
-Now you can access the project via http://127.0.0.1:3001. If you want your project to be accessible to everyone, you need to prepare a domain name pointing to your local machine, and then proxy it to port 3001 of this machine, through a reverse proxy server like nginx.
+Now you can access the project via http://127.0.0.1:3000. If you want your project to be accessible to everyone, you need to prepare a domain name pointing to your local machine, and then proxy it to port 3000 of this machine, through a reverse proxy server like nginx.
 
 ## Contributing
 
@@ -104,5 +106,6 @@ Please contact the repository owner joye61's email for any questions: 89065495@q
 - [ant-design](https://github.com/ant-design/ant-design) Provides React-based UI solutions
 - [wasm-image-compressor](https://github.com/antelle/wasm-image-compressor) Provides PNG image compression implementation based on Webassembly
 - [gifsicle-wasm-browser](https://github.com/renzhezhilu/gifsicle-wasm-browser) Provides GIF image compression implementation based on Webassembly
-- [wasm_avif](https://github.com/packurl/wasm_avif) Provides AVIF image compression implementation based on Webassembly
+- [Squoosh Kit](https://github.com/bnowak008/squoosh-kit) Provides the Squoosh AVIF, ImageQuant, and OxiPNG WebAssembly codecs
+- [heic-to](https://github.com/hoppergee/heic-to) Provides local HEIC and HEIF decoding in the browser
 - [svgo](https://github.com/svg/svgo) Provides SVG vector compression

@@ -1,5 +1,8 @@
 .vscode
+.git
+.next
 docs
 node_modules
+npm-debug.log*
 
 .DS_Store

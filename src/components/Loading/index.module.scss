@@ -7,11 +7,15 @@
   bottom: 0;
   right: 0;
   z-index: 50;
-  background: rgba(20, 30, 27, 0.38);
+  background: rgba(15, 23, 42, 0.42);
+  display: grid;
+  place-items: center;
   > div {
     width: 64px;
     height: 64px;
-    background-color: #173d32;
-    border: 1px solid #173d32;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-md);
+    display: grid;
+    place-items: center;
   }
 }
