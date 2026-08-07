@@ -6,9 +6,9 @@
   "scripts": {
     "prepare:codecs": "node scripts/prepare-codecs.mjs",
     "predev": "npm run prepare:codecs",
-    "dev": "next dev --webpack",
+    "dev": "next dev",
     "prebuild": "npm run prepare:codecs",
-    "build": "next build --webpack",
+    "build": "next build",
     "postbuild": "node scripts/prepare-standalone.mjs",
     "start": "node scripts/start-standalone.mjs",
     "lint": "eslint src tests --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

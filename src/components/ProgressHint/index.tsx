@@ -16,7 +16,7 @@ export const ProgressHint = observer(() => {
         <span style={{ width: `${info.percent}%` }} />
       </div>
       <div className={style.progress}>
-        <strong>{info.loadedNum}</strong><span> / {info.totalNum}</span>
+        <span className={style.count}><strong>{info.loadedNum}</strong> / {info.totalNum}</span>
         {!isMobile && (
           <>
             <span>{gstate.locale?.progress.before}: <b>{formatSize(info.originSize)}</b></span>

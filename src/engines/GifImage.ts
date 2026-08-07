@@ -6,11 +6,21 @@
 
 import { ImageBase, ProcessOutput } from "./ImageBase";
 
-let _gifsicle: typeof import("./GifWasmModule").gifsicle | null = null;
+interface GifsicleModule {
+  gifsicle: (options: {
+    data: Array<{ file: ArrayBuffer; name: string }>;
+    command: string[];
+  }) => Promise<Array<{ file: BlobPart }>>;
+}
+
+let _gifsicle: GifsicleModule["gifsicle"] | null = null;
 
 async function getGifsicle() {
   if (!_gifsicle) {
-    const mod = await import("./GifWasmModule");
+    const path = "/codecs/gif/index.browser.mjs";
+    const mod = (await import(
+      /* webpackIgnore: true */ path
+    )) as GifsicleModule;
     _gifsicle = mod.gifsicle;
   }
   return _gifsicle;
@@ -19,31 +29,37 @@ async function getGifsicle() {
 export class GifImage extends ImageBase {
   async compress(): Promise<ProcessOutput> {
     const { width, height, x, y } = this.getOutputDimension();
+    const inputName = "input.gif";
+    const outputName = "output.gif";
 
     const commands: string[] = [
       `--optimize=3`,
       `--colors=${this.option.gif.colors}`,
     ];
 
-    // Crop mode
-    if (width !== this.info.width || height !== this.info.height) {
+    const resizeMethod = this.option.resize.method;
+    const isCrop =
+      resizeMethod === "presetCrop" ||
+      resizeMethod === "setCropRatio" ||
+      resizeMethod === "setCropSize";
+    if (isCrop) {
       commands.push(`--crop=${x},${y}+${width}x${height}`);
-    } else {
+    } else if (width !== this.info.width || height !== this.info.height) {
       commands.push(`--resize=${width}x${height}`);
     }
 
     if (this.option.gif.dithering) {
       commands.push(`--dither=floyd-steinberg`);
     }
-    commands.push(`--output=/out/${this.info.name}`);
-    commands.push(this.info.name);
+    commands.push(`--output=/out/${outputName}`);
+    commands.push(inputName);
     const buffer = await this.info.blob.arrayBuffer();
     const gifsicle = await getGifsicle();
     const result = await gifsicle({
       data: [
         {
           file: buffer,
-          name: this.info.name,
+          name: inputName,
         },
       ],
       command: [commands.join(" ")],

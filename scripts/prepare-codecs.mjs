@@ -34,3 +34,8 @@ for (const codec of codecs) {
     cpSync(`${source}/${asset}`, `${target}/${asset}`);
   }
 }
+
+const gifTarget = "public/codecs/gif";
+rmSync(gifTarget, { recursive: true, force: true });
+mkdirSync(gifTarget, { recursive: true });
+cpSync("src/engines/GifWasmModule.js", `${gifTarget}/index.browser.mjs`);

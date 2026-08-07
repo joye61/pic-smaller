@@ -27,6 +27,10 @@
   b, strong { color: var(--color-foreground); }
 }
 
+.count {
+  white-space: nowrap;
+}
+
 @media (max-width: 640px) {
   .progress { font-size: 13px; gap: 4px 12px; }
 }

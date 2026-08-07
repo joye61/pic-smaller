@@ -44,7 +44,7 @@
   span:nth-child(1) { top: 25px; left: 12px; width: 32px; height: 27px; border: 1px solid #7390ad; background: rgba(255,255,255,.04); clip-path: polygon(0 0, 78% 0, 100% 26%, 100% 100%, 0 100%); }
   span:nth-child(1)::after { content: ""; position: absolute; left: 7px; right: 7px; top: 8px; height: 7px; border-top: 2px solid #e7bd59; border-bottom: 2px solid #e7bd59; }
   span:nth-child(2) { top: 32px; right: 12px; width: 20px; height: 20px; border: 1px solid currentColor; background: rgba(89,210,180,.14); clip-path: polygon(0 0, 75% 0, 100% 25%, 100% 100%, 0 100%); }
-  span:nth-child(3) { top: 37px; left: 45px; width: 13px; height: 2px; background: currentColor; box-shadow: 0 -5px #59718e, 0 5px #59718e; }
+  span:nth-child(3) { top: 37px; left: 46px; width: 7px; height: 2px; background: currentColor; }
   span:nth-child(3)::after { content: ""; position: absolute; right: -4px; top: -3px; border-left: 5px solid currentColor; border-top: 4px solid transparent; border-bottom: 4px solid transparent; }
 }
 .batch {
@@ -61,10 +61,10 @@
   span:nth-child(1)::after { content: ""; width: 11px; height: 8px; border: 1px solid #e7bd59; clip-path: polygon(0 100%, 35% 40%, 56% 65%, 76% 18%, 100% 100%); background: rgba(231,189,89,.16); }
   span:nth-child(2) { right: 11px; border-color: currentColor; border-radius: 50%; }
   span:nth-child(2)::after { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #f05b45; box-shadow: 0 0 0 3px rgba(240,91,69,.15); }
-  span:nth-child(3) { top: 38px; left: 39px; width: 14px; height: 2px; background: currentColor; }
-  span:nth-child(3)::before, span:nth-child(3)::after { content: ""; position: absolute; width: 5px; height: 5px; border-top: 1px solid currentColor; border-right: 1px solid currentColor; }
-  span:nth-child(3)::before { left: -1px; top: -5px; transform: rotate(-135deg); }
-  span:nth-child(3)::after { right: -1px; top: 1px; transform: rotate(45deg); }
+  span:nth-child(3) { top: 34px; left: 39px; width: 14px; height: 12px; }
+  span:nth-child(3)::before, span:nth-child(3)::after { content: ""; position: absolute; left: 0; width: 14px; height: 5px; background: currentColor; clip-path: polygon(0 50%, 5px 0, 5px 1.5px, 100% 1.5px, 100% 3.5px, 5px 3.5px, 5px 5px); }
+  span:nth-child(3)::before { top: 0; }
+  span:nth-child(3)::after { bottom: 0; transform: rotate(180deg); }
 }
 .crop {
   span:nth-child(1) { top: 20px; left: 22px; width: 45px; height: 36px; border: 1px solid #526b89; background: linear-gradient(145deg, rgba(89,210,180,.2) 0 48%, transparent 49%), linear-gradient(35deg, transparent 0 55%, rgba(231,189,89,.22) 56%); }
@@ -77,7 +77,7 @@
 .compare {
   span:nth-child(1) { top: 21px; left: 12px; width: 68px; height: 37px; border: 1px solid #607b99; background: linear-gradient(135deg, rgba(231,189,89,.22), rgba(231,189,89,.04)); }
   span:nth-child(1)::before { content: ""; position: absolute; inset: 0 0 0 50%; background: linear-gradient(145deg, rgba(89,210,180,.28), rgba(89,210,180,.05)); }
-  span:nth-child(2) { top: 19px; bottom: 8px; left: 46px; width: 1px; background: currentColor; }
+  span:nth-child(2) { top: 22px; bottom: 11px; left: 46px; width: 1px; background: currentColor; }
   span:nth-child(2)::after { content: ""; position: absolute; top: 15px; left: -5px; width: 9px; height: 9px; border: 1px solid currentColor; border-radius: 50%; background: #172033; }
   span:nth-child(3) { top: 29px; left: 20px; width: 13px; height: 13px; border-radius: 50%; background: #e7bd59; box-shadow: 35px 10px 0 -3px #f05b45; }
 }
@@ -93,7 +93,7 @@
   span:nth-child(2)::before { left: 14px; top: 8px; transform: rotate(-14deg); }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .featureGrid article:hover .convert span:nth-child(3), .featureGrid article:hover .compress span:nth-child(3) { animation: dataPulse .8s ease-in-out infinite alternate; }
+  .featureGrid article:hover .compress span:nth-child(3) { animation: dataPulse .8s ease-in-out infinite alternate; }
   .featureGrid article:hover .worker span { animation: nodePulse 1.2s ease-in-out infinite alternate; }
   .featureGrid article:hover .worker span:nth-child(2) { animation-delay: .2s; }
   .featureGrid article:hover .worker span:nth-child(3) { animation-delay: .4s; }
