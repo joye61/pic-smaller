@@ -65,6 +65,8 @@ const localeData: LocaleData = {
     resetBtn: "Seçenekleri sıfırla",
     confirmBtn: "Seçenekleri uygula",
     qualityTitle: "Çıktının kalitesini ayarla (0-1)",
+    extremeMode: "Ekstrem mod",
+    extremeModeHint: "İşlem daha yavaş olur, ancak genellikle daha küçük bir dosya üretir.",
     colorsDesc: "Çıktınun renk sayısını ayarla (2-256)",
     pngDithering: "Dithering katsayısını ayarla (0-1)",
     gifDithering: "Dithering'i aç",

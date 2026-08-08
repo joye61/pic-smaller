@@ -65,6 +65,8 @@ const localeData: LocaleData = {
     resetBtn: "Réinitialiser",
     confirmBtn: "Appliquer",
     qualityTitle: "Qualité de l'image de sortie (0-1)",
+    extremeMode: "Mode extrême",
+    extremeModeHint: "Le traitement sera plus lent, mais produira généralement un fichier plus petit.",
     colorsDesc: "Nombre de couleurs de sortie (2-256)",
     pngDithering: "Coefficient de tramage (0-1)",
     gifDithering: "Activer le tramage",

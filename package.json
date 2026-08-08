@@ -23,6 +23,7 @@
     "@radix-ui/react-select": "^2.3.7",
     "@squoosh-kit/avif": "^0.2.4",
     "@squoosh-kit/imagequant": "^0.2.4",
+    "@squoosh-kit/mozjpeg": "0.2.4",
     "@squoosh-kit/oxipng": "^0.2.4",
     "classnames": "^2.5.1",
     "filesize": "^10.1.1",

@@ -67,6 +67,8 @@ const localeData: LocaleData = {
     resetBtn: "재설정 옵션",
     confirmBtn: "옵션 적용",
     qualityTitle: "출력 이미지 품질 설정(0-1)",
+    extremeMode: "극한 모드",
+    extremeModeHint: "처리 속도는 느려지지만 일반적으로 파일 크기가 더 작아집니다.",
     colorsDesc: "출력 색상 수 설정(2-256)",
     pngDithering: "디더링 계수 설정(0-1)",
     gifDithering: "디더링 켜기",

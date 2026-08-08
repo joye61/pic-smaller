@@ -19,6 +19,13 @@ const codecs = [
       "wasm/avif-enc/avif_enc.wasm",
     ],
   },
+  {
+    name: "mozjpeg",
+    assets: [
+      "wasm/mozjpeg-enc/mozjpeg_enc.js",
+      "wasm/mozjpeg-enc/mozjpeg_enc.wasm",
+    ],
+  },
 ];
 
 for (const codec of codecs) {

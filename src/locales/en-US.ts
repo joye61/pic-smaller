@@ -64,6 +64,8 @@ const localeData: LocaleData = {
     resetBtn: "Reset options",
     confirmBtn: "Apply options",
     qualityTitle: "Set output image quality (0-1)",
+    extremeMode: "Extreme mode",
+    extremeModeHint: "Processing will be slower, but usually produces a smaller file.",
     colorsDesc: "Set the number of output colors (2-256)",
     pngDithering: "Set dithering coefficient (0-1)",
     gifDithering: "Turn on dithering",

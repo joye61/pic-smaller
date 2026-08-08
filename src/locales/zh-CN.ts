@@ -63,6 +63,8 @@ const localeData: LocaleData = {
     resetBtn: "重置选项",
     confirmBtn: "应用选项",
     qualityTitle: "设置输出图片质量（0-1）",
+    extremeMode: "极限模式",
+    extremeModeHint: "处理速度会更慢，但通常可生成更小的文件。",
     colorsDesc: "设置输出颜色数量（2-256）",
     pngDithering: "设置抖色系数（0-1）",
     gifDithering: "开启抖色",

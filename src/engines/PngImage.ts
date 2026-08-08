@@ -1,4 +1,9 @@
-import { ImageBase, OXI_PNG_LEVEL, ProcessOutput } from "./ImageBase";
+import {
+  ImageBase,
+  OXI_PNG_EXTREME_LEVEL,
+  OXI_PNG_LEVEL,
+  ProcessOutput,
+} from "./ImageBase";
 import { Mimes } from "@/mimes";
 
 interface CodecImage {
@@ -38,13 +43,16 @@ export class PngImage extends ImageBase {
     image: CodecImage,
     colors: number,
     dithering: number,
+    extreme = false,
   ): Promise<Blob> {
     const { quantize, optimize } = await codecsReady;
     const quantized = await quantize(image, {
       numColors: colors,
       dither: dithering,
     });
-    const output = await optimize(quantized, { level: OXI_PNG_LEVEL });
+    const output = await optimize(quantized, {
+      level: extreme ? OXI_PNG_EXTREME_LEVEL : OXI_PNG_LEVEL,
+    });
     const bytes = new Uint8Array(output.byteLength);
     bytes.set(output);
     return new Blob([bytes.buffer], { type: Mimes.png });
@@ -59,6 +67,7 @@ export class PngImage extends ImageBase {
       imageData,
       this.option.png.colors,
       this.option.png.dithering,
+      this.option.png.extreme,
     );
     return {
       width,

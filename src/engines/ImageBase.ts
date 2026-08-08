@@ -11,6 +11,7 @@ export interface ImageInfo {
 
 export const PREVIEW_MAX_SIZE = 256;
 export const OXI_PNG_LEVEL = 2;
+export const OXI_PNG_EXTREME_LEVEL = 6;
 export const MAX_CONCURRENCY = 3;
 export const MAX_CANVAS_DIMENSION = 16384;
 export const MAX_FILE_SIZE_WARNING = 50 * 1024 * 1024;
@@ -50,10 +51,12 @@ export interface CompressOption {
   };
   jpeg: {
     quality: number; // 0-1
+    extreme: boolean;
   };
   png: {
     colors: number; // 2-256
     dithering: number; // 0-1
+    extreme: boolean;
   };
   gif: {
     colors: number; // 2-256

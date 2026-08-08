@@ -76,6 +76,8 @@ export interface LocaleData {
     presetSwitchRef: string;
     presetCancelCrop: string;
     qualityTitle: string;
+    extremeMode: string;
+    extremeModeHint: string;
     resetBtn: string;
     confirmBtn: string;
     colorsDesc: string;

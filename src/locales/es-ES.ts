@@ -67,6 +67,8 @@ const localeData: LocaleData = {
     resetBtn: "Reiniciar ajustes",
     confirmBtn: "Aplicar ajustes",
     qualityTitle: "Calidad de imagen (0-1)",
+    extremeMode: "Modo extremo",
+    extremeModeHint: "El proceso será más lento, pero normalmente generará un archivo más pequeño.",
     colorsDesc: "Número de colores de salida (2-256)",
     pngDithering: "Coeficiente de difuminado (0-1)",
     gifDithering: "Difuminado",

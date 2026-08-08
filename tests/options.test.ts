@@ -42,8 +42,8 @@ test("normalization rejects invalid enums and clamps every encoder parameter", (
   assert.equal(normalized.resize.cropWidthRatio, undefined);
   assert.equal(normalized.resize.presetCrop?.paperSize, "a4");
   assert.deepEqual(normalized.format, { target: undefined, transparentFill: "#FFFFFF" });
-  assert.equal(normalized.jpeg.quality, 1);
-  assert.deepEqual(normalized.png, { colors: 2, dithering: 0 });
+  assert.deepEqual(normalized.jpeg, { quality: 1, extreme: false });
+  assert.deepEqual(normalized.png, { colors: 2, dithering: 0, extreme: false });
   assert.deepEqual(normalized.gif, { colors: 256, dithering: false });
   assert.deepEqual(normalized.avif, { quality: 1, speed: 10 });
 });
@@ -64,8 +64,8 @@ test("normalization preserves valid values for every option group", () => {
       presetCrop: { paperSize: "letter", orientation: "landscape", reference: "height", cropPx: 12, offsetPx: -8 },
     },
     format: { target: "webp", transparentFill: "#12abEF" },
-    jpeg: { quality: 0.42 },
-    png: { colors: 64, dithering: 0.25 },
+    jpeg: { quality: 0.42, extreme: true },
+    png: { colors: 64, dithering: 0.25, extreme: true },
     gif: { colors: 32, dithering: true },
     avif: { quality: 73, speed: 4 },
   });
@@ -85,8 +85,8 @@ test("normalization preserves valid values for every option group", () => {
       presetCrop: { paperSize: "letter", orientation: "landscape", reference: "height", cropPx: 12, offsetPx: -8 },
     },
     format: { target: "webp", transparentFill: "#12ABEF" },
-    jpeg: { quality: 0.42 },
-    png: { colors: 64, dithering: 0.25 },
+    jpeg: { quality: 0.42, extreme: true },
+    png: { colors: 64, dithering: 0.25, extreme: true },
     gif: { colors: 32, dithering: true },
     avif: { quality: 73, speed: 4 },
   });

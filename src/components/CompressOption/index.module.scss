@@ -86,6 +86,26 @@
   input { accent-color: var(--color-secondary); width: 17px; height: 17px; }
 }
 
+.extremeField {
+  display: grid;
+  grid-template-columns: 17px 1fr;
+  align-items: start;
+  gap: 9px;
+  margin-top: 16px;
+  font-size: 13px;
+
+  input {
+    width: 17px;
+    height: 17px;
+    margin: 1px 0 0;
+    accent-color: var(--color-secondary);
+  }
+
+  span { display: grid; gap: 3px; }
+  b { color: var(--color-primary); }
+  small { color: var(--color-text-muted); line-height: 1.45; }
+}
+
 .presetGrid {
   display: grid;
   gap: 10px;

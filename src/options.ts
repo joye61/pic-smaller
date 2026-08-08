@@ -24,8 +24,8 @@ export const DefaultCompressOption: CompressOption = {
     },
   },
   format: { target: undefined, transparentFill: "#FFFFFF" },
-  jpeg: { quality: 0.75 },
-  png: { colors: 128, dithering: 0.5 },
+  jpeg: { quality: 0.75, extreme: false },
+  png: { colors: 128, dithering: 0.5, extreme: false },
   gif: { colors: 128, dithering: false },
   avif: { quality: 50, speed: 8 },
 };
@@ -98,10 +98,14 @@ export function normalizeCompressOption(value: unknown): CompressOption {
         ? format.transparentFill.toUpperCase()
         : "#FFFFFF",
     },
-    jpeg: { quality: numberValue(jpeg.quality, 0.75, 0, 1) },
+    jpeg: {
+      quality: numberValue(jpeg.quality, 0.75, 0, 1),
+      extreme: typeof jpeg.extreme === "boolean" ? jpeg.extreme : false,
+    },
     png: {
       colors: Math.round(numberValue(png.colors, 128, 2, 256)),
       dithering: numberValue(png.dithering, 0.5, 0, 1),
+      extreme: typeof png.extreme === "boolean" ? png.extreme : false,
     },
     gif: {
       colors: Math.round(numberValue(gif.colors, 128, 2, 256)),

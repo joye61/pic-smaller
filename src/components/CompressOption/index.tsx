@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import style from "./index.module.scss";
 import { homeState } from "@/states/home";
 import { gstate } from "@/global";
-import { getImageMime, OutputFormats } from "@/mimes";
+import { getImageMime, Mimes, OutputFormats } from "@/mimes";
 import { MAX_CANVAS_DIMENSION, PAPER_SIZES } from "@/engines/ImageBase";
 import { Select } from "@/components/Select";
 import { getCompressionOptionVisibility } from "@/options";
@@ -49,14 +49,20 @@ export const CompressOption = observer(() => {
   const resize = homeState.tempOption.resize;
   const resizeMethod = resize.method;
   const targetFormat = homeState.tempOption.format.target;
+  const sourceMimes = Array.from(homeState.list.values(), (item) =>
+    getImageMime({ name: item.name, type: item.blob.type })
+  );
   const optionVisibility = getCompressionOptionVisibility(
-    Array.from(homeState.list.values(), (item) => getImageMime({ name: item.name, type: item.blob.type })),
+    sourceMimes,
     targetFormat,
   );
   const showJpegOptions = optionVisibility.jpeg;
   const showPngOptions = optionVisibility.png;
   const showGifOptions = optionVisibility.gif;
   const showAvifOptions = optionVisibility.avif;
+  const showJpegExtreme = targetFormat
+    ? Mimes[targetFormat] === Mimes.jpg
+    : sourceMimes.length === 0 || sourceMimes.includes(Mimes.jpg);
   const preset = resizeMethod === "presetCrop"
     ? resize.presetCrop ?? { paperSize: "a4", orientation: "portrait" as const, reference: "width" as const, cropPx: 0, offsetPx: 0 }
     : null;
@@ -160,8 +166,8 @@ export const CompressOption = observer(() => {
         {["jpg", "jpeg"].includes(homeState.tempOption.format.target ?? "") && <label className={style.colorField}><span>{locale?.transparentFillDesc}</span><input type="color" disabled={disabled} value={homeState.tempOption.format.transparentFill} onChange={(event) => { homeState.tempOption.format.transparentFill = event.target.value.toUpperCase(); }} /></label>}
       </section>
 
-      {showJpegOptions && <section><h4>{locale?.jpegLable}</h4><RangeField label={locale?.qualityTitle} value={homeState.tempOption.jpeg.quality} min={0} max={1} step={0.01} disabled={disabled} onChange={(value) => { homeState.tempOption.jpeg.quality = value; }} /></section>}
-      {showPngOptions && <section><h4>{locale?.pngLable}</h4><RangeField label={locale?.colorsDesc} value={homeState.tempOption.png.colors} min={2} max={256} step={1} disabled={disabled} onChange={(value) => { homeState.tempOption.png.colors = value; }} /><RangeField label={locale?.pngDithering} value={homeState.tempOption.png.dithering} min={0} max={1} step={0.01} disabled={disabled} onChange={(value) => { homeState.tempOption.png.dithering = value; }} /></section>}
+      {showJpegOptions && <section><h4>{locale?.jpegLable}</h4><RangeField label={locale?.qualityTitle} value={homeState.tempOption.jpeg.quality} min={0} max={1} step={0.01} disabled={disabled} onChange={(value) => { homeState.tempOption.jpeg.quality = value; }} />{showJpegExtreme && <label className={style.extremeField}><input type="checkbox" checked={homeState.tempOption.jpeg.extreme} disabled={disabled} onChange={(event) => { homeState.tempOption.jpeg.extreme = event.target.checked; }} /><span><b>{locale?.extremeMode}</b><small>{locale?.extremeModeHint}</small></span></label>}</section>}
+      {showPngOptions && <section><h4>{locale?.pngLable}</h4><RangeField label={locale?.colorsDesc} value={homeState.tempOption.png.colors} min={2} max={256} step={1} disabled={disabled} onChange={(value) => { homeState.tempOption.png.colors = value; }} /><RangeField label={locale?.pngDithering} value={homeState.tempOption.png.dithering} min={0} max={1} step={0.01} disabled={disabled} onChange={(value) => { homeState.tempOption.png.dithering = value; }} /><label className={style.extremeField}><input type="checkbox" checked={homeState.tempOption.png.extreme} disabled={disabled} onChange={(event) => { homeState.tempOption.png.extreme = event.target.checked; }} /><span><b>{locale?.extremeMode}</b><small>{locale?.extremeModeHint}</small></span></label></section>}
       {showGifOptions && <section><h4>{locale?.gifLable}</h4><label className={style.checkField}><input type="checkbox" checked={homeState.tempOption.gif.dithering} disabled={disabled} onChange={(event) => { homeState.tempOption.gif.dithering = event.target.checked; }} /><span>{locale?.gifDithering}</span></label><RangeField label={locale?.colorsDesc} value={homeState.tempOption.gif.colors} min={2} max={256} step={1} disabled={disabled} onChange={(value) => { homeState.tempOption.gif.colors = value; }} /></section>}
       {showAvifOptions && <section><h4>{locale?.avifLable}</h4><RangeField label={locale?.avifQuality} value={homeState.tempOption.avif.quality} min={1} max={100} step={1} disabled={disabled} onChange={(value) => { homeState.tempOption.avif.quality = value; }} /><RangeField label={locale?.avifSpeed} value={homeState.tempOption.avif.speed} min={1} max={10} step={1} disabled={disabled} onChange={(value) => { homeState.tempOption.avif.speed = value; }} /></section>}
     </div>

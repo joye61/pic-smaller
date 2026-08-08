@@ -12,6 +12,8 @@ import { getImageMime, Mimes } from "@/mimes";
 import { SvgImage } from "./SvgImage";
 import { getSvgDimension } from "./svgParse";
 import { getFinalMime } from "@/options";
+import { rejectAnimatedImage } from "./animation";
+import { JpegImage } from "./JpegImage";
 
 export interface MessageData {
   info: ImageInfo;
@@ -61,6 +63,10 @@ export async function convert(
   method: HandleMethod = "compress",
 ): Promise<OutputMessageData | null> {
   const mime = getImageMime({ name: data.info.name, type: data.info.blob.type });
+
+  if (method === "compress" && [Mimes.webp, Mimes.avif].includes(mime)) {
+    await rejectAnimatedImage(data.info.blob, mime);
+  }
 
   // For SVG type, do not support type convert
   if (Mimes.svg === mime) {
@@ -120,7 +126,7 @@ export async function convert(
     ) {
       const target = data.option.format.target.toLowerCase();
 
-      if (["avif", "png"].includes(target)) {
+      if (["avif", "png", "jpg", "jpeg"].includes(target)) {
         return createHandler(data, method, Mimes[target]);
       }
 
@@ -204,7 +210,9 @@ export async function createHandler(
     mime = specify;
   }
   let image: ImageBase | null = null;
-  if ([Mimes.jpg, Mimes.webp].includes(mime)) {
+  if (mime === Mimes.jpg) {
+    image = new JpegImage(data.info, data.option);
+  } else if (mime === Mimes.webp) {
     image = new CanvasImage(data.info, data.option);
   } else if (mime === Mimes.avif) {
     image = new AvifImage(data.info, data.option);

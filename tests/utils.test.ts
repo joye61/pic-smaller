@@ -6,8 +6,25 @@ import {
   ImageBase,
   type ProcessOutput,
 } from "@/engines/ImageBase";
-import { OutputFormats } from "@/mimes";
+import { Mimes, OutputFormats } from "@/mimes";
 import { applySvgDimension } from "@/engines/svgParse";
+import { isAnimatedImage, rejectAnimatedImage } from "@/engines/animation";
+
+function ascii(value: string): number[] {
+  return Array.from(value, (character) => character.charCodeAt(0));
+}
+
+function uint32BE(value: number): number[] {
+  return [value >>> 24, value >>> 16, value >>> 8, value].map(
+    (part) => part & 0xff,
+  );
+}
+
+function uint32LE(value: number): number[] {
+  return [value, value >>> 8, value >>> 16, value >>> 24].map(
+    (part) => part & 0xff,
+  );
+}
 
 class PreviewProbeImage extends ImageBase {
   call?: [number, number, number, number, number];
@@ -99,6 +116,72 @@ test("preview forwards crop coordinates without treating them as quality", async
 
 test("output formats expose one canonical JPEG option", () => {
   assert.deepEqual(OutputFormats, ["jpg", "png", "webp", "avif"]);
+});
+
+test("animated WebP is detected from RIFF animation chunks", async () => {
+  const animationChunk = [...ascii("ANIM"), ...uint32LE(0)];
+  const animated = new Blob([
+    new Uint8Array([
+      ...ascii("RIFF"),
+      ...uint32LE(4 + animationChunk.length),
+      ...ascii("WEBP"),
+      ...animationChunk,
+    ]),
+  ]);
+  const stillChunk = [...ascii("VP8 "), ...uint32LE(0)];
+  const still = new Blob([
+    new Uint8Array([
+      ...ascii("RIFF"),
+      ...uint32LE(4 + stillChunk.length),
+      ...ascii("WEBP"),
+      ...stillChunk,
+    ]),
+  ]);
+
+  assert.equal(await isAnimatedImage(animated, Mimes.webp), true);
+  assert.equal(await isAnimatedImage(still, Mimes.webp), false);
+});
+
+test("animated AVIF is detected from the avis sequence brand", async () => {
+  const animated = new Blob([
+    new Uint8Array([
+      ...uint32BE(24),
+      ...ascii("ftyp"),
+      ...ascii("avif"),
+      ...uint32BE(0),
+      ...ascii("mif1"),
+      ...ascii("avis"),
+    ]),
+  ]);
+  const still = new Blob([
+    new Uint8Array([
+      ...uint32BE(20),
+      ...ascii("ftyp"),
+      ...ascii("avif"),
+      ...uint32BE(0),
+      ...ascii("mif1"),
+    ]),
+  ]);
+
+  assert.equal(await isAnimatedImage(animated, Mimes.avif), true);
+  assert.equal(await isAnimatedImage(still, Mimes.avif), false);
+});
+
+test("animated images are rejected before the single-frame canvas pipeline", async () => {
+  const animationChunk = [...ascii("ANIM"), ...uint32LE(0)];
+  const blob = new Blob([
+    new Uint8Array([
+      ...ascii("RIFF"),
+      ...uint32LE(4 + animationChunk.length),
+      ...ascii("WEBP"),
+      ...animationChunk,
+    ]),
+  ], { type: Mimes.webp });
+
+  await assert.rejects(
+    rejectAnimatedImage(blob, Mimes.webp),
+    /original file was preserved/,
+  );
 });
 
 test("every resize mode produces a material, bounded dimension change", () => {

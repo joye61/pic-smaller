@@ -4,6 +4,7 @@ import { optimize } from "svgo/lib/svgo";
 import { applySvgDimension } from "./svgParse";
 import { AvifImage } from "./AvifImage";
 import { PngImage } from "./PngImage";
+import { JpegImage } from "./JpegImage";
 
 /**
  * JPEG/JPG/WEBP is compatible
@@ -66,6 +67,12 @@ export class SvgImage extends ImageBase {
           context.getImageData(0, 0, dimension.width, dimension.height),
           this.option.png.colors,
           this.option.png.dithering,
+          this.option.png.extreme,
+        );
+      } else if (["jpg", "jpeg"].includes(target) && this.option.jpeg.extreme) {
+        blob = await JpegImage.encode(
+          context.getImageData(0, 0, dimension.width, dimension.height),
+          this.option.jpeg.quality,
         );
       } else {
         blob = await canvas.convertToBlob({

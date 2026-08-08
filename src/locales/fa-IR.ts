@@ -65,6 +65,8 @@ const localeData: LocaleData = {
     resetBtn: "بازنشانی گزینه‌ها",
     confirmBtn: "اعمال گزینه‌ها",
     qualityTitle: "تنظیم کیفیت تصویر خروجی (0-1)",
+    extremeMode: "حالت فشرده‌سازی حداکثری",
+    extremeModeHint: "پردازش کندتر خواهد بود، اما معمولاً فایل کوچک‌تری تولید می‌کند.",
     colorsDesc: "تنظیم تعداد رنگ‌های خروجی (2-256)",
     pngDithering: "تنظیم ضریب دانه‌بندی (0-1)",
     gifDithering: "فعال کردن دانه‌بندی",
