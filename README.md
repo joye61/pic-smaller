@@ -28,7 +28,7 @@ and download actions in one view.
 
 Requirements:
 
-- Node.js 20 or newer
+- Node.js 22 LTS or newer
 - npm 10 or newer
 
 ```bash
@@ -60,7 +60,7 @@ Cloudflare builds and deploys the site automatically with these settings:
 | Preview branch | `develop` |
 | Build command | `npm run build:pages` |
 | Output directory | `out` |
-| Node.js version | `20` |
+| Node.js version | `22` |
 
 Pushes to `master` update production. Pushes to `develop` create preview
 deployments. Other branches do not deploy automatically.

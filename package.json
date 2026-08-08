@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.1.0",
   "type": "module",
+  "engines": {
+    "node": ">=22 <25"
+  },
   "scripts": {
     "prepare:codecs": "node scripts/prepare-codecs.mjs",
     "predev": "npm run prepare:codecs",
