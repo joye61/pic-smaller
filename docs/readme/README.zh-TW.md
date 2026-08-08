@@ -29,7 +29,7 @@ Web Workers、WebAssembly、Canvas 及瀏覽器編解碼器在本機完成處理
 
 ## 介面截圖
 
-![Pic Smaller 壓縮工作區](./docs/demo1.png)
+![Pic Smaller 壓縮工作區](../demo1.png)
 
 核心工作區將批次輸入、壓縮結果、輸出設定和下載操作整合在一個檢視內。
 

@@ -29,7 +29,7 @@ Barındırılan uygulamayı [picsmaller.com](https://picsmaller.com/) veya
 
 ## Ekran Görüntüsü
 
-![Pic Smaller sıkıştırma çalışma alanı](./docs/demo1.png)
+![Pic Smaller sıkıştırma çalışma alanı](../demo1.png)
 
 Temel çalışma alanı, toplu girdiyi, sıkıştırma sonuçlarını, çıktı ayarlarını ve
 indirme eylemlerini tek bir görünümde birleştirir.

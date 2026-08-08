@@ -30,7 +30,7 @@ Utilisez l'application hébergée sur [picsmaller.com](https://picsmaller.com/) 
 
 ## Capture d'écran
 
-![Espace de travail Pic Smaller](./docs/demo1.png)
+![Espace de travail Pic Smaller](../demo1.png)
 
 L'espace de travail principal intègre l'entrée par lot, les résultats de compression,
 les paramètres de sortie et les actions de téléchargement dans une seule vue.
