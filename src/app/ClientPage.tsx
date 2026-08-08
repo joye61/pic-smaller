@@ -1,9 +1,12 @@
-"use client";
+import ClientApp from "@/ClientApp";
+import type { SupportedLocale } from "@/locale-config";
+import type { LocaleData } from "@/type";
 
-import dynamic from "next/dynamic";
+type ClientPageProps = {
+  lang: SupportedLocale;
+  locale: LocaleData;
+};
 
-const ClientApp = dynamic(() => import("@/ClientApp"), { ssr: false });
-
-export default function ClientPage() {
-  return <ClientApp />;
+export default function ClientPage({ lang, locale }: ClientPageProps) {
+  return <ClientApp lang={lang} locale={locale} />;
 }

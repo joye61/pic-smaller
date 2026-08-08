@@ -6,6 +6,9 @@ const isPagesBuild =
 
 const nextConfig: NextConfig = {
   output: isPagesBuild ? "export" : "standalone",
+  experimental: {
+    globalNotFound: true,
+  },
 };
 
 export default nextConfig;

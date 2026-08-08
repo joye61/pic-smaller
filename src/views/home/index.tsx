@@ -101,8 +101,6 @@ const FeatureGlyph = ({ kind }: { kind: string }) => (
 const Home = observer(() => {
   useWorkerHandler();
   const [menuOpen, setMenuOpen] = useState(false);
-  const currentLocale = gstate.locale;
-  const currentLang = gstate.lang;
   // Landing copy assets exist for Simplified Chinese and English.
   // zh-TW falls back to English so users never see a Simplified-Chinese
   // landing page paired with a Traditional-Chinese workspace (UI-3).
@@ -127,19 +125,6 @@ const Home = observer(() => {
     document.addEventListener("paste", handlePaste);
     return () => document.removeEventListener("paste", handlePaste);
   }, []);
-
-  useEffect(() => {
-    if (currentLocale) {
-      document.title = currentLocale.siteTitle;
-      let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-      if (!meta) {
-        meta = document.createElement("meta");
-        meta.name = "description";
-        document.head.appendChild(meta);
-      }
-      meta.content = currentLocale.siteDescription;
-    }
-  }, [currentLocale, currentLang]);
 
   // Desktop site supports zh-CN / zh-TW / en-US locales.
   const desktopLangPrefix =

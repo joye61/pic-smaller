@@ -74,6 +74,18 @@ img { max-width: 100%; }
 .__initial { height: 100vh; display: grid; place-items: center; }
 .__initial > div { display: grid; justify-items: center; gap: 14px; color: var(--color-text-muted); }
 
+.globalNotFound {
+  min-height: 100vh;
+  padding: 32px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  text-align: center;
+}
+.globalNotFound strong { color: var(--color-secondary); font-family: "Libre Bodoni", serif; font-size: 92px; line-height: 1; }
+.globalNotFound h1 { margin: 20px 0 8px; font-size: 28px; }
+.globalNotFound p { margin: 0 0 28px; color: var(--color-text-muted); }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

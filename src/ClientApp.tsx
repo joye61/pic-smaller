@@ -2,11 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { configure } from "mobx";
-import { initLang } from "./locale";
-import { App } from "./App";
+import { gstate } from "./global";
+import Home from "./views/home";
+import { Loading } from "./components/Loading";
+import type { SupportedLocale } from "./locale-config";
+import type { LocaleData } from "./type";
 
-export default function ClientApp() {
-  const [initialized, setInitialized] = useState(false);
+type ClientAppProps = {
+  lang: SupportedLocale;
+  locale: LocaleData;
+};
+
+export default function ClientApp({ lang, locale }: ClientAppProps) {
+  useState(() => {
+    gstate.lang = lang;
+    gstate.locale = locale;
+  });
 
   useEffect(() => {
     configure({
@@ -14,8 +25,14 @@ export default function ClientApp() {
       useProxies: "ifavailable",
     });
 
-    initLang().then(() => setInitialized(true));
-  }, []);
+    document.documentElement.lang = lang;
+    window.localStorage.setItem("Pic-Smaller-Locale", lang);
+  }, [lang]);
 
-  return initialized ? <App /> : null;
+  return (
+    <>
+      <Home />
+      {gstate.loading && <Loading />}
+    </>
+  );
 }

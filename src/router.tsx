@@ -1,9 +1,11 @@
-import { createBrowserHistory } from "history";
+import { createBrowserHistory, createMemoryHistory } from "history";
 import { normalize } from "./functions";
 import { gstate } from "./global";
 import { modules } from "./modules";
 
-export const history = createBrowserHistory();
+export const history = typeof window === "undefined"
+  ? createMemoryHistory()
+  : createBrowserHistory();
 
 type Params = Record<string, string | number> | null;
 
