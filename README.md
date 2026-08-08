@@ -81,7 +81,8 @@ npm run build:pages
 npx wrangler pages deploy out --project-name pic-smaller
 ```
 
-The `public/_redirects` file provides SPA fallback routing on Pages.
+The Pages build removes Next.js's generated top-level `404.html` so Cloudflare
+can apply its native SPA fallback routing.
 
 ### Docker
 
