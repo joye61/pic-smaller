@@ -1,5 +1,7 @@
 # Pic Smaller (图小小)
 
+[English](README.md) · [简体中文](docs/readme/README.zh-CN.md) · [繁體中文](docs/readme/README.zh-TW.md) · [日本語](docs/readme/README.ja-JP.md) · [한국어](docs/readme/README.ko-KR.md) · [Français](docs/readme/README.fr-FR.md) · [Español](docs/readme/README.es-ES.md) · [فارسی](docs/readme/README.fa-IR.md) · [Türkçe](docs/readme/README.tr-TR.md)
+
 > [!IMPORTANT]
 > ### Pic Smaller Desktop — The Flagship Edition
 > **Uncompromising native power, beyond the browser.**
