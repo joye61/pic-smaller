@@ -8,8 +8,13 @@ out
 coverage
 docs
 *.log
-.env*.local
-node_modules
-npm-debug.log*
+.env
+.env.*
+!.env.example
+.dev.vars*
+.wrangler
+wrangler.toml
+wrangler.json
+wrangler.jsonc
 
 .DS_Store
