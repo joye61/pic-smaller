@@ -1,5 +1,13 @@
 # Pic Smaller (图小小)
 
+> [!IMPORTANT]
+> ### Pic Smaller Desktop — The Flagship Edition
+> **Uncompromising native power, beyond the browser.**
+>
+> Elevate your workflow with the flagship Pic Smaller Desktop. A dedicated native application built for professionals who refuse to settle — it glides through massive files and entire folder libraries, supports 16+ image formats, and delivers superior processing performance. Complete the experience with an advanced suite of AI tools: background removal, watermark removal, and high-fidelity image upscaling.
+>
+> [![Explore Pic Smaller Desktop](https://img.shields.io/badge/Explore_Pic_Smaller_Desktop-00876c?style=for-the-badge)](https://desktop.picsmaller.com/)
+
 Pic Smaller is a free, open-source batch image compressor that runs entirely
 in the browser. Images are processed locally with Web Workers, WebAssembly,
 Canvas, and browser codecs. Files are never uploaded to an application server.
