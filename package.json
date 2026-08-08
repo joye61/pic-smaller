@@ -9,6 +9,7 @@
     "dev": "next dev",
     "prebuild": "npm run prepare:codecs",
     "build": "next build",
+    "build:pages": "npm run prepare:codecs && next build",
     "postbuild": "node scripts/prepare-standalone.mjs",
     "start": "node scripts/start-standalone.mjs",
     "lint": "eslint src tests --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

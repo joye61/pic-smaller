@@ -1,7 +1,14 @@
-.vscode
 .git
+.github
 .next
+.vercel
+.vscode
+node_modules
+out
+coverage
 docs
+*.log
+.env*.local
 node_modules
 npm-debug.log*
 

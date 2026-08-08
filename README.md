@@ -63,6 +63,28 @@ Figure 4: Where to open the localhost website link
 
 ## Deploy
 
+### Cloudflare Pages
+
+The app can be exported as a static site because all image processing runs in
+the browser. In Cloudflare Pages, use the following build settings:
+
+```text
+Build command: npm run build:pages
+Build output directory: out
+Node.js version: 20
+```
+
+For a direct deployment with Wrangler:
+
+```bash
+npm run build:pages
+npx wrangler pages deploy out --project-name pic-smaller
+```
+
+The `public/_redirects` file provides SPA fallback routing on Pages.
+
+### Docker
+
 If you want to independently deploy this project on your own server, the following document based on Docker, and [Dockerfile](./Dockerfile) script has been tested. Within the project root directory, follow the instructions to start docker application
 
 ```bash
