@@ -13,6 +13,9 @@ const localeData: LocaleData = {
     previewUnavailable: "Tarayıcı özgün HEIC/HEIF görüntüsünü doğrudan gösteremediğinden önce-sonra karşılaştırması kullanılamıyor.",
     originalPreserved: "Çıktı biçimi seçilmediği için özgün HEIC/HEIF dosyası korundu. Yeniden boyutlandırmak veya sıkıştırmak için bir çıktı biçimi seçin.",
   },
+  errors: {
+    animatedUnsupported: "Animasyonlu AVIF/WebP sıkıştırması desteklenmez; orijinal dosya korundu.",
+  },
   uploadCard: {
     title: "Resimlerinizi buraya bırakın",
     subTitle: "Desteklenen formatlar: %s",

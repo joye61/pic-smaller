@@ -15,6 +15,9 @@ const localeData: LocaleData = {
     previewUnavailable: "ブラウザーでは元の HEIC/HEIF 画像を直接表示できないため、圧縮前後の比較は利用できません。",
     originalPreserved: "出力形式が選択されていないため、元の HEIC/HEIF ファイルを保持しました。サイズ変更または圧縮するには出力形式を選択してください。",
   },
+  errors: {
+    animatedUnsupported: "アニメーション AVIF/WebP の圧縮には対応していないため、元のファイルを保持しました。",
+  },
   uploadCard: {
     title: "画像をドラッグまたは選択",
     subTitle: "対応フォーマット：%s",

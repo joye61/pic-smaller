@@ -8,6 +8,9 @@ export interface LocaleData {
     previewUnavailable: string;
     originalPreserved: string;
   };
+  errors: {
+    animatedUnsupported: string;
+  };
   error404: {
     backHome: string;
     description: string;

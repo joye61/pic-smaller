@@ -15,6 +15,9 @@ const localeData: LocaleData = {
     previewUnavailable: "브라우저에서 원본 HEIC/HEIF 이미지를 직접 표시할 수 없어 압축 전후 비교를 사용할 수 없습니다.",
     originalPreserved: "출력 형식을 선택하지 않아 원본 HEIC/HEIF 파일을 유지했습니다. 크기 조정이나 압축을 하려면 출력 형식을 선택하세요.",
   },
+  errors: {
+    animatedUnsupported: "애니메이션 AVIF/WebP 압축은 지원되지 않습니다. 원본 파일을 유지했습니다.",
+  },
   uploadCard: {
     title: "이미지 파일을 여기에 넣기",
     subTitle: "지원 형식: %s",

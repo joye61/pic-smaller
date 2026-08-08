@@ -14,6 +14,9 @@ const localeData: LocaleData = {
     previewUnavailable: "瀏覽器無法直接顯示 HEIC/HEIF 原圖，因此暫不支援壓縮前後比較。",
     originalPreserved: "未指定輸出格式，已保留 HEIC/HEIF 原檔；如需縮放或壓縮，請選擇輸出格式。",
   },
+  errors: {
+    animatedUnsupported: "不支援壓縮動畫 AVIF/WebP 圖片，已保留原檔。",
+  },
   uploadCard: {
     title: "選取文件到這裡，支援拖曳文件和資料夾",
     subTitle: "開源的批量圖片壓縮工具，支援 %s 格式",

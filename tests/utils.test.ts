@@ -8,7 +8,7 @@ import {
 } from "@/engines/ImageBase";
 import { Mimes, OutputFormats } from "@/mimes";
 import { applySvgDimension } from "@/engines/svgParse";
-import { isAnimatedImage, rejectAnimatedImage } from "@/engines/animation";
+import { isAnimatedImage, rejectAnimatedImage, ERROR_ANIMATED_UNSUPPORTED } from "@/engines/animation";
 
 function ascii(value: string): number[] {
   return Array.from(value, (character) => character.charCodeAt(0));
@@ -180,7 +180,7 @@ test("animated images are rejected before the single-frame canvas pipeline", asy
 
   await assert.rejects(
     rejectAnimatedImage(blob, Mimes.webp),
-    /original file was preserved/,
+    (error: unknown) => error instanceof Error && error.message === ERROR_ANIMATED_UNSUPPORTED,
   );
 });
 

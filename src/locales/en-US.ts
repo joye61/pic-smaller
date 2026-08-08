@@ -13,6 +13,9 @@ const localeData: LocaleData = {
     previewUnavailable: "The browser cannot display the original HEIC/HEIF image, so before-and-after comparison is unavailable.",
     originalPreserved: "No output format was selected, so the original HEIC/HEIF file was preserved. Select an output format to resize or compress it.",
   },
+  errors: {
+    animatedUnsupported: "Animated AVIF/WebP compression is not supported; the original file was preserved.",
+  },
   uploadCard: {
     title: "Select files here, support dragging files and folders",
     subTitle: "Open source batch image compression tool, supports %s format",

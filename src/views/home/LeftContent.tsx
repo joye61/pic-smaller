@@ -24,6 +24,7 @@ import {
   getUniqNameOnNames,
 } from "@/functions";
 import { createImageList } from "@/engines/transform";
+import { ERROR_ANIMATED_UNSUPPORTED } from "@/engines/animation";
 import { CompressionRate } from "@/components/CompressionRate";
 
 function isHeif(item: ImageItem) {
@@ -89,12 +90,17 @@ const ResultItem = observer(({ item, disabled, onPreviewUnavailable }: { item: I
         <IconButton label={gstate.locale?.listAction.downloadOne ?? "Download"} disabled={disabled || !item.compress} onClick={() => { if (item.compress?.blob) createDownload(getOutputFileName(item, homeState.option), item.compress.blob); }}><Download size={18} /></IconButton>
         <IconButton label={gstate.locale?.listAction.removeOne ?? "Remove"} danger disabled={disabled} onClick={() => homeState.remove(item.key)}><Trash2 size={18} /></IconButton>
       </div>
-      {item.processError && (
-        <div className={style.errorTooltip} title={item.processError}>
-          <AlertTriangle size={14} />
-          <span>{item.processError}</span>
-        </div>
-      )}
+      {item.processError && (() => {
+        const errorText = item.processError === ERROR_ANIMATED_UNSUPPORTED
+          ? gstate.locale?.errors.animatedUnsupported ?? item.processError
+          : item.processError;
+        return (
+          <div className={style.errorTooltip} title={errorText}>
+            <AlertTriangle size={14} />
+            <span>{errorText}</span>
+          </div>
+        );
+      })()}
       {item.preservedOriginal && (
         <div className={style.noticeTooltip}>
           <AlertTriangle size={14} />

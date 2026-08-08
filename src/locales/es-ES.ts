@@ -13,6 +13,9 @@ const localeData: LocaleData = {
     previewUnavailable: "El navegador no puede mostrar directamente la imagen HEIC/HEIF original, por lo que la comparación no está disponible.",
     originalPreserved: "No se seleccionó un formato de salida, por lo que se conservó el archivo HEIC/HEIF original. Selecciona un formato para redimensionarlo o comprimirlo.",
   },
+  errors: {
+    animatedUnsupported: "No se admite la compresión de AVIF/WebP animados; se conservó el archivo original.",
+  },
   uploadCard: {
     title: "Selecciona o arrastra tus imágenes aquí",
     subTitle: "Formatos soportados: %s",

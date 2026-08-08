@@ -82,10 +82,10 @@ export async function isAnimatedImage(blob: Blob, mime: string) {
   return false;
 }
 
+export const ERROR_ANIMATED_UNSUPPORTED = "animated-unsupported";
+
 export async function rejectAnimatedImage(blob: Blob, mime: string) {
   if (await isAnimatedImage(blob, mime)) {
-    throw new Error(
-      "Animated AVIF/WebP compression is not supported; the original file was preserved.",
-    );
+    throw new Error(ERROR_ANIMATED_UNSUPPORTED);
   }
 }
