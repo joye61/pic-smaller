@@ -131,7 +131,6 @@ const Home = observer(() => {
   useEffect(() => {
     if (currentLocale) {
       document.title = currentLocale.siteTitle;
-      document.documentElement.lang = currentLang;
       let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
       if (!meta) {
         meta = document.createElement("meta");

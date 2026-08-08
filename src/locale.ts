@@ -31,6 +31,7 @@ async function setLocaleData(lang: string) {
   if (!importer) {
     importer = locales[`/src/locales/${defaultLang}.ts`];
   }
+  document.documentElement.lang = lang;
   gstate.locale = (await importer()).default;
 }
 
