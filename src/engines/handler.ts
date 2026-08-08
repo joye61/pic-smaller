@@ -8,9 +8,10 @@ import { GifImage } from "./GifImage";
 import { CanvasImage } from "./CanvasImage";
 import { PngImage } from "./PngImage";
 import { AvifImage } from "./AvifImage";
-import { Mimes } from "@/mimes";
+import { getImageMime, Mimes } from "@/mimes";
 import { SvgImage } from "./SvgImage";
 import { getSvgDimension } from "./svgParse";
+import { getFinalMime } from "@/options";
 
 export interface MessageData {
   info: ImageInfo;
@@ -47,13 +48,6 @@ export function createFailureOutput(
   };
 }
 
-function getInputMime(info: ImageInfo) {
-  const mime = info.blob.type.toLowerCase();
-  if (Object.values(Mimes).includes(mime)) return mime;
-  const extension = info.name.split(".").pop()?.toLowerCase() ?? "";
-  return Mimes[extension] ?? mime;
-}
-
 async function createInputBitmap(info: ImageInfo, mime: string) {
   if ([Mimes.heic, Mimes.heif].includes(mime)) {
     const { heicTo } = await import("heic-to/next");
@@ -66,7 +60,7 @@ export async function convert(
   data: MessageData,
   method: HandleMethod = "compress",
 ): Promise<OutputMessageData | null> {
-  const mime = getInputMime(data.info);
+  const mime = getImageMime({ name: data.info.name, type: data.info.blob.type });
 
   // For SVG type, do not support type convert
   if (Mimes.svg === mime) {
@@ -122,8 +116,7 @@ export async function convert(
       // If there is no target type, don't need convert
       data.option.format.target &&
       // If target type is equal to original type, don't need convert
-      data.option.format.target.toLowerCase() !==
-        data.info.blob.type.toLowerCase()
+      getFinalMime(mime, data.option.format.target) !== mime
     ) {
       const target = data.option.format.target.toLowerCase();
 

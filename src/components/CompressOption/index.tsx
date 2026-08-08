@@ -2,9 +2,10 @@ import { observer } from "mobx-react-lite";
 import style from "./index.module.scss";
 import { homeState } from "@/states/home";
 import { gstate } from "@/global";
-import { OutputFormats } from "@/mimes";
-import { PAPER_SIZES } from "@/engines/ImageBase";
+import { getImageMime, OutputFormats } from "@/mimes";
+import { MAX_CANVAS_DIMENSION, PAPER_SIZES } from "@/engines/ImageBase";
 import { Select } from "@/components/Select";
+import { getCompressionOptionVisibility } from "@/options";
 
 type ResizeMethod = typeof homeState.tempOption.resize.method;
 
@@ -14,12 +15,12 @@ type NumberFieldProps = {
   max?: number;
   placeholder?: string;
   disabled: boolean;
-  onChange: (value: number) => void;
+  onChange: (value?: number) => void;
 };
 
-function NumberField({ value, min = 0, max, placeholder, disabled, onChange }: NumberFieldProps) {
+function NumberField({ value, min = 0, max = MAX_CANVAS_DIMENSION, placeholder, disabled, onChange }: NumberFieldProps) {
   return (
-    <input type="number" value={value ?? ""} min={min} max={max} step={1} placeholder={placeholder} disabled={disabled} onChange={(event) => onChange(Number(event.target.value))} />
+    <input type="number" value={value ?? ""} min={min} max={max} step={1} placeholder={placeholder} disabled={disabled} onChange={(event) => { const nextValue = event.target.value; onChange(nextValue === "" ? undefined : Number(nextValue)); }} />
   );
 }
 
@@ -48,10 +49,14 @@ export const CompressOption = observer(() => {
   const resize = homeState.tempOption.resize;
   const resizeMethod = resize.method;
   const targetFormat = homeState.tempOption.format.target;
-  const showJpegOptions = !targetFormat || ["jpg", "jpeg", "webp"].includes(targetFormat);
-  const showPngOptions = !targetFormat || targetFormat === "png";
-  const showGifOptions = !targetFormat;
-  const showAvifOptions = !targetFormat || targetFormat === "avif";
+  const optionVisibility = getCompressionOptionVisibility(
+    Array.from(homeState.list.values(), (item) => getImageMime({ name: item.name, type: item.blob.type })),
+    targetFormat,
+  );
+  const showJpegOptions = optionVisibility.jpeg;
+  const showPngOptions = optionVisibility.png;
+  const showGifOptions = optionVisibility.gif;
+  const showAvifOptions = optionVisibility.avif;
   const preset = resizeMethod === "presetCrop"
     ? resize.presetCrop ?? { paperSize: "a4", orientation: "portrait" as const, reference: "width" as const, cropPx: 0, offsetPx: 0 }
     : null;
@@ -121,7 +126,9 @@ export const CompressOption = observer(() => {
       const otherDimension = preset.reference === "width" ? item.height : item.width;
       const referenceRatio = preset.reference === "width" ? ratioWidth : ratioHeight;
       const otherRatio = preset.reference === "width" ? ratioHeight : ratioWidth;
-      const remaining = referenceDimension - Math.max(0, preset.cropPx + preset.offsetPx) - Math.max(0, preset.cropPx - preset.offsetPx);
+      const cropPx = preset.cropPx ?? 0;
+      const offsetPx = preset.offsetPx ?? 0;
+      const remaining = referenceDimension - Math.max(0, cropPx + offsetPx) - Math.max(0, cropPx - offsetPx);
       if (remaining <= 0 || Math.round(remaining * otherRatio / referenceRatio) > otherDimension) {
         presetWarning = true;
         break;

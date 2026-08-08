@@ -4,6 +4,7 @@ import { runInAction, toJS } from "mobx";
 import { ImageItem, homeState } from "@/states/home";
 import { CompressOption, ImageInfo } from "./ImageBase";
 import { OutputMessageData } from "./handler";
+import { normalizeCompressOption } from "@/options";
 
 export interface MessageData {
   info: ImageInfo;
@@ -133,7 +134,8 @@ export async function createImageList(files: Array<File>) {
 
   if (files.length === 0) return;
 
-  const option = toJS(homeState.tempOption);
+  const option = normalizeCompressOption(toJS(homeState.tempOption));
+  runInAction(() => { homeState.tempOption = structuredClone(option); });
   runInAction(() => { homeState.option = option; });
   try {
     localStorage.setItem("pic-smaller-options", JSON.stringify(option));

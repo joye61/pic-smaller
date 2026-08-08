@@ -1,49 +1,9 @@
-import { CompressOption, PREVIEW_MAX_SIZE, ProcessOutput } from "@/engines/ImageBase";
+import { CompressOption, ProcessOutput } from "@/engines/ImageBase";
 import { createCompressTask } from "@/engines/transform";
-import { makeAutoObservable, reaction } from "mobx";
+import { makeAutoObservable, reaction, toJS } from "mobx";
+import { DefaultCompressOption, normalizeCompressOption } from "@/options";
 
-export const DefaultCompressOption: CompressOption = {
-  preview: {
-    maxSize: PREVIEW_MAX_SIZE,
-  },
-  resize: {
-    method: undefined,
-    width: undefined,
-    height: undefined,
-    short: undefined,
-    long: undefined,
-    cropWidthRatio: undefined,
-    cropHeightRatio: undefined,
-    cropWidthSize: undefined,
-    cropHeightSize: undefined,
-    presetCrop: {
-      paperSize: "a4",
-      orientation: "portrait",
-      reference: "width",
-      cropPx: 0,
-      offsetPx: 0,
-    },
-  },
-  format: {
-    target: undefined,
-    transparentFill: "#FFFFFF",
-  },
-  jpeg: {
-    quality: 0.75,
-  },
-  png: {
-    colors: 128,
-    dithering: 0.5,
-  },
-  gif: {
-    colors: 128,
-    dithering: false,
-  },
-  avif: {
-    quality: 50,
-    speed: 8,
-  },
-};
+export { DefaultCompressOption } from "@/options";
 
 export interface ProgressHintInfo {
   loadedNum: number;
@@ -81,11 +41,10 @@ function loadPersistedOption(): CompressOption {
   try {
     const raw = localStorage.getItem(OPTION_STORAGE_KEY);
     if (raw) {
-      const persisted = JSON.parse(raw);
-      return { ...DefaultCompressOption, ...persisted };
+      return normalizeCompressOption(JSON.parse(raw));
     }
   } catch {}
-  return { ...DefaultCompressOption };
+  return normalizeCompressOption(undefined);
 }
 
 function persistOption(option: CompressOption) {
@@ -111,7 +70,7 @@ export class HomeState {
     // Auto-persist temp option changes so settings survive page reloads
     // even before the user commits them by starting a batch.
     reaction(
-      () => this.tempOption,
+      () => toJS(this.tempOption),
       (opt) => persistOption(opt),
     );
   }
@@ -145,8 +104,8 @@ export class HomeState {
     this.completedPreviewCount = 0;
     this.originSize = 0;
     this.outputSize = 0;
-    this.tempOption = { ...DefaultCompressOption };
-    this.option = { ...DefaultCompressOption };
+    this.tempOption = structuredClone(DefaultCompressOption);
+    this.option = structuredClone(DefaultCompressOption);
     persistOption(this.option);
   }
 

@@ -4,6 +4,10 @@ import { LocaleData } from "@/type";
 
 const localeData: LocaleData = {
   logo: "PicSmaller",
+  siteTitle:
+    "PicSmaller - Compress JPEG, PNG, WEBP, AVIF, HEIC, SVG and GIF images intelligently",
+  siteDescription:
+    "Compress JPEG, PNG, WEBP, AVIF, HEIC, SVG and GIF images securely in your browser. Batch resize, crop, and convert formats — all processed locally.",
   initial: "초기화 중",
   previewHelp:
     "압축 효과를 비교하려면 구분선을 드래그하세요. 왼쪽은 원본 이미지, 오른쪽은 압축된 이미지입니다.",

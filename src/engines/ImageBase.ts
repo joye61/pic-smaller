@@ -40,8 +40,8 @@ export interface CompressOption {
       paperSize: string;
       orientation: "portrait" | "landscape";
       reference: "width" | "height";
-      cropPx: number;
-      offsetPx: number;
+      cropPx?: number;
+      offsetPx?: number;
     };
   };
   format: {

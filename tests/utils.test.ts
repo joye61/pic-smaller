@@ -33,15 +33,24 @@ class PreviewProbeImage extends ImageBase {
 }
 
 function createDimensionProbe(resize: CompressOption["resize"]) {
+  return createSizedDimensionProbe(resize, 1200, 800);
+}
+
+function createSizedDimensionProbe(
+  resize: CompressOption["resize"],
+  width: number,
+  height: number,
+  target?: CompressOption["format"]["target"],
+) {
   return new PreviewProbeImage(
     {
       key: 1,
       name: "probe.png",
-      width: 1200,
-      height: 800,
+      width,
+      height,
       blob: new Blob([], { type: "image/png" }),
     },
-    { resize } as CompressOption,
+    { resize, format: { target, transparentFill: "#FFFFFF" } } as CompressOption,
   );
 }
 
@@ -122,4 +131,55 @@ test("SVG resize and crop update vector dimensions without rasterizing", () => {
   assert.match(cropped, /width="800"/);
   assert.match(cropped, /height="800"/);
   assert.match(cropped, /viewBox="30 20 80 80"/);
+});
+
+test("resize modes handle portrait, empty, and oversized parameters", () => {
+  const cases: Array<[CompressOption["resize"], [number, number], [number, number]]> = [
+    [{ method: "fitWidth", width: 600 }, [600, 400], [600, 900]],
+    [{ method: "fitHeight", height: 400 }, [600, 400], [267, 400]],
+    [{ method: "setShort", short: 400 }, [600, 400], [400, 600]],
+    [{ method: "setLong", long: 600 }, [600, 400], [400, 600]],
+    [{ method: "setCropRatio", cropWidthRatio: 1, cropHeightRatio: 1 }, [800, 800], [800, 800]],
+    [{ method: "setCropSize", cropWidthSize: 5000, cropHeightSize: 5000 }, [1200, 800], [800, 1200]],
+    [{ method: "presetCrop", presetCrop: { paperSize: "a4", orientation: "portrait", reference: "height", cropPx: 0, offsetPx: 0 } }, [566, 800], [800, 1200]],
+  ];
+
+  for (const [resize, landscapeExpected, portraitExpected] of cases) {
+    const landscape = createSizedDimensionProbe(resize, 1200, 800).getOutputDimension();
+    const portrait = createSizedDimensionProbe(resize, 800, 1200).getOutputDimension();
+    assert.deepEqual([landscape.width, landscape.height], landscapeExpected);
+    assert.deepEqual([portrait.width, portrait.height], portraitExpected);
+  }
+
+  const emptyCases: CompressOption["resize"][] = [
+    { method: "fitWidth" },
+    { method: "fitHeight" },
+    { method: "setShort" },
+    { method: "setLong" },
+    { method: "setCropRatio" },
+    { method: "setCropSize" },
+    { method: "presetCrop", presetCrop: { paperSize: "a4", orientation: "portrait", reference: "width" } },
+  ];
+  for (const resize of emptyCases) {
+    assert.deepEqual(createSizedDimensionProbe(resize, 1200, 800).getOutputDimension(), { x: 0, y: 0, width: 1200, height: 800 });
+  }
+});
+
+test("target format never changes resize geometry", () => {
+  const resizeCases: CompressOption["resize"][] = [
+    { method: "fitWidth", width: 600 },
+    { method: "fitHeight", height: 400 },
+    { method: "setShort", short: 400 },
+    { method: "setLong", long: 600 },
+    { method: "setCropRatio", cropWidthRatio: 16, cropHeightRatio: 9 },
+    { method: "setCropSize", cropWidthSize: 640, cropHeightSize: 480 },
+    { method: "presetCrop", presetCrop: { paperSize: "a4", orientation: "landscape", reference: "width", cropPx: 20, offsetPx: -5 } },
+  ];
+
+  for (const resize of resizeCases) {
+    const expected = createSizedDimensionProbe(resize, 1200, 800).getOutputDimension();
+    for (const target of OutputFormats) {
+      assert.deepEqual(createSizedDimensionProbe(resize, 1200, 800, target).getOutputDimension(), expected);
+    }
+  }
 });

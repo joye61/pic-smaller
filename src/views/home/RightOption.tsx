@@ -6,6 +6,7 @@ import { CompressOption } from "@/components/CompressOption";
 import { gstate } from "@/global";
 import { DefaultCompressOption, homeState } from "@/states/home";
 import { useEffect } from "react";
+import { normalizeCompressOption } from "@/options";
 
 export const RightOption = observer(() => {
   const disabled = homeState.hasTaskRunning();
@@ -50,7 +51,9 @@ export const RightOption = observer(() => {
 
   const apply = () => {
     homeState.showOption = false;
-    homeState.option = toJS(homeState.tempOption);
+    const option = normalizeCompressOption(toJS(homeState.tempOption));
+    homeState.tempOption = structuredClone(option);
+    homeState.option = option;
     if (homeState.list.size > 0) homeState.reCompress();
   };
 

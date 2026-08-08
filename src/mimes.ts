@@ -12,3 +12,10 @@ export const Mimes: Record<string, string> = {
 };
 
 export const OutputFormats = ["jpg", "png", "webp", "avif"] as const;
+
+export function getImageMime(file: { name: string; type: string }) {
+  const mime = file.type.toLowerCase();
+  if (Object.values(Mimes).includes(mime)) return mime;
+  const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
+  return Mimes[extension] ?? mime;
+}

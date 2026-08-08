@@ -3,9 +3,9 @@ import "@/main.scss";
 
 export const metadata: Metadata = {
   title:
-    "PicSmaller - Compress JPEG, PNG, WEBP, AVIF, SVG and GIF images intelligently",
+    "PicSmaller - Compress JPEG, PNG, WEBP, AVIF, HEIC, SVG and GIF images intelligently",
   description:
-    "Compress JPEG, PNG, WEBP, AVIF, SVG and GIF images securely in your browser.",
+    "Compress JPEG, PNG, WEBP, AVIF, HEIC, SVG and GIF images securely in your browser. Batch resize, crop, and convert formats — all processed locally.",
   icons: {
     icon: "/logo.png",
   },
@@ -19,7 +19,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="en">
       <body>{children}</body>
     </html>
   );

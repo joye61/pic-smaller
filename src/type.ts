@@ -1,5 +1,7 @@
 export interface LocaleData {
   logo: string;
+  siteTitle: string;
+  siteDescription: string;
   initial: string;
   previewHelp: string;
   heif: {

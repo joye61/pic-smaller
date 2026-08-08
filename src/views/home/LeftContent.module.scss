@@ -1,7 +1,9 @@
 .content {
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   background: var(--color-surface);
 }
 
@@ -38,8 +40,8 @@
 .dangerButton { color: var(--color-destructive); }
 
 .list {
-  min-height: 280px;
-  max-height: 560px;
+  min-height: 0;
+  flex: 1;
   overflow: auto;
   padding: 8px 16px;
 }
@@ -121,13 +123,13 @@
   svg { flex: none; margin-top: 2px; color: var(--color-warning); }
 }
 .spin { animation: spin .8s linear infinite; color: var(--color-secondary) !important; }
-.progress { padding: 14px 16px 16px; border-top: 1px solid var(--color-border); background: var(--color-surface-subtle); }
+.progress { margin-top: auto; padding: 14px 16px 16px; border-top: 1px solid var(--color-border); background: var(--color-surface-subtle); }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 760px) {
   .toolbar { align-items: stretch; flex-direction: column; > div { justify-content: space-between; } }
-  .list { max-height: 620px; padding: 6px 12px; }
+  .list { padding: 6px 12px; }
   .resultItem { grid-template-columns: 58px minmax(0, 1fr) auto; gap: 10px; }
   .preview { width: 58px; height: 58px; }
   .outputInfo { grid-column: 2; }

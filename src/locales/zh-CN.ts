@@ -2,6 +2,10 @@ import { LocaleData } from "@/type";
 
 const localeData: LocaleData = {
   logo: "图小小",
+  siteTitle:
+    "图小小 - 在线批量压缩 JPEG、PNG、WEBP、AVIF、HEIC、SVG 和 GIF 图片",
+  siteDescription:
+    "在浏览器中安全压缩 JPEG、PNG、WEBP、AVIF、HEIC、SVG 和 GIF 图片。批量缩放、裁剪和格式转换，全程本地处理，无需上传。",
   initial: "初始化中",
   previewHelp: "拖动分割线对比压缩效果：左边是原始图，右边是压缩图",
   heif: {

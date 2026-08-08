@@ -2,6 +2,10 @@ import { LocaleData } from "@/type";
 
 const localeData: LocaleData = {
   logo: "PicSmaller",
+  siteTitle:
+    "PicSmaller - Compress JPEG, PNG, WEBP, AVIF, HEIC, SVG and GIF images intelligently",
+  siteDescription:
+    "Compress JPEG, PNG, WEBP, AVIF, HEIC, SVG and GIF images securely in your browser. Batch resize, crop, and convert formats — all processed locally.",
   initial: "در حال راه‌اندازی",
   previewHelp:
     "خط تقسیم را برای مقایسه اثر فشرده سازی بکشید: سمت چپ تصویر اصلی و سمت راست تصویر فشرده است",

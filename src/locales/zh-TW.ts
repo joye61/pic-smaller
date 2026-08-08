@@ -4,6 +4,10 @@ import { LocaleData } from "@/type";
 
 const localeData: LocaleData = {
   logo: "圖小小",
+  siteTitle:
+    "圖小小 - 在線批量壓縮 JPEG、PNG、WEBP、AVIF、HEIC、SVG 和 GIF 圖片",
+  siteDescription:
+    "在瀏覽器中安全壓縮 JPEG、PNG、WEBP、AVIF、HEIC、SVG 和 GIF 圖片。批量縮放、裁剪和格式轉換，全程本機處理，無需上傳。",
   initial: "初始化中",
   previewHelp: "拖曳分割線對比壓縮效果：左邊是原始圖，右邊是壓縮圖",
   heif: {

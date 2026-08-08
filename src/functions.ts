@@ -104,6 +104,12 @@ export async function preloadImage(src: string) {
   });
 }
 
+export function isSupportedType(file: File): boolean {
+  if (Object.values(Mimes).includes(file.type)) return true;
+  const ext = file.name.split(".").pop()?.toLowerCase();
+  return ext ? Object.keys(Mimes).includes(ext) : false;
+}
+
 /**
  * Get file list from FileSystemEntry
  * @param entry
@@ -118,8 +124,7 @@ export async function getFilesFromEntry(
     return new Promise<Array<File>>((resolve) => {
       fileEntry.file(
         (result) => {
-          const types = Object.values(Mimes);
-          resolve(types.includes(result.type) ? [result] : []);
+          resolve(isSupportedType(result) ? [result] : []);
         },
         () => [],
       );
@@ -156,8 +161,7 @@ export async function getFilesFromHandle(
   if (handle.kind === "file") {
     const fileHandle = handle as FileSystemFileHandle;
     const file = await fileHandle.getFile();
-    const types = Object.values(Mimes);
-    return types.includes(file.type) ? [file] : [];
+    return isSupportedType(file) ? [file] : [];
   }
 
   // If handle is a directory
@@ -235,12 +239,8 @@ export async function getFilesFromClipboard(event: ClipboardEvent): Promise<Arra
     // Check if the item is an image
     if (item.type.startsWith('image/')) {
       const file = item.getAsFile();
-      if (file) {
-        // Check if the image type is supported
-        const types = Object.values(Mimes);
-        if (types.includes(file.type)) {
-          files.push(file);
-        }
+      if (file && isSupportedType(file)) {
+        files.push(file);
       }
     }
   }

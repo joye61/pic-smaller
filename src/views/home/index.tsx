@@ -45,7 +45,7 @@ const copy = {
     footer: "开源的浏览器端批量图片处理工具。",
     desktopNav: "桌面版",
     desktopEyebrow: "{brand}桌面版 · WINDOWS / MACOS",
-    desktopTitle: "桌面版不止网页功能——更多格式，更强性能，更少限制",
+    desktopTitle: "桌面版：更多格式，更强性能，更少限制",
     desktopIntro: "网页版满足日常轻量处理；桌面版面向专业需求，支持更多格式、更大文件、更快速度，并提供 AI 去背景、去水印、高清放大等网页版无法实现的能力。",
     desktopPoints: ["16+ 图片格式支持（网页版仅 6 种），含 RAW、HEIC、PSD", "无文件大小与数量限制（网页版受浏览器内存约束）", "AI 去背景 / 去水印 / 超分辨率（网页版无法实现）", "完全离线可用 + 整文件夹高速批处理"],
     desktopDownload: "下载桌面版",
@@ -101,6 +101,8 @@ const FeatureGlyph = ({ kind }: { kind: string }) => (
 const Home = observer(() => {
   useWorkerHandler();
   const [menuOpen, setMenuOpen] = useState(false);
+  const currentLocale = gstate.locale;
+  const currentLang = gstate.lang;
   // Landing copy assets exist for Simplified Chinese and English.
   // zh-TW falls back to English so users never see a Simplified-Chinese
   // landing page paired with a Traditional-Chinese workspace (UI-3).
@@ -126,9 +128,24 @@ const Home = observer(() => {
     return () => document.removeEventListener("paste", handlePaste);
   }, []);
 
+  useEffect(() => {
+    if (currentLocale) {
+      document.title = currentLocale.siteTitle;
+      document.documentElement.lang = currentLang;
+      let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+      if (!meta) {
+        meta = document.createElement("meta");
+        meta.name = "description";
+        document.head.appendChild(meta);
+      }
+      meta.content = currentLocale.siteDescription;
+    }
+  }, [currentLocale, currentLang]);
+
   // Desktop site supports zh-CN / zh-TW / en-US locales.
   const desktopLangPrefix =
     gstate.lang === "zh-CN" || gstate.lang === "zh-TW" ? gstate.lang : "en-US";
+  const desktopHomeUrl = `https://desktop.picsmaller.com/${desktopLangPrefix}/`;
   const desktopDownloadUrl = `https://desktop.picsmaller.com/${desktopLangPrefix}/download`;
   const scrollToTool = () => document.getElementById("compressor")?.scrollIntoView({ behavior: "smooth" });
   return (
@@ -137,7 +154,7 @@ const Home = observer(() => {
         <a href="#top" className={style.brand} aria-label={`${brandName} home`}><Logo title={brandName} /></a>
         <div className={style.headerTools}>
           <nav className={menuOpen ? style.navOpen : ""} aria-label="Primary navigation">
-            <a className={style.desktopNav} href={desktopDownloadUrl} target="_blank" rel="noreferrer"><span className={style.desktopIcon}><Monitor size={18} /></span><span>{text.desktopNav}</span><b>PRO</b></a>
+            <a className={style.desktopNav} href={desktopHomeUrl} target="_blank" rel="noreferrer"><span className={style.desktopIcon}><Monitor size={18} /></span><span>{text.desktopNav}</span><b>PRO</b></a>
           </nav>
           <div className={style.headerActions}>
             <div className={style.language}><Languages size={16} /><Select compact value={gstate.lang} ariaLabel="Language" options={langList.map((lang) => ({ value: lang.key, label: lang.label }))} onChange={changeLang} /></div>
