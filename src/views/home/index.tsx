@@ -126,9 +126,9 @@ const Home = observer(() => {
     return () => document.removeEventListener("paste", handlePaste);
   }, []);
 
-  // Desktop site supports zh-CN / zh-TW / en-US locales.
+  // Desktop site supports zh-CN / en-US locales.
   const desktopLangPrefix =
-    gstate.lang === "zh-CN" || gstate.lang === "zh-TW" ? gstate.lang : "en-US";
+    gstate.lang === "zh-CN" ? gstate.lang : "en";
   const desktopHomeUrl = `https://desktop.picsmaller.com/${desktopLangPrefix}/`;
   const desktopDownloadUrl = `https://desktop.picsmaller.com/${desktopLangPrefix}/download`;
   const scrollToTool = () => document.getElementById("compressor")?.scrollIntoView({ behavior: "smooth" });
