@@ -1,0 +1,30 @@
+schema = 1
+name = "Pic Smaller"
+
+[runtime]
+kind = "node"
+version = "24"
+package_manager = "npm"
+
+[[setup.steps]]
+kind = "dependencies"
+locked = true
+
+[[setup.steps]]
+run = ["npm", "run", "build"]
+
+[launch]
+command = ["npm", "start"]
+host = "127.0.0.1"
+host_env = "NEXT_HOSTNAME"
+port = 3000
+port_env = "PORT"
+
+[health]
+type = "http"
+path = "/en-US/"
+timeout_seconds = 90
+
+[persistence]
+# Options and locale use browser storage; image queues are held in memory.
+paths = []

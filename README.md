@@ -36,6 +36,8 @@ and download actions in one view.
 
 ## Development
 
+[![Launch on PicoRunner](https://picorunner.com/badges/launch.svg)](https://picorunner.com/launch/?repository=https%3A%2F%2Fgithub.com%2Fjoye61%2Fpic-smaller)
+
 Requirements:
 
 - Node.js 22 LTS or newer
