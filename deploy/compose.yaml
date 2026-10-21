@@ -1,0 +1,23 @@
+name: image-tool
+
+services:
+  web:
+    image: local/image-tool:${IMAGE_TAG:-initial}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:13001:3000"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 384m
+    cpus: 0.5
+    pids_limit: 128
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"

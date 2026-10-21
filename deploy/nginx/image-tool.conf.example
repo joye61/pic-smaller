@@ -1,0 +1,50 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name img.arcanelune.top;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name img.arcanelune.top;
+    server_tokens off;
+
+    ssl_certificate /etc/letsencrypt/live/img.arcanelune.top/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/img.arcanelune.top/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    access_log /var/log/nginx/image-tool.access.log;
+    error_log /var/log/nginx/image-tool.error.log warn;
+
+    add_header Strict-Transport-Security "max-age=15552000" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+
+    client_max_body_size 1m;
+
+    location / {
+        limit_except GET HEAD { deny all; }
+
+        proxy_pass http://127.0.0.1:13001;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 10s;
+        proxy_read_timeout 120s;
+        proxy_send_timeout 120s;
+        proxy_hide_header X-Powered-By;
+    }
+}

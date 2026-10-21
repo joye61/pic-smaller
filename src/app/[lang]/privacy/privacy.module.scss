@@ -1,0 +1,133 @@
+.page {
+  min-height: 100vh;
+  background: var(--color-background);
+
+  > header,
+  > footer,
+  .hero,
+  .content {
+    width: min(920px, calc(100% - 40px));
+    margin-inline: auto;
+  }
+
+  > header {
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    > a:first-child {
+      text-decoration: none;
+    }
+  }
+
+  > footer {
+    padding: 28px 0 48px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 13px;
+
+    a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+    }
+    a:hover {
+      color: var(--color-secondary);
+    }
+  }
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-primary);
+  text-decoration: none;
+
+  strong { font-size: 20px; }
+}
+
+.hero {
+  padding: 72px 64px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    135deg,
+    var(--color-surface),
+    var(--color-action-soft)
+  );
+  box-shadow: 0 24px 70px rgba(37, 99, 235, 0.1);
+
+  svg {
+    color: var(--color-secondary);
+  }
+  h1 {
+    margin: 18px 0 12px;
+    color: var(--color-primary);
+    font-family: Georgia, serif;
+    font-size: clamp(36px, 6vw, 58px);
+  }
+  p {
+    max-width: 700px;
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+}
+
+.content {
+  padding: 42px 0 72px;
+  display: grid;
+  gap: 22px;
+
+  section {
+    padding: 32px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  h2 {
+    margin: 0 0 16px;
+    color: var(--color-primary);
+    font-size: 22px;
+  }
+  p {
+    margin: 10px 0;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+  }
+}
+
+.actions {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .page > header {
+    align-items: flex-start;
+    padding: 16px 0;
+  }
+  .page > header :global(.button) {
+    min-height: 40px;
+    padding-inline: 12px;
+    font-size: 12px;
+  }
+  .hero {
+    padding: 44px 24px;
+  }
+  .content section {
+    padding: 24px;
+  }
+  .page > footer {
+    flex-direction: column;
+  }
+}

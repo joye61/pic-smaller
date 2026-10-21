@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+readonly APP_DIR="/srv/apps/image-tool/deploy"
+readonly INCOMING_DIR="/srv/images/image-tool/incoming"
+readonly HEALTH_URL="http://127.0.0.1:13001/api/health"
+readonly FALLBACK_URL="http://127.0.0.1:13001/"
+
+log() {
+  printf '[lunepic-deploy] %s\n' "$*"
+}
+
+fail() {
+  printf '[lunepic-deploy] ERROR: %s\n' "$*" >&2
+  exit 1
+}
+
+[[ $# -eq 1 ]] || fail "usage: deploy-image-tool vMAJOR.MINOR.PATCH"
+readonly VERSION="$1"
+readonly SEMVER_PATTERN='^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$'
+[[ "$VERSION" =~ $SEMVER_PATTERN ]] || fail "invalid version: $VERSION"
+
+readonly ARCHIVE="$INCOMING_DIR/image-tool-${VERSION}-amd64.tar.gz"
+readonly CHECKSUM="${ARCHIVE}.sha256"
+readonly IMAGE="local/image-tool:${VERSION}"
+readonly ENV_FILE="$APP_DIR/.env"
+
+[[ -f "$APP_DIR/compose.yaml" ]] || fail "missing $APP_DIR/compose.yaml"
+[[ -f "$ARCHIVE" ]] || fail "missing $ARCHIVE"
+[[ -f "$CHECKSUM" ]] || fail "missing $CHECKSUM"
+
+cd "$INCOMING_DIR"
+sha256sum --check "$(basename "$CHECKSUM")"
+gzip -t "$ARCHIVE"
+
+old_tag="$(sed -n 's/^IMAGE_TAG=//p' "$ENV_FILE" 2>/dev/null | tail -n 1)"
+old_tag="${old_tag:-initial}"
+
+write_tag() {
+  local tag="$1"
+  local temporary
+  temporary="$(mktemp "$APP_DIR/.env.XXXXXX")"
+  printf 'IMAGE_TAG=%s\n' "$tag" > "$temporary"
+  chmod 0600 "$temporary"
+  mv -f "$temporary" "$ENV_FILE"
+}
+
+rollback() {
+  log "rolling back to local/image-tool:${old_tag}"
+  write_tag "$old_tag"
+  (cd "$APP_DIR" && docker compose up -d --no-build --remove-orphans)
+  for _ in {1..12}; do
+    if curl --fail --silent --show-error --max-time 5 "$FALLBACK_URL" >/dev/null; then
+      log "rollback completed"
+      return 0
+    fi
+    sleep 5
+  done
+  log "rollback container did not become reachable"
+  return 1
+}
+
+log "loading $IMAGE"
+gzip -dc "$ARCHIVE" | docker load
+
+[[ "$(docker image inspect "$IMAGE" --format '{{.Architecture}}')" == "amd64" ]] || fail "image architecture is not amd64"
+[[ "$(docker image inspect "$IMAGE" --format '{{index .Config.Labels "org.opencontainers.image.version"}}')" == "$VERSION" ]] || fail "image version label mismatch"
+revision="$(docker image inspect "$IMAGE" --format '{{index .Config.Labels "org.opencontainers.image.revision"}}')"
+[[ "$revision" =~ ^[0-9a-f]{40}$ ]] || fail "image revision label is missing or invalid"
+
+log "starting $IMAGE"
+write_tag "$VERSION"
+cd "$APP_DIR"
+if ! docker compose up -d --no-build --remove-orphans; then
+  log "container replacement failed for $IMAGE"
+  rollback || true
+  docker image rm "$IMAGE" >/dev/null 2>&1 || true
+  fail "deployment failed and rollback was requested"
+fi
+
+healthy=false
+for _ in {1..18}; do
+  response="$(curl --fail --silent --show-error --max-time 5 "$HEALTH_URL" 2>/dev/null || true)"
+  if grep -Fq "\"status\":\"ok\"" <<<"$response" && grep -Fq "\"version\":\"$revision\"" <<<"$response"; then
+    healthy=true
+    break
+  fi
+  sleep 5
+done
+
+if [[ "$healthy" != true ]]; then
+  log "health check failed for $IMAGE"
+  rollback || true
+  docker image rm "$IMAGE" >/dev/null 2>&1 || true
+  fail "deployment failed and rollback was requested"
+fi
+
+log "deployment healthy at revision $revision"
+rm -f -- "$ARCHIVE" "$CHECKSUM"
+
+mapfile -t tags < <(
+  docker image ls \
+    --filter 'reference=local/image-tool:*' \
+    --format '{{.Repository}}:{{.Tag}} {{.CreatedAt}}' \
+    | sort -r -k2,3 \
+    | awk '{print $1}'
+)
+
+if (( ${#tags[@]} > 3 )); then
+  for tag in "${tags[@]:3}"; do
+    docker image rm "$tag" >/dev/null 2>&1 || true
+  done
+fi
+
+log "release $VERSION is live"

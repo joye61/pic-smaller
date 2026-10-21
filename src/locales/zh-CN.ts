@@ -1,16 +1,17 @@
 import { LocaleData } from "@/type";
 
 const localeData: LocaleData = {
-  logo: "图小小",
-  siteTitle:
-    "图小小 - 在线批量压缩 JPEG、PNG、WEBP、AVIF、HEIC、SVG 和 GIF 图片",
+  logo: "LunePic",
+  siteTitle: "LunePic - 免费在线批量压缩、转换和调整图片",
   siteDescription:
-    "在浏览器中安全压缩 JPEG、PNG、WEBP、AVIF、HEIC、SVG 和 GIF 图片。批量缩放、裁剪和格式转换，全程本地处理，无需上传。",
+    "在浏览器中批量压缩、转换、缩放和裁剪 JPEG、PNG、WebP、AVIF、HEIC、SVG 与 GIF 图片，全程本地处理，无需上传。",
   initial: "初始化中",
   previewHelp: "拖动分割线对比压缩效果：左边是原始图，右边是压缩图",
   heif: {
-    previewUnavailable: "浏览器无法直接显示 HEIC/HEIF 原图，因此暂不支持压缩前后对比。",
-    originalPreserved: "未指定输出格式，已保留 HEIC/HEIF 原文件；如需缩放或压缩，请选择输出格式。",
+    previewUnavailable:
+      "浏览器无法直接显示 HEIC/HEIF 原图，因此暂不支持压缩前后对比。",
+    originalPreserved:
+      "未指定输出格式，已保留 HEIC/HEIF 原文件；如需缩放或压缩，请选择输出格式。",
   },
   errors: {
     animatedUnsupported: "不支持压缩动画 AVIF/WebP 图片，已保留原文件。",
@@ -42,7 +43,7 @@ const localeData: LocaleData = {
   },
   optionPannel: {
     failTip: "无法更小，请调整参数后重试",
-    help: "图小小是一款批量图片压缩应用程序，对选项的修改将应用到所有图片上",
+    help: "LunePic 是一款本地批量图片处理工具，对选项的修改将应用到当前批次的所有图片",
     resizeLable: "调整图片尺寸",
     jpegLable: "JPEG/WEBP参数",
     pngLable: "PNG参数",

@@ -2,6 +2,7 @@ import { CompressOption, ProcessOutput } from "@/engines/ImageBase";
 import { createCompressTask } from "@/engines/transform";
 import { makeAutoObservable, reaction, toJS } from "mobx";
 import { DefaultCompressOption, normalizeCompressOption } from "@/options";
+import { toolOptionsStorageKey } from "@/storage";
 
 export { DefaultCompressOption } from "@/options";
 
@@ -35,11 +36,9 @@ function revokeItemUrls(item?: ImageItem) {
   if (item.compress?.src) URL.revokeObjectURL(item.compress.src);
 }
 
-const OPTION_STORAGE_KEY = "pic-smaller-options";
-
 function loadPersistedOption(): CompressOption {
   try {
-    const raw = localStorage.getItem(OPTION_STORAGE_KEY);
+    const raw = localStorage.getItem(toolOptionsStorageKey);
     if (raw) {
       return normalizeCompressOption(JSON.parse(raw));
     }
@@ -49,7 +48,7 @@ function loadPersistedOption(): CompressOption {
 
 function persistOption(option: CompressOption) {
   try {
-    localStorage.setItem(OPTION_STORAGE_KEY, JSON.stringify(option));
+    localStorage.setItem(toolOptionsStorageKey, JSON.stringify(option));
   } catch {}
 }
 

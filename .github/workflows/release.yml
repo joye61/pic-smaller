@@ -1,0 +1,118 @@
+name: Release LunePic
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment: production
+
+    steps:
+      - name: Validate release tag
+        shell: bash
+        run: |
+          semver='^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$'
+          if [[ ! "${GITHUB_REF_NAME}" =~ ${semver} ]]; then
+            echo "Unsupported release tag: ${GITHUB_REF_NAME}" >&2
+            exit 1
+          fi
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Verify source
+        run: |
+          npm run lint
+          npm test
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build AMD64 image
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --build-arg "BUILD_SHA=${GITHUB_SHA}" \
+            --build-arg "BUILD_VERSION=${GITHUB_REF_NAME}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --label "org.opencontainers.image.version=${GITHUB_REF_NAME}" \
+            --load \
+            --tag "local/image-tool:${GITHUB_REF_NAME}" \
+            .
+
+      - name: Export and checksum image
+        shell: bash
+        run: |
+          mkdir -p dist
+          archive="image-tool-${GITHUB_REF_NAME}-amd64.tar.gz"
+          docker save "local/image-tool:${GITHUB_REF_NAME}" | gzip -1 > "dist/${archive}"
+          (cd dist && sha256sum "${archive}" > "${archive}.sha256")
+          gzip -t "dist/${archive}"
+          ls -lh dist
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-tool-${{ github.ref_name }}-amd64
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+
+      - name: Configure production SSH
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          install -d -m 0700 ~/.ssh
+          printf '%s\n' "${SSH_PRIVATE_KEY}" > ~/.ssh/lunepic_deploy
+          chmod 0600 ~/.ssh/lunepic_deploy
+          printf '%s\n' "${SSH_KNOWN_HOSTS}" > ~/.ssh/known_hosts
+          chmod 0644 ~/.ssh/known_hosts
+
+      - name: Upload image to production
+        shell: bash
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          scp -i ~/.ssh/lunepic_deploy \
+            dist/image-tool-${GITHUB_REF_NAME}-amd64.tar.gz \
+            dist/image-tool-${GITHUB_REF_NAME}-amd64.tar.gz.sha256 \
+            "${SERVER_USER}@${SERVER_HOST}:/srv/images/image-tool/incoming/"
+
+      - name: Deploy and verify production
+        shell: bash
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          ssh -i ~/.ssh/lunepic_deploy "${SERVER_USER}@${SERVER_HOST}" \
+            "sudo /usr/local/sbin/deploy-image-tool '${GITHUB_REF_NAME}'"
+
+      - name: Verify public health endpoint
+        run: |
+          curl --fail --silent --show-error \
+            --retry 6 --retry-delay 5 --retry-all-errors \
+            "https://img.arcanelune.top/api/health"

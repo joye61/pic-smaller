@@ -5,6 +5,7 @@ import { ImageItem, homeState } from "@/states/home";
 import { CompressOption, ImageInfo } from "./ImageBase";
 import { OutputMessageData } from "./handler";
 import { normalizeCompressOption } from "@/options";
+import { toolOptionsStorageKey } from "@/storage";
 
 export interface MessageData {
   info: ImageInfo;
@@ -34,7 +35,8 @@ function message(event: MessageEvent<OutputMessageData>) {
 
     if (event.data.compress) {
       if (!value.compress) homeState.completedCompressCount++;
-      homeState.outputSize += event.data.compress.blob.size - (value.compress?.blob.size ?? 0);
+      homeState.outputSize +=
+        event.data.compress.blob.size - (value.compress?.blob.size ?? 0);
       value.compress = event.data.compress;
       if (value.status !== "error") value.status = "done";
     }
@@ -64,7 +66,10 @@ export function useWorkerHandler() {
   }, []);
 }
 
-function createMessageData(item: ImageInfo, option: CompressOption): MessageData {
+function createMessageData(
+  item: ImageInfo,
+  option: CompressOption,
+): MessageData {
   return {
     /**
      * Why not use the spread operator here?
@@ -128,33 +133,39 @@ export async function createImageList(files: Array<File>) {
       .join(", ");
     const extra = largeFiles.length > 3 ? ` +${largeFiles.length - 3}` : "";
     console.warn(
-      `[PicSmaller] Detected ${largeFiles.length} large file(s) (${names}${extra}). Processing may be slow or exceed browser memory limits.`,
+      `[LunePic] Detected ${largeFiles.length} large file(s) (${names}${extra}). Processing may be slow or exceed browser memory limits.`,
     );
   }
 
   if (files.length === 0) return;
 
   const option = normalizeCompressOption(toJS(homeState.tempOption));
-  runInAction(() => { homeState.tempOption = structuredClone(option); });
-  runInAction(() => { homeState.option = option; });
+  runInAction(() => {
+    homeState.tempOption = structuredClone(option);
+  });
+  runInAction(() => {
+    homeState.option = option;
+  });
   try {
-    localStorage.setItem("pic-smaller-options", JSON.stringify(option));
+    localStorage.setItem(toolOptionsStorageKey, JSON.stringify(option));
   } catch {}
 
   for (let offset = 0; offset < files.length; offset += 40) {
-    const items = files.slice(offset, offset + 40).map((file): ImageItem => ({
-      key: uniqId(),
-      name: file.name,
-      blob: file,
-      width: 0,
-      height: 0,
-      src: URL.createObjectURL(file),
-      preview: undefined,
-      compress: undefined,
-      status: "processing",
-      processError: undefined,
-      preservedOriginal: false,
-    }));
+    const items = files.slice(offset, offset + 40).map(
+      (file): ImageItem => ({
+        key: uniqId(),
+        name: file.name,
+        blob: file,
+        width: 0,
+        height: 0,
+        src: URL.createObjectURL(file),
+        preview: undefined,
+        compress: undefined,
+        status: "processing",
+        processError: undefined,
+        preservedOriginal: false,
+      }),
+    );
 
     runInAction(() => {
       items.forEach((item) => {
@@ -165,7 +176,9 @@ export async function createImageList(files: Array<File>) {
 
     items.forEach((item) => {
       createPreviewTask(item, option);
-      enqueueDispatch(() => workerC?.postMessage(createMessageData(item, option)));
+      enqueueDispatch(() =>
+        workerC?.postMessage(createMessageData(item, option)),
+      );
     });
 
     if (offset + 40 < files.length) {

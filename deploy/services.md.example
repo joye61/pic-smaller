@@ -1,0 +1,16 @@
+# 服务器项目登记
+
+| 项目 | 目录 | 内部端口 | 域名 | 资源限制 | 状态 |
+| --- | --- | ---: | --- | --- | --- |
+| LunePic 图片批处理台 | `/srv/apps/image-tool` | 13001 | `img.arcanelune.top` | 384MB / 0.5 CPU | 运行中（HTTPS、自动部署） |
+| 预留项目2 | 待定 | 13002 | 待定 | 待定 | 未开始 |
+| 预留项目3 | 待定 | 13003 | 待定 | 待定 | 未开始 |
+
+## LunePic 运维信息
+
+- 仓库：`https://github.com/ArcaneLune/pic-smaller`
+- 发布：推送 SemVer 标签，由 GitHub Actions 构建 AMD64 镜像并自动部署。
+- 当前版本：读取 `/srv/apps/image-tool/deploy/.env` 的 `IMAGE_TAG`。
+- 健康检查：`https://img.arcanelune.top/api/health`
+- 回滚：将 `.env` 的 `IMAGE_TAG` 改为保留版本，再执行 `docker compose up -d --no-build`。
+- 上游：只人工评估并同步必要的安全或兼容性更新。

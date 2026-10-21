@@ -7,6 +7,7 @@ import Home from "./views/home";
 import { Loading } from "./components/Loading";
 import type { SupportedLocale } from "./locale-config";
 import type { LocaleData } from "./type";
+import { localeStorageKey } from "./storage";
 
 type ClientAppProps = {
   lang: SupportedLocale;
@@ -26,7 +27,7 @@ export default function ClientApp({ lang, locale }: ClientAppProps) {
     });
 
     document.documentElement.lang = lang;
-    window.localStorage.setItem("Pic-Smaller-Locale", lang);
+    window.localStorage.setItem(localeStorageKey, lang);
   }, [lang]);
 
   return (

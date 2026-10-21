@@ -1,12 +1,5 @@
-import ClientPage from "../ClientPage";
-import RootLocaleRedirect from "../RootLocaleRedirect";
-import enUS from "@/locales/en-US";
+import { permanentRedirect } from "next/navigation";
 
 export default function Page() {
-  return (
-    <>
-      <ClientPage lang="en-US" locale={enUS} />
-      <RootLocaleRedirect />
-    </>
-  );
+  permanentRedirect("/zh-CN");
 }

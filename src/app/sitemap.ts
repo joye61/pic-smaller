@@ -1,27 +1,37 @@
 import type { MetadataRoute } from "next";
-import {
-  getLocalePath,
-  siteUrl,
-  supportedLocales,
-} from "@/locale-config";
+import { getLocalePath, siteUrl, supportedLocales } from "@/locale-config";
 
 export const dynamic = "force-static";
 
-const languages = Object.fromEntries(
-  [
-    ...supportedLocales.map((locale) => [
-      locale,
-      `${siteUrl}${getLocalePath(locale)}`,
-    ]),
-    ["x-default", `${siteUrl}/en-US/`],
-  ],
-);
+const languages = Object.fromEntries([
+  ...supportedLocales.map((locale) => [
+    locale,
+    `${siteUrl}${getLocalePath(locale)}`,
+  ]),
+    ["x-default", `${siteUrl}/zh-CN`],
+]);
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return supportedLocales.map((locale) => ({
+  const homePages: MetadataRoute.Sitemap = supportedLocales.map((locale) => ({
     url: `${siteUrl}${getLocalePath(locale)}`,
     changeFrequency: "monthly",
-    priority: locale === "en-US" || locale === "zh-CN" ? 1 : 0.8,
+    priority: 1,
     alternates: { languages },
   }));
+
+  const privacyLanguages = {
+    "zh-CN": `${siteUrl}/zh-CN/privacy`,
+    "en-US": `${siteUrl}/en-US/privacy`,
+    "x-default": `${siteUrl}/zh-CN/privacy`,
+  };
+  const privacyPages: MetadataRoute.Sitemap = supportedLocales.map(
+    (locale) => ({
+    url: `${siteUrl}${getLocalePath(locale)}/privacy`,
+      changeFrequency: "yearly",
+      priority: 0.4,
+      alternates: { languages: privacyLanguages },
+    }),
+  );
+
+  return [...homePages, ...privacyPages];
 }

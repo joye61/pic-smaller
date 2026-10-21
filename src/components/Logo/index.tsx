@@ -7,14 +7,14 @@ interface LogoProps {
 }
 
 export const Logo = observer(
-  ({ iconSize = 40, title = "PicSmaller" }: LogoProps) => {
+  ({ iconSize = 40, title = "LunePic" }: LogoProps) => {
     return (
       <div className={style.container}>
         <span
           className={style.icon}
           style={{ width: iconSize, height: iconSize }}
         >
-          <img src="/logo.png" alt="" aria-hidden="true" />
+          <img src="/lunepic-logo.svg" alt="" aria-hidden="true" />
         </span>
         <span>{title}</span>
       </div>

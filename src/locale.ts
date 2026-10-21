@@ -4,6 +4,7 @@ import {
   isSupportedLocale,
   localeOptions,
 } from "./locale-config";
+import { localeStorageKey } from "./storage";
 
 export const langList: Array<{ key: string; label: string }> = [
   ...localeOptions,
@@ -11,6 +12,6 @@ export const langList: Array<{ key: string; label: string }> = [
 
 export function changeLang(lang: string) {
   const locale = isSupportedLocale(lang) ? lang : defaultLocale;
-  window.localStorage.setItem("Pic-Smaller-Locale", locale);
+  window.localStorage.setItem(localeStorageKey, locale);
   window.location.assign(getLocalePath(locale));
 }

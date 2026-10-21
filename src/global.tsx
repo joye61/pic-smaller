@@ -7,7 +7,7 @@ import { Initial } from "./Initial";
 export class GlobalState {
   public pathname: string = normalize(history.location.pathname);
   public page: null | React.ReactNode = (<Initial />);
-  public lang: string = "en-US";
+  public lang: string = "zh-CN";
   public locale: LocaleData | null = null;
   public loading: boolean = false;
   constructor() {

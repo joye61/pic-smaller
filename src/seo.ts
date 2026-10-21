@@ -25,7 +25,7 @@ export function createLocaleMetadata(
       canonical: getLocalePath(locale),
       languages: {
         ...languageAlternates,
-        "x-default": "/en-US/",
+        "x-default": "/zh-CN",
       },
     },
     openGraph: {
@@ -33,11 +33,16 @@ export function createLocaleMetadata(
       url: getLocalePath(locale),
       title: localeData.siteTitle,
       description: localeData.siteDescription,
-      siteName: "PicSmaller",
+      siteName: "LunePic",
       locale: locale.replace("-", "_"),
     },
+    twitter: {
+      card: "summary_large_image",
+      title: localeData.siteTitle,
+      description: localeData.siteDescription,
+    },
     icons: {
-      icon: "/logo.png",
+      icon: "/lunepic-logo.svg",
     },
     other: {
       google: "notranslate",

@@ -167,7 +167,7 @@ export const LeftContent = observer(() => {
         names.add(uniqueName);
         if (info.compress?.blob) zip.file(uniqueName, info.compress.blob);
       }
-      createDownload("picsmaller.zip", await zip.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 6 } }));
+      createDownload("lunepic.zip", await zip.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 6 } }));
     } finally {
       gstate.loading = false;
     }
